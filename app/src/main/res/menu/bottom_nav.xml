@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+
+        android:id="@+id/bottomNav_home"
+        android:title="Tổng quan"
+        app:showAsAction="ifRoom"
+        android:icon="@mipmap/home"
+        tools:ignore="HardcodedText" />
+    <item
+        android:id="@+id/bottomNav_account"
+        android:title="Tài khoản"
+        app:showAsAction="ifRoom"
+        android:icon="@mipmap/wallet"
+        tools:ignore="HardcodedText" />
+    <item
+        android:id="@+id/bottomNav_addMore"
+        android:title="Thêm mới"
+        app:showAsAction="ifRoom"
+        android:icon="@mipmap/add_more"
+        tools:ignore="HardcodedText" />
+    <item
+        android:id="@+id/bottomNav_report"
+        android:title="Báo cáo"
+        app:showAsAction="always"
+        android:icon="@mipmap/report"
+        tools:ignore="HardcodedText" />
+    <item
+        android:id="@+id/bottomNav_other"
+        android:title="Mục khác"
+        app:showAsAction="always"
+        android:icon="@mipmap/other"
+        tools:ignore="HardcodedText" />
+</menu>
