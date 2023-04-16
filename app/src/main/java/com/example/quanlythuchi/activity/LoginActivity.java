@@ -1,5 +1,6 @@
 package com.example.quanlythuchi.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -26,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     Button btn_logIn;
     EditText input_email;
     EditText input_password;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,9 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         Objects.requireNonNull(getSupportActionBar()).hide();
         Realm.init(this);
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Đang lấy thông tin của bạn");
 
         onClick();
     }
@@ -51,8 +56,9 @@ public class LoginActivity extends AppCompatActivity {
                 if(!email.trim().isEmpty() && !password.trim().isEmpty()){
                     App app = new App(new AppConfiguration.Builder(LoginActivity.APP_ID).build());
                     Credentials emailPasswordCredentials = Credentials.emailPassword(email, password);
-
                     AtomicReference<User> user = new AtomicReference<User>();
+
+                    progressDialog.show();
 
                     app.loginAsync(emailPasswordCredentials, it -> {
                         if (it.isSuccess()) {
@@ -63,7 +69,11 @@ public class LoginActivity extends AppCompatActivity {
                         else{
                             new CustomToast(getApplicationContext()).show("Thông tin bạn cung cấp không hợp lệ !");
                         }
+                        progressDialog.hide();
                     });
+                }
+                else{
+                    new CustomToast(getApplicationContext()).show("Vui lòng điền đầy đủ thông tin");
                 }
             }
         });
