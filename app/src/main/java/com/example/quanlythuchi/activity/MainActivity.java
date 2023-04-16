@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.quanlythuchi.R;
 import com.example.quanlythuchi.service.LayoutService;
+import com.example.quanlythuchi.service.TestService;
 import com.github.javafaker.Faker;
 
 import java.util.Objects;
@@ -25,8 +26,10 @@ public class MainActivity extends AppCompatActivity {
 
         layoutService.loadDashboardHeader();
 
-        Faker faker = new Faker();
+        TestService test = new TestService();
 
-        Log.i(TAG, "onCreate: " + faker.name().fullName());
+        test.test();
+
+
     }
 }
