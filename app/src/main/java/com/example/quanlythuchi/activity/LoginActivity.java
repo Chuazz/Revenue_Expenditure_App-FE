@@ -38,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Đang lấy thông tin của bạn");
+        progressDialog.setCancelable(false);
 
         onClick();
     }
@@ -69,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
                         else{
                             new CustomToast(getApplicationContext()).show("Thông tin bạn cung cấp không hợp lệ !");
                         }
-                        progressDialog.hide();
+                        progressDialog.cancel();
                     });
                 }
                 else{

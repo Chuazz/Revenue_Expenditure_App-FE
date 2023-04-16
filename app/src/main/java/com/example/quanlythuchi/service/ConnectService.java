@@ -25,7 +25,7 @@ public class ConnectService {
         MongoClient mongoClient =
                 Objects.requireNonNull(user).getMongoClient("mongodb-atlas");
         MongoDatabase mongoDatabase =
-                mongoClient.getDatabase("plant-data-database");
+                mongoClient.getDatabase("quan_ly_thu_chi");
 
         CodecRegistry pojoCodecRegistry = fromRegistries(AppConfiguration.DEFAULT_BSON_CODEC_REGISTRY,
                 fromProviders(PojoCodecProvider.builder().automatic(true).build()));

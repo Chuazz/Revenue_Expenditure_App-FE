@@ -3,12 +3,71 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.account.AccountHeaderFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#39A5F3"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            app:contentInsetEnd="16dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+
+                <ImageView
+                    android:id="@+id/account_historyBtn"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:contentDescription="lịch sử"
+                    android:src="@drawable/ic_history"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/account_checkBtn"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="HardcodedText" />
+
+                <Button
+                    android:id="@+id/account_optionBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="42dp"
+                    android:background="@drawable/account_button_bg"
+                    android:text="Chi tiền"
+                    android:drawableEnd="@drawable/ic_drop_down"
+                    android:textColor="#fff"
+                    android:textAllCaps="false"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/account_historyBtn"
+                    app:layout_constraintRight_toLeftOf="@id/account_checkBtn"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="40dp"
+                    tools:ignore="HardcodedText" />
+
+                <ImageView
+                    android:id="@+id/account_checkBtn"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:contentDescription="Làm mới"
+                    android:src="@mipmap/reload"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/account_historyBtn"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="HardcodedText" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
