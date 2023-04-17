@@ -1,22 +1,15 @@
 package com.example.quanlythuchi.activity;
 
-import static android.content.ContentValues.TAG;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.quanlythuchi.R;
-import com.example.quanlythuchi.service.LayoutService;
-import com.example.quanlythuchi.service.TestService;
-import com.github.javafaker.Faker;
+import com.example.quanlythuchi.fragment.dashboard.service.LayoutService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     LayoutService layoutService;
@@ -42,9 +35,20 @@ public class MainActivity extends AppCompatActivity {
                         layoutService.loadDashboardHeader();
                         break;
                     }
-                    case R.id.bottomNav_account:{
+                    case R.id.bottomNav_account: {
                         layoutService.loadAccountHeader();
                         break;
+                    }
+                    case R.id.bottomNav_addMore: {
+                        layoutService.loadAddMoreHeader();
+                        break;
+                    }
+                    case R.id.bottomNav_report: {
+                        layoutService.loadReportHeader();
+                        break;
+                    }
+                    case R.id.bottomNav_other: {
+                        return false;
                     }
                 }
                 return true;

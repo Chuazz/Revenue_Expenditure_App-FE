@@ -1,4 +1,4 @@
-package com.example.quanlythuchi.service;
+package com.example.quanlythuchi.fragment.dashboard.service;
 
 public class DanhMucChiService {
     public void test() {

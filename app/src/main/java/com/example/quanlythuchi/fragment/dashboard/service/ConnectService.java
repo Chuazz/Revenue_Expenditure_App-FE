@@ -1,4 +1,4 @@
-package com.example.quanlythuchi.service;
+package com.example.quanlythuchi.fragment.dashboard.service;
 
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;

@@ -1,4 +1,4 @@
-package com.example.quanlythuchi.service;
+package com.example.quanlythuchi.fragment.dashboard.service;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -6,7 +6,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.quanlythuchi.R;
 import com.example.quanlythuchi.fragment.account.AccountHeaderFragment;
-import com.example.quanlythuchi.fragment.dashBoard.DashboardHeaderFragment;
+import com.example.quanlythuchi.fragment.addMore.AddMoreHeaderFragment;
+import com.example.quanlythuchi.fragment.dashboard.DashboardHeaderFragment;
+import com.example.quanlythuchi.fragment.report.ReportHeaderFragment;
 
 public class LayoutService {
     private final FragmentManager fragmentManager;
@@ -21,6 +23,14 @@ public class LayoutService {
 
     public void loadAccountHeader(){
         change(R.id.main_fragmentHeader, AccountHeaderFragment.newInstance());
+    }
+
+    public void loadAddMoreHeader(){
+        change(R.id.main_fragmentHeader, AddMoreHeaderFragment.newInstance());
+    }
+
+    public void loadReportHeader(){
+        change(R.id.main_fragmentHeader, ReportHeaderFragment.newInstance());
     }
 
     public void change(int id, Fragment fragment){

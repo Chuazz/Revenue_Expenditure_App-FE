@@ -1,4 +1,4 @@
-package com.example.quanlythuchi.fragment.dashBoard;
+package com.example.quanlythuchi.fragment.dashboard;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
