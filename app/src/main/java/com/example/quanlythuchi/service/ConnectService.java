@@ -19,17 +19,13 @@ import io.realm.mongodb.mongo.MongoClient;
 import io.realm.mongodb.mongo.MongoDatabase;
 
 public class ConnectService {
-    public MongoDatabase start(){
+    public static MongoDatabase start(){
         App app = new App(new AppConfiguration.Builder(LoginActivity.APP_ID).build());
         User user = app.currentUser();
         MongoClient mongoClient =
                 Objects.requireNonNull(user).getMongoClient("mongodb-atlas");
         MongoDatabase mongoDatabase =
                 mongoClient.getDatabase("quan_ly_thu_chi");
-
-        CodecRegistry pojoCodecRegistry = fromRegistries(AppConfiguration.DEFAULT_BSON_CODEC_REGISTRY,
-                fromProviders(PojoCodecProvider.builder().automatic(true).build()));
-
         return mongoDatabase;
     }
 }
