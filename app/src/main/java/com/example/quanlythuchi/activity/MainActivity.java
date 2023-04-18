@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     case R.id.bottomNav_addMore: {
                         layoutService.loadAddMoreHeader();
+                        layoutService.loadAddMoreBody();
                         break;
                     }
                     case R.id.bottomNav_report: {
