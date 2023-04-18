@@ -2,13 +2,17 @@ package com.example.quanlythuchi.activity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.quanlythuchi.R;
-import com.example.quanlythuchi.fragment.dashboard.service.LayoutService;
+import com.example.quanlythuchi.callback.InsertOneCallback;
+import com.example.quanlythuchi.model.DanhMucChi;
+import com.example.quanlythuchi.service.DanhMucChiService;
+import com.example.quanlythuchi.service.LayoutService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,6 +26,21 @@ public class MainActivity extends AppCompatActivity {
 
         layoutService.loadDashboardHeader();
         onBottomNavItemClick();
+
+        DanhMucChiService danhMucChiService = new DanhMucChiService();
+        DanhMucChi danhMucChi = new DanhMucChi("thuận nè2");
+
+        danhMucChiService.insertOne(danhMucChi, new InsertOneCallback() {
+            @Override
+            public void onSuccess() {
+                Log.v("EXAMPLE", "THÀNH CÔNG!");
+            }
+            @Override
+            public void onFailure() {
+                Log.v("EXAMPLE", "THẤT BẠI!");
+            }
+        });
+
     }
 
     void onBottomNavItemClick(){

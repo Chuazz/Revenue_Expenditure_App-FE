@@ -1,4 +1,4 @@
-package com.example.quanlythuchi.fragment.dashboard.service;
+package com.example.quanlythuchi.service;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
