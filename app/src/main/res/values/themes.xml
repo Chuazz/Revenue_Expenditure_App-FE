@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.QuảnLýThuChi" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Theme.QuảnLýThuChi" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">#39A5F3</item>
         <item name="colorSecondary">#BDB9B9</item>
         <item name="colorContainer">#6D6C6C</item>

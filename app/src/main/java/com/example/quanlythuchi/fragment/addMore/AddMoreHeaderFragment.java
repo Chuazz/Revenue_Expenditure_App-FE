@@ -82,6 +82,7 @@ public class AddMoreHeaderFragment extends Fragment {
                             break;
                         }
                     }
+                    optionContainer.setVisibility(View.GONE);
                 }
             });
         }
