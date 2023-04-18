@@ -8,8 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.quanlythuchi.R;
-import com.example.quanlythuchi.fragment.dashboard.service.LayoutService;
+import com.example.quanlythuchi.service.LayoutService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.datepicker.MaterialDatePicker;
 
 public class MainActivity extends AppCompatActivity {
     LayoutService layoutService;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     case R.id.bottomNav_addMore: {
                         layoutService.loadAddMoreHeader();
+                        layoutService.loadAddMoreBody();
                         break;
                     }
                     case R.id.bottomNav_report: {
