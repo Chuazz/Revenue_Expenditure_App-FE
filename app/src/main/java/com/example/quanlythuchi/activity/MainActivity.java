@@ -9,11 +9,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.quanlythuchi.R;
-import com.example.quanlythuchi.callback.InsertOneCallback;
+import com.example.quanlythuchi.callback.danhmucchi.FindOneCallback;
 import com.example.quanlythuchi.model.DanhMucChi;
 import com.example.quanlythuchi.service.DanhMucChiService;
 import com.example.quanlythuchi.service.LayoutService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import org.bson.Document;
+
 
 public class MainActivity extends AppCompatActivity {
     LayoutService layoutService;
@@ -28,12 +31,13 @@ public class MainActivity extends AppCompatActivity {
         onBottomNavItemClick();
 
         DanhMucChiService danhMucChiService = new DanhMucChiService();
-        DanhMucChi danhMucChi = new DanhMucChi("thuận nè2");
+        Document queryFilter  = new Document("_id", "643eaac133e44dfb0aadd12c");
 
-        danhMucChiService.insertOne(danhMucChi, new InsertOneCallback() {
+        danhMucChiService.findOne(queryFilter, new FindOneCallback() {
             @Override
-            public void onSuccess() {
-                Log.v("EXAMPLE", "THÀNH CÔNG!");
+            public void onSuccess(DanhMucChi result) {
+                Log.v("EXAMPLE", "Danh mục chi nè ");
+                Log.v("EXAMPLE", result.getTenDMChi());
             }
             @Override
             public void onFailure() {

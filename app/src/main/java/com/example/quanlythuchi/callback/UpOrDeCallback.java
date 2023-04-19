@@ -1,6 +1,6 @@
 package com.example.quanlythuchi.callback;
 
-public interface InsertOneCallback {
-    void onSuccess();
+public interface UpOrDeCallback {
+    void onSuccess(long count);
     void onFailure();
 }
