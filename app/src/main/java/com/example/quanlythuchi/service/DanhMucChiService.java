@@ -3,6 +3,9 @@ package com.example.quanlythuchi.service;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
+import android.util.Log;
+
+import com.example.quanlythuchi.callback.danhmucchi.FindCallback;
 import com.example.quanlythuchi.callback.danhmucchi.FindManyCallback;
 import com.example.quanlythuchi.callback.danhmucchi.FindOneCallback;
 import com.example.quanlythuchi.callback.InsertCallback;
@@ -13,8 +16,8 @@ import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 
+import java.util.ArrayList;
 import java.util.List;
-
 
 import io.realm.mongodb.AppConfiguration;
 import io.realm.mongodb.RealmResultTask;
@@ -22,10 +25,12 @@ import io.realm.mongodb.mongo.MongoCollection;
 import io.realm.mongodb.mongo.MongoDatabase;
 import io.realm.mongodb.mongo.iterable.MongoCursor;
 
+
 public class DanhMucChiService {
+    MongoDatabase mongoDatabase;
     MongoCollection<DanhMucChi> mongoCollection;
     public DanhMucChiService() {
-        MongoDatabase mongoDatabase = ConnectService.start();
+        this.mongoDatabase = ConnectService.start();
         CodecRegistry pojoCodecRegistry = fromRegistries(AppConfiguration.DEFAULT_BSON_CODEC_REGISTRY,
                 fromProviders(PojoCodecProvider.builder().automatic(true).build()));
         this.mongoCollection =
@@ -34,7 +39,22 @@ public class DanhMucChiService {
                         DanhMucChi.class).withCodecRegistry(pojoCodecRegistry);
     }
 
-    // Tự động tắt nè
+    public void findAll(FindCallback callback) {
+        this.mongoCollection.find().iterator().getAsync(task -> {
+            if (task.isSuccess()) {
+                MongoCursor<DanhMucChi> results = task.get();
+                List<DanhMucChi> danhMucList = new ArrayList<>();
+                while (results.hasNext()) {
+                    DanhMucChi chi = results.next();
+                    danhMucList.add(chi);
+                }
+                callback.onSuccess(danhMucList);
+            } else {
+                callback.onFailure();
+            }
+        });
+    }
+
     public void findOne(Document queryFilter, FindOneCallback callback) {
         this.mongoCollection.findOne(queryFilter).getAsync(task -> {
             if (task.isSuccess()) {
@@ -50,9 +70,6 @@ public class DanhMucChiService {
         findTask.getAsync(task -> {
             if (task.isSuccess()) {
                 callback.onSuccess(task.get());
-                //while (results.hasNext()) {
-                //    Log.v("EXAMPLE", results.next().toString());
-                //}
             } else {
                 callback.onFailure();
             }

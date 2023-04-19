@@ -9,13 +9,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.quanlythuchi.R;
-import com.example.quanlythuchi.callback.danhmucchi.FindOneCallback;
+import com.example.quanlythuchi.callback.InsertCallback;
+import com.example.quanlythuchi.callback.UpOrDeCallback;
 import com.example.quanlythuchi.model.DanhMucChi;
 import com.example.quanlythuchi.service.DanhMucChiService;
 import com.example.quanlythuchi.service.LayoutService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.bson.Document;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -29,22 +34,6 @@ public class MainActivity extends AppCompatActivity {
 
         layoutService.loadDashboardHeader();
         onBottomNavItemClick();
-
-        DanhMucChiService danhMucChiService = new DanhMucChiService();
-        Document queryFilter  = new Document("_id", "643eaac133e44dfb0aadd12c");
-
-        danhMucChiService.findOne(queryFilter, new FindOneCallback() {
-            @Override
-            public void onSuccess(DanhMucChi result) {
-                Log.v("EXAMPLE", "Danh mục chi nè ");
-                Log.v("EXAMPLE", result.getTenDMChi());
-            }
-            @Override
-            public void onFailure() {
-                Log.v("EXAMPLE", "THẤT BẠI!");
-            }
-        });
-
     }
 
     void onBottomNavItemClick(){
