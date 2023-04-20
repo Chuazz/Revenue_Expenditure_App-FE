@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quanlythuchi.R;
-import com.example.quanlythuchi.callback.OnTypeItemClickListener;
+import com.example.quanlythuchi.callback.listener.OnTypeItemClickListener;
 import com.example.quanlythuchi.model.DanhMucChi;
 
 import java.util.List;

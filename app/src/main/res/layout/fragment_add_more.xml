@@ -173,7 +173,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/addMore_description"
-                app:layout_constraintBottom_toTopOf="@id/addMore_account"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
@@ -192,6 +192,9 @@
                     tools:ignore="HardcodedText" />
 
                 <EditText
+                    android:clickable="false"
+                    android:hint="Ngày chi"
+                    android:focusable="false"
                     android:id="@+id/addMore_dateAddInput"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -201,7 +204,7 @@
                     android:layout_width="0dp"
                     android:layout_marginStart="24dp"
                     android:layout_height="wrap_content"
-                    tools:ignore="Autofill,LabelFor" />
+                    tools:ignore="Autofill,HardcodedText,LabelFor" />
 
                 <Button
                     android:id="@+id/addMore_chooseDateAddBtn"
@@ -216,56 +219,56 @@
                     tools:ignore="HardcodedText" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/addMore_account"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/addMore_dateAdd"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp"
-                >
-                <ImageView
-                    android:id="@+id/addMore_accountImg"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/addMore_accountInput"
-                    android:src="@mipmap/logo"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:contentDescription="Chọn hạng mục"
-                    tools:ignore="HardcodedText" />
+<!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                android:id="@+id/addMore_account"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:layout_constraintLeft_toLeftOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/addMore_dateAdd"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintRight_toRightOf="parent"-->
+<!--                android:paddingTop="12dp"-->
+<!--                android:paddingBottom="12dp"-->
+<!--                >-->
+<!--                <ImageView-->
+<!--                    android:id="@+id/addMore_accountImg"-->
+<!--                    app:layout_constraintTop_toTopOf="parent"-->
+<!--                    app:layout_constraintLeft_toLeftOf="parent"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    app:layout_constraintRight_toLeftOf="@id/addMore_accountInput"-->
+<!--                    android:src="@mipmap/logo"-->
+<!--                    android:layout_width="42dp"-->
+<!--                    android:layout_height="42dp"-->
+<!--                    android:contentDescription="Chọn hạng mục"-->
+<!--                    tools:ignore="HardcodedText" />-->
 
-                <EditText
-                    android:id="@+id/addMore_accountInput"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/addMore_chooseAccountBtn"
-                    app:layout_constraintLeft_toRightOf="@id/addMore_accountImg"
-                    android:hint="Ví"
-                    android:inputType="text"
-                    android:layout_width="0dp"
-                    android:layout_marginStart="24dp"
-                    android:layout_height="wrap_content"
-                    tools:ignore="Autofill,HardcodedText,LabelFor" />
+<!--                <EditText-->
+<!--                    android:id="@+id/addMore_accountInput"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent"-->
+<!--                    app:layout_constraintRight_toLeftOf="@+id/addMore_chooseAccountBtn"-->
+<!--                    app:layout_constraintLeft_toRightOf="@id/addMore_accountImg"-->
+<!--                    android:hint="Ví"-->
+<!--                    android:inputType="text"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_marginStart="24dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    tools:ignore="Autofill,HardcodedText,LabelFor" />-->
 
-                <Button
-                    android:id="@+id/addMore_chooseAccountBtn"
-                    app:layout_constraintLeft_toRightOf="@id/addMore_accountInput"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:text="Chọn"
-                    android:textColor="#fff"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    tools:ignore="HardcodedText" />
+<!--                <Button-->
+<!--                    android:id="@+id/addMore_chooseAccountBtn"-->
+<!--                    app:layout_constraintLeft_toRightOf="@id/addMore_accountInput"-->
+<!--                    app:layout_constraintRight_toRightOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent"-->
+<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                    android:text="Chọn"-->
+<!--                    android:textColor="#fff"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    tools:ignore="HardcodedText" />-->
 
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+<!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

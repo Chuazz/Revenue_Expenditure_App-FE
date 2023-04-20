@@ -6,16 +6,27 @@ public class ChiPhi {
     private NguoiDung NguoiDung;
     private DanhMucChi DanhMucChi;
     private long TienChi;
-    private Date NgayChi;
+    private String NgayChi;
+
+    public String getGhiChu() {
+        return GhiChu;
+    }
+
+    public void setGhiChu(String ghiChu) {
+        GhiChu = ghiChu;
+    }
+
+    private String GhiChu;
 
     public ChiPhi() {
     }
 
-    public ChiPhi(NguoiDung nguoiDung, DanhMucChi danhMucChi, long tienChi, Date ngayChi) {
+    public ChiPhi(NguoiDung nguoiDung, DanhMucChi danhMucChi, long tienChi, String ngayChi, String ghiChu) {
         NguoiDung = nguoiDung;
         DanhMucChi = danhMucChi;
         TienChi = tienChi;
         NgayChi = ngayChi;
+        GhiChu = ghiChu;
     }
 
     public NguoiDung getNguoiDung() {
@@ -42,11 +53,11 @@ public class ChiPhi {
         TienChi = tienChi;
     }
 
-    public Date getNgayChi() {
+    public String getNgayChi() {
         return NgayChi;
     }
 
-    public void setNgayChi(Date ngayChi) {
+    public void setNgayChi(String ngayChi) {
         NgayChi = ngayChi;
     }
 }

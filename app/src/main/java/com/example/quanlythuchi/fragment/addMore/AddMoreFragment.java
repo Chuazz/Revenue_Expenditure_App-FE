@@ -21,17 +21,24 @@ import android.widget.LinearLayout;
 
 import com.example.quanlythuchi.R;
 import com.example.quanlythuchi.activity.LoginActivity;
+import com.example.quanlythuchi.callback.InsertCallback;
 import com.example.quanlythuchi.callback.nguoidung.FindOneCallback;
+import com.example.quanlythuchi.model.ChiPhi;
+import com.example.quanlythuchi.model.DanhMucChi;
 import com.example.quanlythuchi.model.NguoiDung;
+import com.example.quanlythuchi.service.ChiPhiService;
 import com.example.quanlythuchi.service.LayoutService;
 import com.example.quanlythuchi.service.NguoiDungService;
+import com.example.quanlythuchi.util.CustomToast;
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
 import org.bson.Document;
 
 public class AddMoreFragment extends Fragment {
     View view;
     EditText moneyInput;
+    EditText typeInput;
     EditText dateAddInput;
     Button chooseTypeBtn;
     boolean isOptionChecked = false;
@@ -39,6 +46,11 @@ public class AddMoreFragment extends Fragment {
     LinearLayout optionContainer;
     ImageView checkBtn;
     LayoutService layoutService;
+    NguoiDungService nguoiDungService;
+    Button dateAddBtn;
+    ChiPhiService chiPhiService;
+    DanhMucChi danhMucChi;
+    EditText descriptionInput;
 
     public AddMoreFragment() {
     }
@@ -54,6 +66,12 @@ public class AddMoreFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            DanhMucChi danhMucChi = (DanhMucChi) savedInstanceState.getSerializable("muc_chi");
+
+            Log.i(TAG, "onCreateView: " + danhMucChi.getTenDMChi());
+        }
     }
 
     @Override
@@ -67,6 +85,12 @@ public class AddMoreFragment extends Fragment {
         optionContainer = view.findViewById(R.id.addMore_optionContainer);
         checkBtn = view.findViewById(R.id.addMore_checkBtn);
         layoutService = new LayoutService(getParentFragmentManager());
+        nguoiDungService = new NguoiDungService();
+        dateAddBtn = view.findViewById(R.id.addMore_chooseDateAddBtn);
+        typeInput = view.findViewById(R.id.addMore_typeInput);
+        chiPhiService = new ChiPhiService();
+        danhMucChi = new DanhMucChi();
+        descriptionInput = view.findViewById(R.id.addMore_descriptionInput);
 
         onDateAddClick();
         onChooseTypeClick();
@@ -79,13 +103,19 @@ public class AddMoreFragment extends Fragment {
     }
 
     void onDateAddClick(){
-        dateAddInput.setOnClickListener(new View.OnClickListener() {
+        dateAddBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 MaterialDatePicker<Long> materialDatePicker =  MaterialDatePicker.Builder.datePicker()
-                        .setTitleText("Ngày thu")
+                        .setTitleText("Ngày chi")
                         .setSelection(MaterialDatePicker.todayInUtcMilliseconds()).build();
 
+                materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
+                    @Override
+                    public void onPositiveButtonClick(Long selection) {
+                        dateAddInput.setText(materialDatePicker.getHeaderText());
+                    }
+                });
                 materialDatePicker.show(getParentFragmentManager(), "TAG");
             }
         });
@@ -102,6 +132,16 @@ public class AddMoreFragment extends Fragment {
 
     void onCreateView(){
         optionContainer.setVisibility(View.GONE);
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            DanhMucChi danhMucChi = (DanhMucChi) bundle.getSerializable("muc_chi");
+            this.danhMucChi = danhMucChi;
+
+            if(danhMucChi != null){
+                typeInput.setText(danhMucChi.getTenDMChi());
+            }
+        }
     }
 
     void onOptionItemClick(){
@@ -155,21 +195,18 @@ public class AddMoreFragment extends Fragment {
         checkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NguoiDungService nguoiDungService = new NguoiDungService();
-                Document query = new Document("TenDangNhap", LoginActivity.userName);
-
-                Log.i(TAG, "onClick: " + LoginActivity.userName);
-
-                nguoiDungService.findOne(query, new FindOneCallback() {
+                ChiPhi chiPhi = new ChiPhi(LoginActivity.nguoiDung, danhMucChi,
+                        Long.parseLong(String.valueOf(moneyInput.getText())),
+                        String.valueOf(dateAddInput.getText()), String.valueOf(descriptionInput.getText()));
+                chiPhiService.insertOne(chiPhi, new InsertCallback() {
                     @Override
-                    public void onSuccess(NguoiDung result) {
-                        Log.i(TAG, "onSuccess: " + result.getHoTen());
-                        Log.i(TAG, "onSuccess: " + result);
+                    public void onSuccess() {
+                        new CustomToast(getContext()).show("Thêm thành công");
                     }
 
                     @Override
                     public void onFailure() {
-
+                        new CustomToast(getContext()).show("Lỗi mẹ rồi");
                     }
                 });
             }

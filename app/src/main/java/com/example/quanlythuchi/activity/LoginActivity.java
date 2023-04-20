@@ -1,8 +1,11 @@
 package com.example.quanlythuchi.activity;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,7 +13,12 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.quanlythuchi.R;
+import com.example.quanlythuchi.callback.nguoidung.FindOneCallback;
+import com.example.quanlythuchi.model.NguoiDung;
+import com.example.quanlythuchi.service.NguoiDungService;
 import com.example.quanlythuchi.util.CustomToast;
+
+import org.bson.Document;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -28,7 +36,9 @@ public class LoginActivity extends AppCompatActivity {
     EditText input_email;
     EditText input_password;
     ProgressDialog progressDialog;
-    public static String userName;
+    NguoiDungService nguoiDungService;
+    public static NguoiDung nguoiDung;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +73,6 @@ public class LoginActivity extends AppCompatActivity {
                     Credentials emailPasswordCredentials = Credentials.emailPassword(email, password);
                     AtomicReference<User> user = new AtomicReference<User>();
 
-                    userName = email;
                     progressDialog.show();
 
                     app.loginAsync(emailPasswordCredentials, it -> {
@@ -71,6 +80,21 @@ public class LoginActivity extends AppCompatActivity {
                             user.set(app.currentUser());
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
+
+                            nguoiDungService = new NguoiDungService();
+                            Document query = new Document("tenDangNhap", email);
+
+                            nguoiDungService.findOne(query, new FindOneCallback() {
+                                @Override
+                                public void onSuccess(NguoiDung result) {
+                                    nguoiDung = result;
+                                }
+
+                                @Override
+                                public void onFailure() {
+                                    Log.i(TAG, "onFailure: " + "Loi mia r");
+                                }
+                            });
                         }
                         else{
                             new CustomToast(getApplicationContext()).show("Thông tin bạn cung cấp không hợp lệ !");
