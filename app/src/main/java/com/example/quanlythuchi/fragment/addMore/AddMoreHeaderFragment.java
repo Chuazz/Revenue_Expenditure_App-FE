@@ -1,11 +1,14 @@
 package com.example.quanlythuchi.fragment.addMore;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +17,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.quanlythuchi.R;
+import com.example.quanlythuchi.activity.LoginActivity;
+import com.example.quanlythuchi.callback.nguoidung.FindOneCallback;
+import com.example.quanlythuchi.model.NguoiDung;
+import com.example.quanlythuchi.service.NguoiDungService;
+
+import org.bson.Document;
 
 public class AddMoreHeaderFragment extends Fragment {
     boolean isOptionChecked = false;
     View view;
     Button optionBtn;
     LinearLayout optionContainer;
+    ImageView checkBtn;
 
 
     public AddMoreHeaderFragment() {
@@ -44,11 +54,13 @@ public class AddMoreHeaderFragment extends Fragment {
         this.view = view;
         optionBtn = view.findViewById(R.id.addMore_optionBtn);
         optionContainer = view.findViewById(R.id.addMore_optionContainer);
+        checkBtn = view.findViewById(R.id.addMore_checkBtn);
 
 
         onCreateView();
         onOptionClick();
         onOptionItemClick();
+        onCheckBtnClick();
 
         return view;
     }
@@ -92,8 +104,6 @@ public class AddMoreHeaderFragment extends Fragment {
         optionBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View target) {
-
-
                 if(isOptionChecked){
                     optionContainer.setVisibility(View.GONE);
                 }
@@ -102,6 +112,31 @@ public class AddMoreHeaderFragment extends Fragment {
                 }
                 isOptionChecked = !isOptionChecked;
 
+            }
+        });
+    }
+
+    void onCheckBtnClick(){
+        checkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NguoiDungService nguoiDungService = new NguoiDungService();
+                Document query = new Document("TenDangNhap", LoginActivity.userName);
+
+                Log.i(TAG, "onClick: " + LoginActivity.userName);
+
+                nguoiDungService.findOne(query, new FindOneCallback() {
+                    @Override
+                    public void onSuccess(NguoiDung result) {
+                        Log.i(TAG, "onSuccess: " + result.getHoTen());
+                        Log.i(TAG, "onSuccess: " + result);
+                    }
+
+                    @Override
+                    public void onFailure() {
+
+                    }
+                });
             }
         });
     }

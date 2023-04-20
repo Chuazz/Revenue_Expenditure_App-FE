@@ -28,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText input_email;
     EditText input_password;
     ProgressDialog progressDialog;
+    public static String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                     Credentials emailPasswordCredentials = Credentials.emailPassword(email, password);
                     AtomicReference<User> user = new AtomicReference<User>();
 
+                    userName = email;
                     progressDialog.show();
 
                     app.loginAsync(emailPasswordCredentials, it -> {

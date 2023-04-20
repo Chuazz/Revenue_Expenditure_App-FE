@@ -107,16 +107,28 @@
 
                 <EditText
                     android:id="@+id/addMore_typeInput"
-                    android:hint="Chọn hạng mục"
+                    android:hint="Hạng mục"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/addMore_chooseTypeBtn"
                     app:layout_constraintLeft_toRightOf="@id/addMore_questionImg"
                     android:inputType="date"
                     android:layout_width="0dp"
                     android:layout_marginStart="24dp"
                     android:layout_height="wrap_content"
                     tools:ignore="Autofill,HardcodedText,LabelFor" />
+
+                <Button
+                    android:id="@+id/addMore_chooseTypeBtn"
+                    app:layout_constraintLeft_toRightOf="@id/addMore_typeInput"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:text="Chọn"
+                    android:textColor="#fff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    tools:ignore="HardcodedText" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -187,13 +199,25 @@
                     android:id="@+id/addMore_dateAddInput"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/addMore_chooseDateAddBtn"
                     app:layout_constraintLeft_toRightOf="@id/addMore_calendarImg"
                     android:inputType="date"
                     android:layout_width="0dp"
                     android:layout_marginStart="24dp"
                     android:layout_height="wrap_content"
                     tools:ignore="Autofill,LabelFor" />
+
+                <Button
+                    android:id="@+id/addMore_chooseDateAddBtn"
+                    app:layout_constraintLeft_toRightOf="@id/addMore_dateAddInput"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:text="Chọn"
+                    android:textColor="#fff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    tools:ignore="HardcodedText" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -223,13 +247,26 @@
                     android:id="@+id/addMore_accountInput"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/addMore_chooseAccountBtn"
                     app:layout_constraintLeft_toRightOf="@id/addMore_accountImg"
+                    android:hint="Ví"
                     android:inputType="date"
                     android:layout_width="0dp"
                     android:layout_marginStart="24dp"
                     android:layout_height="wrap_content"
-                    tools:ignore="Autofill,LabelFor" />
+                    tools:ignore="Autofill,HardcodedText,LabelFor" />
+
+                <Button
+                    android:id="@+id/addMore_chooseAccountBtn"
+                    app:layout_constraintLeft_toRightOf="@id/addMore_accountInput"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:text="Chọn"
+                    android:textColor="#fff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    tools:ignore="HardcodedText" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -241,7 +278,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.75"/>
+            app:layout_constraintGuide_percent="0.8"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

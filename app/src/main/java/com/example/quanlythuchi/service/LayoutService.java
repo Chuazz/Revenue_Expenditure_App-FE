@@ -8,6 +8,7 @@ import com.example.quanlythuchi.R;
 import com.example.quanlythuchi.fragment.account.AccountHeaderFragment;
 import com.example.quanlythuchi.fragment.addMore.AddMoreBodyFragment;
 import com.example.quanlythuchi.fragment.addMore.AddMoreHeaderFragment;
+import com.example.quanlythuchi.fragment.dashboard.DashboardBodyFragment;
 import com.example.quanlythuchi.fragment.dashboard.DashboardHeaderFragment;
 import com.example.quanlythuchi.fragment.report.ReportHeaderFragment;
 
@@ -36,6 +37,10 @@ public class LayoutService {
 
     public void loadAddMoreBody(){
         change(R.id.main_fragmentBody, AddMoreBodyFragment.newInstance());
+    }
+
+    public void loadDashboardBody(){
+        change(R.id.main_fragmentBody, DashboardBodyFragment.newInstance());
     }
 
     public void change(int id, Fragment fragment){

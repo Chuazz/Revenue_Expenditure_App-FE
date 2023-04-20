@@ -6,9 +6,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.account.AccountHeaderFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
+        android:id="@+id/addMore_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         >
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/addMore_toolbar"
@@ -75,6 +76,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_below="@id/addMore_toolbar"
             android:background="@drawable/add_more_bg"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -178,6 +180,5 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 </FrameLayout>
