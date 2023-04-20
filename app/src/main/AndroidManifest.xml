@@ -21,9 +21,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.ChoosePayTypeActivity"
-            android:exported="false" />
-        <activity
             android:name=".activity.MainActivity"
             android:exported="true">
         </activity>

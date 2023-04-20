@@ -21,7 +21,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         layoutService = new LayoutService(getSupportFragmentManager());
 
-        layoutService.loadDashboardHeader();
+        layoutService.loadDashboard();
+
         onBottomNavItemClick();
     }
 
@@ -32,25 +33,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
-                    case R.id.bottomNav_home: {
-                        layoutService.loadDashboardHeader();
-                        layoutService.loadDashboardBody();
+                    case R.id.bottomNav_dashboard: {
+                        layoutService.loadDashboard();
                         break;
                     }
                     case R.id.bottomNav_account: {
-                        layoutService.loadAccountHeader();
+                        layoutService.loadAccount();
                         break;
                     }
                     case R.id.bottomNav_addMore: {
-                        layoutService.loadAddMoreHeader();
-                        layoutService.loadAddMoreBody();
+                        layoutService.loadAddMore();
                         break;
                     }
                     case R.id.bottomNav_report: {
-                        layoutService.loadReportHeader();
+                        layoutService.loadReport();
                         break;
                     }
                     case R.id.bottomNav_other: {
+                        layoutService.loadOther();
                         return false;
                     }
                 }

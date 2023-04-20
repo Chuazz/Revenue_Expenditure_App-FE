@@ -1,4 +1,4 @@
-package com.example.quanlythuchi.fragment.account;
+package com.example.quanlythuchi.fragment.report;
 
 import android.os.Bundle;
 
@@ -10,9 +10,14 @@ import android.view.ViewGroup;
 
 import com.example.quanlythuchi.R;
 
-public class AccountHeaderFragment extends Fragment {
-    public static AccountHeaderFragment newInstance() {
-        AccountHeaderFragment fragment = new AccountHeaderFragment();
+public class ReportFragment extends Fragment {
+
+    public ReportFragment() {
+        // Required empty public constructor
+    }
+
+    public static ReportFragment newInstance() {
+        ReportFragment fragment = new ReportFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -26,7 +31,6 @@ public class AccountHeaderFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_account_header, container, false);
+        return inflater.inflate(R.layout.fragment_report, container, false);
     }
 }

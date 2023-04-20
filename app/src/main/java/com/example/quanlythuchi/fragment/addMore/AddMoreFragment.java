@@ -1,8 +1,10 @@
 package com.example.quanlythuchi.fragment.addMore;
 
+import static android.view.View.inflate;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -13,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -20,26 +23,31 @@ import com.example.quanlythuchi.R;
 import com.example.quanlythuchi.activity.LoginActivity;
 import com.example.quanlythuchi.callback.nguoidung.FindOneCallback;
 import com.example.quanlythuchi.model.NguoiDung;
+import com.example.quanlythuchi.service.LayoutService;
 import com.example.quanlythuchi.service.NguoiDungService;
+import com.google.android.material.datepicker.MaterialDatePicker;
 
 import org.bson.Document;
 
-public class AddMoreHeaderFragment extends Fragment {
-    boolean isOptionChecked = false;
+public class AddMoreFragment extends Fragment {
     View view;
+    EditText moneyInput;
+    EditText dateAddInput;
+    Button chooseTypeBtn;
+    boolean isOptionChecked = false;
     Button optionBtn;
     LinearLayout optionContainer;
     ImageView checkBtn;
+    LayoutService layoutService;
 
-
-    public AddMoreHeaderFragment() {
-        // Required empty public constructor
+    public AddMoreFragment() {
     }
 
-    public static AddMoreHeaderFragment newInstance() {
-        AddMoreHeaderFragment fragment = new AddMoreHeaderFragment();
+    public static AddMoreFragment newInstance() {
+        AddMoreFragment fragment = new AddMoreFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -49,20 +57,47 @@ public class AddMoreHeaderFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_more_header, container, false);
-        this.view = view;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_add_more, container, false);
+        moneyInput = view.findViewById(R.id.addMore_addMoneyText);
+        dateAddInput = view.findViewById(R.id.addMore_dateAddInput);
+        chooseTypeBtn = view.findViewById(R.id.addMore_chooseTypeBtn);
         optionBtn = view.findViewById(R.id.addMore_optionBtn);
         optionContainer = view.findViewById(R.id.addMore_optionContainer);
         checkBtn = view.findViewById(R.id.addMore_checkBtn);
+        layoutService = new LayoutService(getParentFragmentManager());
 
-
+        onDateAddClick();
+        onChooseTypeClick();
         onCreateView();
         onOptionClick();
         onOptionItemClick();
         onCheckBtnClick();
 
         return view;
+    }
+
+    void onDateAddClick(){
+        dateAddInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MaterialDatePicker<Long> materialDatePicker =  MaterialDatePicker.Builder.datePicker()
+                        .setTitleText("Ngày thu")
+                        .setSelection(MaterialDatePicker.todayInUtcMilliseconds()).build();
+
+                materialDatePicker.show(getParentFragmentManager(), "TAG");
+            }
+        });
+    }
+
+    void onChooseTypeClick(){
+        chooseTypeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                layoutService.loadPayType();
+            }
+        });
     }
 
     void onCreateView(){

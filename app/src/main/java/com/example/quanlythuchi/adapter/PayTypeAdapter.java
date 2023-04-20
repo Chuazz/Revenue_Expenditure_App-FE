@@ -10,17 +10,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quanlythuchi.R;
-import com.example.quanlythuchi.model.DanhMucThu;
+import com.example.quanlythuchi.callback.OnTypeItemClickListener;
+import com.example.quanlythuchi.model.DanhMucChi;
 
 import java.util.List;
 
 public class PayTypeAdapter extends RecyclerView.Adapter<PayTypeAdapter.ViewHolder> {
-    List<DanhMucThu> danhMucThus;
+    List<DanhMucChi> danhMucChis;
     Context context;
+    private OnTypeItemClickListener listener;
 
-    public PayTypeAdapter(Context context, List<DanhMucThu> danhMucThus) {
-        this.danhMucThus = danhMucThus;
+    public PayTypeAdapter(Context context, List<DanhMucChi> danhMucChis, OnTypeItemClickListener listener) {
+        this.danhMucChis = danhMucChis;
         this.context = context;
+        this.listener = listener;
     }
 
     @NonNull
@@ -35,13 +38,14 @@ public class PayTypeAdapter extends RecyclerView.Adapter<PayTypeAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        DanhMucThu contact = danhMucThus.get(position);
-        holder.nameType.setText(contact.getTenDMThu());
+        DanhMucChi contact = danhMucChis.get(position);
+        holder.nameType.setText(contact.getTenDMChi());
+        holder.bind(danhMucChis.get(position), listener);
     }
 
     @Override
     public int getItemCount() {
-        return danhMucThus.size();
+        return danhMucChis.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -50,6 +54,15 @@ public class PayTypeAdapter extends RecyclerView.Adapter<PayTypeAdapter.ViewHold
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             nameType = itemView.findViewById(R.id.payTypeItem_nameType);
+        }
+
+        public void bind(final DanhMucChi item, final OnTypeItemClickListener listener) {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    listener.onItemClick(item);
+
+                }
+            });
         }
     }
 }

@@ -5,12 +5,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.quanlythuchi.R;
-import com.example.quanlythuchi.fragment.account.AccountHeaderFragment;
-import com.example.quanlythuchi.fragment.addMore.AddMoreBodyFragment;
-import com.example.quanlythuchi.fragment.addMore.AddMoreHeaderFragment;
-import com.example.quanlythuchi.fragment.dashboard.DashboardBodyFragment;
-import com.example.quanlythuchi.fragment.dashboard.DashboardHeaderFragment;
-import com.example.quanlythuchi.fragment.report.ReportHeaderFragment;
+import com.example.quanlythuchi.fragment.account.AccountFragment;
+import com.example.quanlythuchi.fragment.addMore.AddMoreFragment;
+import com.example.quanlythuchi.fragment.dashboard.DashboardFragment;
+import com.example.quanlythuchi.fragment.payType.PayTypeFragment;
+import com.example.quanlythuchi.fragment.report.ReportFragment;
 
 public class LayoutService {
     private final FragmentManager fragmentManager;
@@ -19,28 +18,28 @@ public class LayoutService {
         this.fragmentManager = fragmentManager;
     }
 
-    public void loadDashboardHeader(){
-        change(R.id.main_fragmentHeader, DashboardHeaderFragment.newInstance());
+    public void loadDashboard(){
+        change(R.id.main_fragmentBody, DashboardFragment.newInstance());
     }
 
-    public void loadAccountHeader(){
-        change(R.id.main_fragmentHeader, AccountHeaderFragment.newInstance());
+    public void loadAccount(){
+        change(R.id.main_fragmentBody, AccountFragment.newInstance());
     }
 
-    public void loadAddMoreHeader(){
-        change(R.id.main_fragmentHeader, AddMoreHeaderFragment.newInstance());
+    public void loadAddMore(){
+        change(R.id.main_fragmentBody, AddMoreFragment.newInstance());
     }
 
-    public void loadReportHeader(){
-        change(R.id.main_fragmentHeader, ReportHeaderFragment.newInstance());
+    public void loadReport(){
+        change(R.id.main_fragmentBody, ReportFragment.newInstance());
     }
 
-    public void loadAddMoreBody(){
-        change(R.id.main_fragmentBody, AddMoreBodyFragment.newInstance());
+    public void loadOther(){
+
     }
 
-    public void loadDashboardBody(){
-        change(R.id.main_fragmentBody, DashboardBodyFragment.newInstance());
+    public void loadPayType(){
+        change(R.id.main_fragmentBody, PayTypeFragment.newInstance());
     }
 
     public void change(int id, Fragment fragment){
