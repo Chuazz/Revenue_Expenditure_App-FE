@@ -3,11 +3,14 @@ package com.example.quanlythuchi.service;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
+import android.util.Log;
+
 import com.example.quanlythuchi.callback.InsertCallback;
 import com.example.quanlythuchi.callback.UpOrDeCallback;
 import com.example.quanlythuchi.callback.nguoidung.FindCallback;
 import com.example.quanlythuchi.callback.nguoidung.FindManyCallback;
 import com.example.quanlythuchi.callback.nguoidung.FindOneCallback;
+import com.example.quanlythuchi.model.DanhMucChi;
 import com.example.quanlythuchi.model.NguoiDung;
 
 import org.bson.Document;
@@ -40,12 +43,12 @@ public class NguoiDungService {
         this.mongoCollection.find().iterator().getAsync(task -> {
             if (task.isSuccess()) {
                 MongoCursor<NguoiDung> results = task.get();
-                List<NguoiDung> danhMucList = new ArrayList<>();
+                List<NguoiDung> nguoiDungs = new ArrayList<>();
                 while (results.hasNext()) {
                     NguoiDung chi = results.next();
-                    danhMucList.add(chi);
+                    nguoiDungs.add(chi);
                 }
-                callback.onSuccess(danhMucList);
+                callback.onSuccess(nguoiDungs);
             } else {
                 callback.onFailure();
             }
@@ -55,7 +58,9 @@ public class NguoiDungService {
     public void findOne(Document queryFilter, FindOneCallback callback) {
         this.mongoCollection.findOne(queryFilter).getAsync(task -> {
             if (task.isSuccess()) {
-                callback.onSuccess(task.get());
+                NguoiDung nguoiDung = task.get();
+                Log.v("EXAMPLE", nguoiDung.getSDT());
+                callback.onSuccess(nguoiDung);
             } else {
                 callback.onFailure();
             }

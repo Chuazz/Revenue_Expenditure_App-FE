@@ -5,18 +5,18 @@ public class NguoiDung {
     private String HoTen;
     private String Pass;
 
+    private String NgaySinh;
+    private String SDT;
+
     public NguoiDung() { }
 
-    public NguoiDung(String tenDangNhap, String hoTen, String pass, String SDT, String ngaySinh) {
-        TenDangNhap = tenDangNhap;
-        HoTen = hoTen;
-        Pass = pass;
+    public NguoiDung(String tenDangNhap, String hoTen, String pass, String ngaySinh, String SDT) {
+        this.TenDangNhap = tenDangNhap;
+        this.HoTen = hoTen;
+        this.Pass = pass;
+        this.NgaySinh = ngaySinh;
         this.SDT = SDT;
-        NgaySinh = ngaySinh;
     }
-
-    private String SDT;
-    private String NgaySinh;
 
     public void setHoTen(String hoTen) {
         HoTen = hoTen;
