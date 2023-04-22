@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,17 +24,22 @@ import android.widget.LinearLayout;
 import com.example.quanlythuchi.R;
 import com.example.quanlythuchi.activity.LoginActivity;
 import com.example.quanlythuchi.callback.InsertCallback;
+import com.example.quanlythuchi.fragment.payReceiveType.PayTypeFragment;
 import com.example.quanlythuchi.model.ChiPhi;
 import com.example.quanlythuchi.model.DanhMucChi;
 import com.example.quanlythuchi.model.DanhMucThu;
+import com.example.quanlythuchi.model.ThuNhap;
 import com.example.quanlythuchi.service.ChiPhiService;
 import com.example.quanlythuchi.service.LayoutService;
 import com.example.quanlythuchi.service.NguoiDungService;
+import com.example.quanlythuchi.service.ThuNhapService;
 import com.example.quanlythuchi.util.CustomToast;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
 import org.bson.Document;
+
+import java.util.Objects;
 
 public class AddMoreFragment extends Fragment {
     View view;
@@ -54,6 +60,8 @@ public class AddMoreFragment extends Fragment {
     DanhMucThu danhMucThu;
     EditText descriptionInput;
     Bundle oldValue;
+    ThuNhapService thuNhapService;
+    FragmentManager fragmentManager;
 
     public AddMoreFragment() {
     }
@@ -70,20 +78,12 @@ public class AddMoreFragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putString("test", String.valueOf(moneyInput.getText()));
-
         Log.i(TAG, "onSaveInstanceState: ");
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            DanhMucChi danhMucChi = (DanhMucChi) savedInstanceState.getSerializable("muc_chi");
-
-            Log.i(TAG, "onCreateView: " + danhMucChi.getTenDMChi());
-        }
     }
 
     @Override
@@ -104,6 +104,8 @@ public class AddMoreFragment extends Fragment {
         danhMucChi = new DanhMucChi();
         descriptionInput = view.findViewById(R.id.addMore_descriptionInput);
         oldValue = new Bundle();
+        thuNhapService = new ThuNhapService();
+        fragmentManager = requireActivity().getSupportFragmentManager();
 
         onDateAddClick();
         onChooseTypeClick();
@@ -138,7 +140,12 @@ public class AddMoreFragment extends Fragment {
         chooseTypeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                layoutService.loadPayType();
+                if(isPay){
+                    layoutService.loadPayType();
+                }
+                else{
+                    layoutService.loadReceiveType();
+                }
             }
         });
     }
@@ -217,11 +224,20 @@ public class AddMoreFragment extends Fragment {
         checkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ChiPhi chiPhi = new ChiPhi(LoginActivity.nguoiDung, danhMucChi,
-                        Long.parseLong(String.valueOf(moneyInput.getText())),
-                        String.valueOf(dateAddInput.getText()), String.valueOf(descriptionInput.getText()));
+                if(isPay){
+                    ChiPhi chiPhi = new ChiPhi(LoginActivity.nguoiDung, danhMucChi,
+                            Long.parseLong(String.valueOf(moneyInput.getText())),
+                            String.valueOf(dateAddInput.getText()), String.valueOf(descriptionInput.getText()));
 
-                chiPhiService.insertOne(chiPhi);
+                    chiPhiService.insertOne(chiPhi);
+                }
+                else{
+                    ThuNhap thuNhap = new ThuNhap(LoginActivity.nguoiDung, danhMucThu,
+                            Long.parseLong(String.valueOf(moneyInput.getText())),
+                            String.valueOf(dateAddInput.getText()), String.valueOf(descriptionInput.getText()));
+
+                    thuNhapService.insertOne(thuNhap);
+                }
             }
         });
     }

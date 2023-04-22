@@ -6,16 +6,27 @@ public class ThuNhap {
     private NguoiDung NguoiDung;
     private DanhMucThu DanhMucThu;
     private long TienThu;
-    private Date NgayThu;
+    private String NgayThu;
+
+    public String getGhiChu() {
+        return GhiChu;
+    }
+
+    public void setGhiChu(String ghiChu) {
+        GhiChu = ghiChu;
+    }
+
+    private String GhiChu;
 
     public ThuNhap() {
     }
 
-    public ThuNhap(NguoiDung nguoiDung, DanhMucThu danhMucThu, long tienThu, Date ngayThu) {
+    public ThuNhap(NguoiDung nguoiDung, DanhMucThu danhMucThu, long tienThu, String ngayThu, String ghiChu) {
         NguoiDung = nguoiDung;
         DanhMucThu = danhMucThu;
         TienThu = tienThu;
         NgayThu = ngayThu;
+        GhiChu = ghiChu;
     }
 
     public NguoiDung getNguoiDung() {
@@ -42,11 +53,11 @@ public class ThuNhap {
         TienThu = tienThu;
     }
 
-    public Date getNgayThu() {
+    public String getNgayThu() {
         return NgayThu;
     }
 
-    public void setNgayThu(Date ngayThu) {
+    public void setNgayThu(String ngayThu) {
         NgayThu = ngayThu;
     }
 }

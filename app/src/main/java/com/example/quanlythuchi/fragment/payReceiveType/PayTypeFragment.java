@@ -3,6 +3,7 @@ package com.example.quanlythuchi.fragment.payReceiveType;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,6 +33,7 @@ public class PayTypeFragment extends Fragment implements TypeDataPassListener {
     View view;
     ImageView turnBackBtn;
     LayoutService layoutService;
+    FragmentManager fragmentManager;
 
     public PayTypeFragment() {
         // Required empty public constructor
@@ -57,6 +59,7 @@ public class PayTypeFragment extends Fragment implements TypeDataPassListener {
         danhMucChiservice = new DanhMucChiService();
         turnBackBtn = view.findViewById(R.id.choosePayType_turnBackBtn);
         layoutService = new LayoutService(getParentFragmentManager());
+        fragmentManager = getParentFragmentManager();
 
         onCreate();
         onTurnBackBtnClick();
@@ -76,7 +79,7 @@ public class PayTypeFragment extends Fragment implements TypeDataPassListener {
     void onCreate(){
         CompletableFuture<List<DanhMucChi>> future = danhMucChiservice.findAll();
         danhMucChis = future.join();
-        PayTypeAdapter payTypeAdapter = new PayTypeAdapter(getContext(), danhMucChis, new OnTypeItemClickListener() {
+        PayTypeAdapter payTypeAdapter = new PayTypeAdapter(getContext(), danhMucChis, new OnPayItemClickListener() {
             @Override
             public void onItemClick(DanhMucChi item) {
                 Bundle bundle = new Bundle();
@@ -85,7 +88,7 @@ public class PayTypeFragment extends Fragment implements TypeDataPassListener {
                 AddMoreFragment addMoreFragment = new AddMoreFragment();
                 addMoreFragment.setArguments(bundle);
 
-                layoutService.change(R.id.main_fragmentBody, addMoreFragment);
+                fragmentManager.popBackStack();
             }
         });
 

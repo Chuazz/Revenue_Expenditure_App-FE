@@ -8,7 +8,7 @@ import com.example.quanlythuchi.R;
 import com.example.quanlythuchi.fragment.account.AccountFragment;
 import com.example.quanlythuchi.fragment.addMore.AddMoreFragment;
 import com.example.quanlythuchi.fragment.dashboard.DashboardFragment;
-import com.example.quanlythuchi.fragment.payReceiveType.ReceiveTypeFragment;
+import com.example.quanlythuchi.fragment.payReceiveType.PayTypeFragment;
 import com.example.quanlythuchi.fragment.payReceiveType.ReceiveTypeFragment;
 import com.example.quanlythuchi.fragment.report.ReportFragment;
 

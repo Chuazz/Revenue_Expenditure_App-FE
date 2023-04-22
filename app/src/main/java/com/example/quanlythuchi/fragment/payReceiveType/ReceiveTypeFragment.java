@@ -28,6 +28,7 @@ import com.example.quanlythuchi.service.LayoutService;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 
@@ -69,34 +70,25 @@ public class ReceiveTypeFragment extends Fragment {
     }
 
     void onCreate(){
-        danhMucThuService.findAll(new FindCallback() {
+        CompletableFuture<List<DanhMucThu>> future = danhMucThuService.findAll();
+        List<DanhMucThu> results = future.join();
+
+        ReceiveTypeAdapter receiveTypeAdapter = new ReceiveTypeAdapter(getContext(), results, new OnReceiveItemClickListener() {
             @Override
-            public void onSuccess(List results) {
-                danhMucThus = results;
+            public void onItemClick(DanhMucThu item) {
+                Bundle bundle = new Bundle();
 
-                ReceiveTypeAdapter receiveTypeAdapter = new ReceiveTypeAdapter(getContext(), results, new OnReceiveItemClickListener() {
-                    @Override
-                    public void onItemClick(DanhMucThu item) {
-                        Bundle bundle = new Bundle();
+                bundle.putSerializable("muc_thu", item);
+                AddMoreFragment addMoreFragment = new AddMoreFragment();
+                addMoreFragment.setArguments(bundle);
 
-                        bundle.putSerializable("muc_thu", item);
-                        AddMoreFragment addMoreFragment = new AddMoreFragment();
-                        addMoreFragment.setArguments(bundle);
-
-                        layoutService.change(R.id.main_fragmentBody, addMoreFragment);
-                    }
-                });
-
-                listDanhMucThu.setAdapter(receiveTypeAdapter);
-                listDanhMucThu.setItemAnimator(new SlideInLeftAnimator());
-                listDanhMucThu.setLayoutManager(new LinearLayoutManager(getContext()));
-            }
-
-            @Override
-            public void onFailure() {
-                Log.i("TAG", "onFailure: ");
+                layoutService.change(R.id.main_fragmentBody, addMoreFragment);
             }
         });
+
+        listDanhMucThu.setAdapter(receiveTypeAdapter);
+        listDanhMucThu.setItemAnimator(new SlideInLeftAnimator());
+        listDanhMucThu.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     private void onTurnBackBtnClick() {
