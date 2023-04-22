@@ -23,8 +23,8 @@ import com.example.quanlythuchi.service.LayoutService;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
-import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 
 public class PayTypeFragment extends Fragment implements TypeDataPassListener {
     DanhMucChiService danhMucChiservice;
@@ -75,34 +75,23 @@ public class PayTypeFragment extends Fragment implements TypeDataPassListener {
     }
 
     void onCreate(){
-        danhMucChiservice.findAll(new FindCallback() {
+        CompletableFuture<List<DanhMucChi>> future = danhMucChiservice.findAll();
+        danhMucChis = future.join();
+        PayTypeAdapter payTypeAdapter = new PayTypeAdapter(getContext(), danhMucChis, new OnTypeItemClickListener() {
             @Override
-            public void onSuccess(List results) {
-                danhMucChis = results;
+            public void onItemClick(DanhMucChi item) {
+                Bundle bundle = new Bundle();
 
-                PayTypeAdapter payTypeAdapter = new PayTypeAdapter(getContext(), danhMucChis, new OnTypeItemClickListener() {
-                    @Override
-                    public void onItemClick(DanhMucChi item) {
-                        Bundle bundle = new Bundle();
+                bundle.putSerializable("muc_chi", item);
+                AddMoreFragment addMoreFragment = new AddMoreFragment();
+                addMoreFragment.setArguments(bundle);
 
-                        bundle.putSerializable("muc_chi", item);
-                        AddMoreFragment addMoreFragment = new AddMoreFragment();
-                        addMoreFragment.setArguments(bundle);
-
-                        layoutService.change(R.id.main_fragmentBody, addMoreFragment);
-                    }
-                });
-
-                listDanhMucChi.setAdapter(payTypeAdapter);
-                listDanhMucChi.setItemAnimator(new SlideInLeftAnimator());
-                listDanhMucChi.setLayoutManager(new LinearLayoutManager(getContext()));
-            }
-
-            @Override
-            public void onFailure() {
-
+                layoutService.change(R.id.main_fragmentBody, addMoreFragment);
             }
         });
+
+        listDanhMucChi.setAdapter(payTypeAdapter);
+        listDanhMucChi.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     @Override

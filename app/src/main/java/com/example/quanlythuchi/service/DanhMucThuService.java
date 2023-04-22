@@ -3,11 +3,9 @@ package com.example.quanlythuchi.service;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
-import com.example.quanlythuchi.callback.InsertCallback;
-import com.example.quanlythuchi.callback.UpOrDeCallback;
-import com.example.quanlythuchi.callback.danhmucthu.FindCallback;
-import com.example.quanlythuchi.callback.danhmucthu.FindManyCallback;
-import com.example.quanlythuchi.callback.danhmucthu.FindOneCallback;
+import android.util.Log;
+
+import com.example.quanlythuchi.model.DanhMucChi;
 import com.example.quanlythuchi.model.DanhMucThu;
 
 import org.bson.Document;
@@ -16,6 +14,9 @@ import org.bson.codecs.pojo.PojoCodecProvider;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import io.realm.mongodb.AppConfiguration;
 import io.realm.mongodb.RealmResultTask;
@@ -26,6 +27,7 @@ import io.realm.mongodb.mongo.iterable.MongoCursor;
 public class DanhMucThuService {
     MongoDatabase mongoDatabase;
     MongoCollection<DanhMucThu> mongoCollection;
+
     public DanhMucThuService() {
         this.mongoDatabase = ConnectService.start();
         CodecRegistry pojoCodecRegistry = fromRegistries(AppConfiguration.DEFAULT_BSON_CODEC_REGISTRY,
@@ -36,102 +38,54 @@ public class DanhMucThuService {
                         DanhMucThu.class).withCodecRegistry(pojoCodecRegistry);
     }
 
-    public void findAll(FindCallback callback) {
-        this.mongoCollection.find().iterator().getAsync(task -> {
-            if (task.isSuccess()) {
-                MongoCursor<DanhMucThu> results = task.get();
-                List<DanhMucThu> danhMucList = new ArrayList<>();
-                while (results.hasNext()) {
-                    DanhMucThu chi = results.next();
-                    danhMucList.add(chi);
-                }
-                callback.onSuccess(danhMucList);
-            } else {
-                callback.onFailure();
+    public CompletableFuture<List<DanhMucThu>> findAll() {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+
+        CompletableFuture<List<DanhMucThu>> future = CompletableFuture.supplyAsync(() -> {
+            RealmResultTask<MongoCursor<DanhMucThu>> task = mongoCollection.find().iterator();
+            MongoCursor<DanhMucThu> dmcMongoCursor = task.get();
+            List<DanhMucThu> danhMucThus = new ArrayList<>();
+            while (dmcMongoCursor.hasNext()) {
+                DanhMucThu thu = dmcMongoCursor.next();
+                danhMucThus.add(thu);
             }
-        });
+            return danhMucThus;
+        }, executor);
+        return future;
     }
 
-    public void findOne(Document queryFilter, FindOneCallback callback) {
-        this.mongoCollection.findOne(queryFilter).getAsync(task -> {
+    public CompletableFuture<DanhMucThu> findOne(Document document) {
+        CompletableFuture<DanhMucThu> future = new CompletableFuture<>();
+        this.mongoCollection.findOne(document).getAsync(task -> {
             if (task.isSuccess()) {
-                callback.onSuccess(task.get());
+                future.complete(task.get());
             } else {
-                callback.onFailure();
+                future.completeExceptionally(task.getError());
             }
         });
+        return future;
     }
 
-    public void findMany(Document queryFilter, FindManyCallback callback) {
-        RealmResultTask<MongoCursor<DanhMucThu>> findTask = mongoCollection.find(queryFilter).iterator();
-        findTask.getAsync(task -> {
-            if (task.isSuccess()) {
-                callback.onSuccess(task.get());
-            } else {
-                callback.onFailure();
-            }
-        });
-    }
-
-    public void insertOne(DanhMucThu danhMucThu, InsertCallback callback) {
+    public CompletableFuture<Void> insertOne(DanhMucThu danhMucThu) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
         this.mongoCollection.insertOne(danhMucThu).getAsync(task -> {
             if (task.isSuccess()) {
-                callback.onSuccess();
+                future.complete(null);
             } else {
-                callback.onFailure();
+                future.completeExceptionally(task.getError());
             }
         });
+        return future;
     }
-
-    public void insertMany(List<DanhMucThu> danhMucThus, InsertCallback callback) {
+    public CompletableFuture<Void> insertMany(List<DanhMucThu> danhMucThus) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
         this.mongoCollection.insertMany(danhMucThus).getAsync(task -> {
             if (task.isSuccess()) {
-                callback.onSuccess();
+                future.complete(null);
             } else {
-                callback.onFailure();
+                future.completeExceptionally(task.getError());
             }
         });
-    }
-
-    public void updateOne(Document queryFilter, Document updateDocument, UpOrDeCallback callback) {
-        //Document queryFilter = new Document("name", "petunia");
-        //Document updateDocument = new Document("$set", new Document("sunlight", "partial"));
-        this.mongoCollection.updateOne(queryFilter, updateDocument).getAsync(task -> {
-            if (task.isSuccess()) {
-                callback.onSuccess(task.get().getModifiedCount());
-            } else {
-                callback.onFailure();
-            }
-        });
-    }
-
-    public void updateMany(Document queryFilter, Document updateDocument, UpOrDeCallback callback) {
-        mongoCollection.updateMany(queryFilter, updateDocument).getAsync(task -> {
-            if (task.isSuccess()) {
-                callback.onSuccess(task.get().getModifiedCount());
-            } else {
-                callback.onFailure();
-            }
-        });
-    }
-
-    public void deleteOne(Document queryFilter, UpOrDeCallback callback) {
-        mongoCollection.deleteOne(queryFilter).getAsync(task -> {
-            if (task.isSuccess()) {
-                callback.onSuccess(task.get().getDeletedCount());
-            } else {
-                callback.onFailure();
-            }
-        });
-    }
-
-    public void deleteMany(Document queryFilter, UpOrDeCallback callback) {
-        this.mongoCollection.deleteMany(queryFilter).getAsync(task -> {
-            if (task.isSuccess()) {
-                callback.onSuccess(task.get().getDeletedCount());
-            } else {
-                callback.onFailure();
-            }
-        });
+        return future;
     }
 }

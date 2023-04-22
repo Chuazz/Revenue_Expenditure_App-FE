@@ -198,17 +198,8 @@ public class AddMoreFragment extends Fragment {
                 ChiPhi chiPhi = new ChiPhi(LoginActivity.nguoiDung, danhMucChi,
                         Long.parseLong(String.valueOf(moneyInput.getText())),
                         String.valueOf(dateAddInput.getText()), String.valueOf(descriptionInput.getText()));
-                chiPhiService.insertOne(chiPhi, new InsertCallback() {
-                    @Override
-                    public void onSuccess() {
-                        new CustomToast(getContext()).show("Thêm thành công");
-                    }
 
-                    @Override
-                    public void onFailure() {
-                        new CustomToast(getContext()).show("Lỗi mẹ rồi");
-                    }
-                });
+                chiPhiService.insertOne(chiPhi);
             }
         });
     }

@@ -11,12 +11,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.quanlythuchi.R;
 import com.example.quanlythuchi.callback.InsertCallback;
 import com.example.quanlythuchi.callback.nguoidung.FindOneCallback;
+import com.example.quanlythuchi.model.DanhMucChi;
 import com.example.quanlythuchi.model.NguoiDung;
+import com.example.quanlythuchi.service.ChiPhiService;
+import com.example.quanlythuchi.service.DanhMucChiService;
 import com.example.quanlythuchi.service.LayoutService;
 import com.example.quanlythuchi.service.NguoiDungService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -32,23 +41,19 @@ public class MainActivity extends AppCompatActivity {
 
         onBottomNavItemClick();
 
-        NguoiDungService nguoiDungService = new NguoiDungService();
+//        Log.v("EXAMPLE", "Vo roi");
+//
+//        DanhMucChiService danhMucChiService = new DanhMucChiService();
+//
+//        DanhMucChi danhMucChi = new DanhMucChi("x");
+//        danhMucChiService.insertOne(danhMucChi);
+//
+//        List<DanhMucChi> arr = Arrays.asList(
+//                new DanhMucChi("1"),
+//                new DanhMucChi("2"),
+//                new DanhMucChi("3"));
+//        danhMucChiService.insertMany(arr);
 
-        Document document = new Document("tenDangNhap", "thuanpt182@gmail.com");
-        Log.v("EXAMPLE", "Da chay!");
-        nguoiDungService.findOne(document, new FindOneCallback() {
-            @Override
-            public void onSuccess(NguoiDung result) {
-                Log.v("EXAMPLE", "Duoc roi!");
-                //Log.v("EXAMPLE", "" + result);
-                Log.v("EXAMPLE", "" + result.getHoTen());
-            }
-
-            @Override
-            public void onFailure() {
-
-            }
-        });
 
     }
 
