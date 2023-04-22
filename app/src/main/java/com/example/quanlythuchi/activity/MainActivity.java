@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.quanlythuchi.R;
 import com.example.quanlythuchi.callback.InsertCallback;
 import com.example.quanlythuchi.callback.nguoidung.FindOneCallback;
+import com.example.quanlythuchi.fragment.addMore.AddMoreFragment;
 import com.example.quanlythuchi.model.NguoiDung;
 import com.example.quanlythuchi.service.LayoutService;
 import com.example.quanlythuchi.service.NguoiDungService;
@@ -31,25 +32,6 @@ public class MainActivity extends AppCompatActivity {
         layoutService.loadDashboard();
 
         onBottomNavItemClick();
-
-        NguoiDungService nguoiDungService = new NguoiDungService();
-
-        Document document = new Document("tenDangNhap", "thuanpt182@gmail.com");
-        Log.v("EXAMPLE", "Da chay!");
-        nguoiDungService.findOne(document, new FindOneCallback() {
-            @Override
-            public void onSuccess(NguoiDung result) {
-                Log.v("EXAMPLE", "Duoc roi!");
-                //Log.v("EXAMPLE", "" + result);
-                Log.v("EXAMPLE", "" + result.getHoTen());
-            }
-
-            @Override
-            public void onFailure() {
-
-            }
-        });
-
     }
 
     void onBottomNavItemClick(){

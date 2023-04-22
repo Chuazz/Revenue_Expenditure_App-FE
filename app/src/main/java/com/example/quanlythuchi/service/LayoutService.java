@@ -8,7 +8,8 @@ import com.example.quanlythuchi.R;
 import com.example.quanlythuchi.fragment.account.AccountFragment;
 import com.example.quanlythuchi.fragment.addMore.AddMoreFragment;
 import com.example.quanlythuchi.fragment.dashboard.DashboardFragment;
-import com.example.quanlythuchi.fragment.payType.PayTypeFragment;
+import com.example.quanlythuchi.fragment.payReceiveType.PayTypeFragment;
+import com.example.quanlythuchi.fragment.payReceiveType.ReceiveTypeFragment;
 import com.example.quanlythuchi.fragment.report.ReportFragment;
 
 public class LayoutService {
@@ -42,9 +43,14 @@ public class LayoutService {
         change(R.id.main_fragmentBody, PayTypeFragment.newInstance());
     }
 
+    public void loadReceiveType() {
+        change(R.id.main_fragmentBody, ReceiveTypeFragment.newInstance());
+    }
+
     public void change(int id, Fragment fragment){
         FragmentTransaction transaction = this.fragmentManager.beginTransaction();
         transaction.replace(id, fragment);
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 }

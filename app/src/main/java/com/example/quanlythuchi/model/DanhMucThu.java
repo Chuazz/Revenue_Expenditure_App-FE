@@ -1,6 +1,8 @@
 package com.example.quanlythuchi.model;
 
-public class DanhMucThu {
+import java.io.Serializable;
+
+public class DanhMucThu implements Serializable {
     private String TenDMThu;
 
     public DanhMucThu() {

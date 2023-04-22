@@ -1,4 +1,4 @@
-package com.example.quanlythuchi.fragment.payType;
+package com.example.quanlythuchi.fragment.payReceiveType;
 
 import android.os.Bundle;
 
@@ -13,20 +13,18 @@ import android.widget.ImageView;
 
 import com.example.quanlythuchi.R;
 import com.example.quanlythuchi.adapter.PayTypeAdapter;
-import com.example.quanlythuchi.callback.listener.OnTypeItemClickListener;
+import com.example.quanlythuchi.callback.listener.OnPayItemClickListener;
 import com.example.quanlythuchi.callback.danhmucchi.FindCallback;
-import com.example.quanlythuchi.callback.sendData.TypeDataPassListener;
 import com.example.quanlythuchi.fragment.addMore.AddMoreFragment;
 import com.example.quanlythuchi.model.DanhMucChi;
 import com.example.quanlythuchi.service.DanhMucChiService;
 import com.example.quanlythuchi.service.LayoutService;
 
-import java.io.Serializable;
 import java.util.List;
 
 import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 
-public class PayTypeFragment extends Fragment implements TypeDataPassListener {
+public class PayTypeFragment extends Fragment {
     DanhMucChiService danhMucChiservice;
     RecyclerView listDanhMucChi;
     List danhMucChis;
@@ -69,7 +67,7 @@ public class PayTypeFragment extends Fragment implements TypeDataPassListener {
         turnBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                layoutService.loadAddMore();
+                getParentFragmentManager().popBackStack();
             }
         });
     }
@@ -80,7 +78,7 @@ public class PayTypeFragment extends Fragment implements TypeDataPassListener {
             public void onSuccess(List results) {
                 danhMucChis = results;
 
-                PayTypeAdapter payTypeAdapter = new PayTypeAdapter(getContext(), danhMucChis, new OnTypeItemClickListener() {
+                    PayTypeAdapter payTypeAdapter = new PayTypeAdapter(getContext(), danhMucChis, new OnPayItemClickListener() {
                     @Override
                     public void onItemClick(DanhMucChi item) {
                         Bundle bundle = new Bundle();
@@ -103,10 +101,5 @@ public class PayTypeFragment extends Fragment implements TypeDataPassListener {
 
             }
         });
-    }
-
-    @Override
-    public void onDataPass(DanhMucChi danhMucChi) {
-
     }
 }

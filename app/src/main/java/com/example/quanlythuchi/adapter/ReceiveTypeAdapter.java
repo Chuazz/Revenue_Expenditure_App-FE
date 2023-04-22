@@ -1,6 +1,8 @@
 package com.example.quanlythuchi.adapter;
 
+
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,17 +13,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quanlythuchi.R;
 import com.example.quanlythuchi.callback.listener.OnPayItemClickListener;
+import com.example.quanlythuchi.callback.listener.OnReceiveItemClickListener;
 import com.example.quanlythuchi.model.DanhMucChi;
+import com.example.quanlythuchi.model.DanhMucThu;
 
 import java.util.List;
 
-public class PayTypeAdapter extends RecyclerView.Adapter<PayTypeAdapter.ViewHolder> {
-    List<DanhMucChi> danhMucChis;
+public class ReceiveTypeAdapter extends RecyclerView.Adapter<ReceiveTypeAdapter.ViewHolder> {
+    List<DanhMucThu> danhMucThus;
     Context context;
-    private OnPayItemClickListener listener;
+    private OnReceiveItemClickListener listener;
 
-    public PayTypeAdapter(Context context, List<DanhMucChi> danhMucChis, OnPayItemClickListener listener) {
-        this.danhMucChis = danhMucChis;
+    public ReceiveTypeAdapter(Context context, List<DanhMucThu> danhMucThus, OnReceiveItemClickListener listener) {
+        this.danhMucThus = danhMucThus;
         this.context = context;
         this.listener = listener;
     }
@@ -29,7 +33,7 @@ public class PayTypeAdapter extends RecyclerView.Adapter<PayTypeAdapter.ViewHold
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater =LayoutInflater.from(this.context);
+        LayoutInflater layoutInflater = LayoutInflater.from(this.context);
         View view = layoutInflater.inflate(R.layout.pay_type_item, null);
         ViewHolder holder = new ViewHolder(view);
 
@@ -38,14 +42,14 @@ public class PayTypeAdapter extends RecyclerView.Adapter<PayTypeAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        DanhMucChi contact = danhMucChis.get(position);
-        holder.nameType.setText(contact.getTenDMChi());
-        holder.bind(danhMucChis.get(position), listener);
+        DanhMucThu contact = danhMucThus.get(position);
+        holder.nameType.setText(contact.getTenDMThu());
+        holder.bind(danhMucThus.get(position), listener);
     }
 
     @Override
     public int getItemCount() {
-        return danhMucChis.size();
+        return danhMucThus.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -56,7 +60,7 @@ public class PayTypeAdapter extends RecyclerView.Adapter<PayTypeAdapter.ViewHold
             nameType = itemView.findViewById(R.id.payTypeItem_nameType);
         }
 
-        public void bind(final DanhMucChi item, final OnPayItemClickListener listener) {
+        public void bind(final DanhMucThu item, final OnReceiveItemClickListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     listener.onItemClick(item);

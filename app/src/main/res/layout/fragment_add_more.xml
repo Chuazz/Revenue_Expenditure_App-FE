@@ -193,7 +193,7 @@
 
                 <EditText
                     android:clickable="false"
-                    android:hint="Ngày chi"
+                    android:hint="Ngày"
                     android:focusable="false"
                     android:id="@+id/addMore_dateAddInput"
                     app:layout_constraintBottom_toBottomOf="parent"
