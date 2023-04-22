@@ -13,7 +13,6 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.quanlythuchi.R;
-import com.example.quanlythuchi.callback.nguoidung.FindOneCallback;
 import com.example.quanlythuchi.model.NguoiDung;
 import com.example.quanlythuchi.service.NguoiDungService;
 import com.example.quanlythuchi.util.CustomToast;

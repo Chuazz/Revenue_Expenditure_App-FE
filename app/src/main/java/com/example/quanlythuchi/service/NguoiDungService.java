@@ -5,6 +5,7 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 import android.util.Log;
 import com.example.quanlythuchi.model.NguoiDung;
+import com.example.quanlythuchi.model.ThuNhap;
 
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistry;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import io.realm.mongodb.AppConfiguration;
 import io.realm.mongodb.RealmResultTask;
@@ -75,4 +77,40 @@ public class NguoiDungService {
         });
         return future;
     }
+
+    public CompletableFuture<Long> theUserExistingMoney(Document tenDangNhap) {
+        ThuNhapService thuNhapService = new ThuNhapService();
+        ChiPhiService chiPhiService = new ChiPhiService();
+
+        CompletableFuture<Long> future = new CompletableFuture<>();
+        thuNhapService.totalRevenueOfUsers(tenDangNhap).thenCompose(totalTienThu -> {
+            return chiPhiService.totalUserSpend(tenDangNhap).thenApply(totalTienChi -> {
+                return totalTienThu - totalTienChi;
+            });
+        }).thenAccept(sum -> {
+            future.complete(sum);
+        }).exceptionally(e -> {
+            System.err.println("Error occurred while calculating total user spend: " + e.getMessage());
+            future.completeExceptionally(e);
+            return null;
+        });
+        return future;
+    }
+
+
+    public Future<Long> theUserExistingMoney_Future(Document tenDangNhap) {
+        ThuNhapService thuNhapService = new ThuNhapService();
+        ThuNhapService chiPhiService = new ThuNhapService();
+
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        Future<Long> future = executor.submit(() -> {
+            Long totalTienThu = thuNhapService.totalRevenueOfUsers(tenDangNhap).get();
+            Long totalTienChi = chiPhiService.totalRevenueOfUsers(tenDangNhap).get();
+            return totalTienThu - totalTienChi;
+        });
+        executor.shutdown();
+        return future;
+    }
+
+
 }

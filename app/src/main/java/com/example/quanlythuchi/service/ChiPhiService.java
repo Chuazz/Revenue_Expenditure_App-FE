@@ -5,6 +5,7 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 import android.util.Log;
 import com.example.quanlythuchi.model.ChiPhi;
+import com.example.quanlythuchi.model.NguoiDung;
 
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistry;
@@ -86,6 +87,43 @@ public class ChiPhiService {
                 future.completeExceptionally(task.getError());
             }
         });
+        return future;
+    }
+
+    public CompletableFuture<Long> totalUserSpend(Document tenDangNhap) {
+        NguoiDungService nguoiDungService = new NguoiDungService();
+        CompletableFuture<NguoiDung> root = nguoiDungService.findOne(tenDangNhap);
+        CompletableFuture<Long> future = new CompletableFuture<>();
+
+        root.thenAccept(user -> {
+            if (user != null) {
+                Document nguoiDung = new Document("nguoiDung", user);
+                RealmResultTask<MongoCursor<ChiPhi>> findTask = mongoCollection.find(nguoiDung).iterator();
+                findTask.getAsync(task -> {
+                    if (task.isSuccess()) {
+                        List<ChiPhi> chiPhis = new ArrayList<>();
+                        MongoCursor<ChiPhi> results = task.get();
+
+                        while (results.hasNext()) {
+                            chiPhis.add(results.next());
+                        }
+
+                        long totalTienChi = chiPhis.stream().mapToLong(ChiPhi::getTienChi).sum();
+                        future.complete(totalTienChi);
+                    } else {
+                        future.completeExceptionally(task.getError());
+                    }
+                });
+            } else {
+                System.out.println("User not found");
+                future.complete(null);
+            }
+        }).exceptionally(e -> {
+            System.err.println("Error occurred while finding user: " + e.getMessage());
+            future.completeExceptionally(e);
+            return null;
+        });
+
         return future;
     }
 }

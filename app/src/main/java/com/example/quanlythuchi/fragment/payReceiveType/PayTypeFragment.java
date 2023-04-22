@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import com.example.quanlythuchi.R;
 import com.example.quanlythuchi.adapter.PayTypeAdapter;
 import com.example.quanlythuchi.callback.listener.OnPayItemClickListener;
-import com.example.quanlythuchi.callback.danhmucchi.FindCallback;
 import com.example.quanlythuchi.callback.sendData.TypeDataPassListener;
 import com.example.quanlythuchi.fragment.addMore.AddMoreFragment;
 import com.example.quanlythuchi.model.DanhMucChi;
@@ -24,6 +23,8 @@ import com.example.quanlythuchi.service.LayoutService;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+
+import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 
 
 public class PayTypeFragment extends Fragment implements TypeDataPassListener {
@@ -88,11 +89,13 @@ public class PayTypeFragment extends Fragment implements TypeDataPassListener {
                 AddMoreFragment addMoreFragment = new AddMoreFragment();
                 addMoreFragment.setArguments(bundle);
 
-                fragmentManager.popBackStack();
+                layoutService.change(R.id.main_fragmentBody, addMoreFragment);
+                //fragmentManager.popBackStack();
             }
         });
 
         listDanhMucChi.setAdapter(payTypeAdapter);
+        listDanhMucChi.setItemAnimator(new SlideInLeftAnimator());
         listDanhMucChi.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 

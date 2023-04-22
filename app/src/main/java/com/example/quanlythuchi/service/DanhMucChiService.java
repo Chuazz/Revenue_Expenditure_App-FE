@@ -2,16 +2,7 @@ package com.example.quanlythuchi.service;
 
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
-
-import android.util.Log;
-
-import com.example.quanlythuchi.callback.danhmucchi.FindCallback;
-import com.example.quanlythuchi.callback.danhmucchi.FindManyCallback;
-import com.example.quanlythuchi.callback.danhmucchi.FindOneCallback;
-import com.example.quanlythuchi.callback.InsertCallback;
-import com.example.quanlythuchi.callback.UpOrDeCallback;
 import com.example.quanlythuchi.model.DanhMucChi;
-import com.example.quanlythuchi.model.DanhMucThu;
 
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistry;

@@ -1,10 +1,8 @@
 package com.example.quanlythuchi.fragment.addMore;
 
-import static android.view.View.inflate;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,8 +21,6 @@ import android.widget.LinearLayout;
 
 import com.example.quanlythuchi.R;
 import com.example.quanlythuchi.activity.LoginActivity;
-import com.example.quanlythuchi.callback.InsertCallback;
-import com.example.quanlythuchi.fragment.payReceiveType.PayTypeFragment;
 import com.example.quanlythuchi.model.ChiPhi;
 import com.example.quanlythuchi.model.DanhMucChi;
 import com.example.quanlythuchi.model.DanhMucThu;
@@ -33,13 +29,8 @@ import com.example.quanlythuchi.service.ChiPhiService;
 import com.example.quanlythuchi.service.LayoutService;
 import com.example.quanlythuchi.service.NguoiDungService;
 import com.example.quanlythuchi.service.ThuNhapService;
-import com.example.quanlythuchi.util.CustomToast;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
-
-import org.bson.Document;
-
-import java.util.Objects;
 
 public class AddMoreFragment extends Fragment {
     View view;
