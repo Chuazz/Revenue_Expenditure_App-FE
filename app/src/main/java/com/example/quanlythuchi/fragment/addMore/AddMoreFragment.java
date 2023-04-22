@@ -1,8 +1,10 @@
 package com.example.quanlythuchi.fragment.addMore;
 
+import static android.view.View.inflate;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -30,6 +32,8 @@ import com.example.quanlythuchi.service.NguoiDungService;
 import com.example.quanlythuchi.util.CustomToast;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+
+import org.bson.Document;
 
 public class AddMoreFragment extends Fragment {
     View view;
@@ -73,26 +77,13 @@ public class AddMoreFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        if(savedInstanceState != null){
-            Log.i(TAG, "onCreate: " + String.valueOf(savedInstanceState.getString("test")));
-        }
-    }
 
-    void loadOldForm(Bundle savedInstanceState){
-        if(savedInstanceState != null){
-            if(savedInstanceState.get("so_tien") != null){
-                moneyInput.setText(String.valueOf(savedInstanceState.get("so_tien")));
-            }
-            if(savedInstanceState.get("ghi_chu") != null){
-                descriptionInput.setText(String.valueOf(savedInstanceState.get("ghi_chu")));
-            }
-            if(savedInstanceState.get("ngay_chi") != null){
-                dateAddInput.setText(String.valueOf(savedInstanceState.get("ngay_chi")));
-            }
-        }
+        if (savedInstanceState != null) {
+            DanhMucChi danhMucChi = (DanhMucChi) savedInstanceState.getSerializable("muc_chi");
 
+            Log.i(TAG, "onCreateView: " + danhMucChi.getTenDMChi());
+        }
     }
 
     @Override
@@ -147,7 +138,7 @@ public class AddMoreFragment extends Fragment {
         chooseTypeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                layoutService.loadReceiveType();
+                layoutService.loadPayType();
             }
         });
     }
@@ -229,17 +220,8 @@ public class AddMoreFragment extends Fragment {
                 ChiPhi chiPhi = new ChiPhi(LoginActivity.nguoiDung, danhMucChi,
                         Long.parseLong(String.valueOf(moneyInput.getText())),
                         String.valueOf(dateAddInput.getText()), String.valueOf(descriptionInput.getText()));
-                chiPhiService.insertOne(chiPhi, new InsertCallback() {
-                    @Override
-                    public void onSuccess() {
-                        new CustomToast(getContext()).show("Thêm thành công");
-                    }
 
-                    @Override
-                    public void onFailure() {
-                        new CustomToast(getContext()).show("Thông tin bạn cung cấp không hợp lệ");
-                    }
-                });
+                chiPhiService.insertOne(chiPhi);
             }
         });
     }

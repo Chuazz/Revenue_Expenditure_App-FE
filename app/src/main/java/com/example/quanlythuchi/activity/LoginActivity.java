@@ -21,6 +21,7 @@ import com.example.quanlythuchi.util.CustomToast;
 import org.bson.Document;
 
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 
 import io.realm.Realm;
@@ -83,17 +84,13 @@ public class LoginActivity extends AppCompatActivity {
 
                             nguoiDungService = new NguoiDungService();
                             Document query = new Document("tenDangNhap", email);
+                            CompletableFuture<NguoiDung> future  = nguoiDungService.findOne(query);
 
-                            nguoiDungService.findOne(query, new FindOneCallback() {
-                                @Override
-                                public void onSuccess(NguoiDung result) {
-                                    nguoiDung = result;
-                                }
-
-                                @Override
-                                public void onFailure() {
-                                    Log.i(TAG, "onFailure: " + "Loi mia r");
-                                }
+                            future.thenAccept(user2 -> {
+                                nguoiDung = user2;
+                            }).exceptionally(throwable -> {
+                                Log.i(TAG, "onFailure: " + "Loi mia r");
+                                return null;
                             });
                         }
                         else{

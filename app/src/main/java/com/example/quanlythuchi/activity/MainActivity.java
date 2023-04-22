@@ -13,11 +13,19 @@ import com.example.quanlythuchi.callback.InsertCallback;
 import com.example.quanlythuchi.callback.nguoidung.FindOneCallback;
 import com.example.quanlythuchi.fragment.addMore.AddMoreFragment;
 import com.example.quanlythuchi.model.NguoiDung;
+import com.example.quanlythuchi.service.ChiPhiService;
+import com.example.quanlythuchi.service.DanhMucChiService;
 import com.example.quanlythuchi.service.LayoutService;
 import com.example.quanlythuchi.service.NguoiDungService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -32,6 +40,21 @@ public class MainActivity extends AppCompatActivity {
         layoutService.loadDashboard();
 
         onBottomNavItemClick();
+
+//        Log.v("EXAMPLE", "Vo roi");
+//
+//        DanhMucChiService danhMucChiService = new DanhMucChiService();
+//
+//        DanhMucChi danhMucChi = new DanhMucChi("x");
+//        danhMucChiService.insertOne(danhMucChi);
+//
+//        List<DanhMucChi> arr = Arrays.asList(
+//                new DanhMucChi("1"),
+//                new DanhMucChi("2"),
+//                new DanhMucChi("3"));
+//        danhMucChiService.insertMany(arr);
+
+
     }
 
     void onBottomNavItemClick(){

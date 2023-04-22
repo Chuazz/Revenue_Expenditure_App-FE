@@ -15,16 +15,17 @@ import com.example.quanlythuchi.R;
 import com.example.quanlythuchi.adapter.PayTypeAdapter;
 import com.example.quanlythuchi.callback.listener.OnPayItemClickListener;
 import com.example.quanlythuchi.callback.danhmucchi.FindCallback;
+import com.example.quanlythuchi.callback.sendData.TypeDataPassListener;
 import com.example.quanlythuchi.fragment.addMore.AddMoreFragment;
 import com.example.quanlythuchi.model.DanhMucChi;
 import com.example.quanlythuchi.service.DanhMucChiService;
 import com.example.quanlythuchi.service.LayoutService;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
-import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 
-public class PayTypeFragment extends Fragment {
+public class PayTypeFragment extends Fragment implements TypeDataPassListener {
     DanhMucChiService danhMucChiservice;
     RecyclerView listDanhMucChi;
     List danhMucChis;
@@ -67,39 +68,33 @@ public class PayTypeFragment extends Fragment {
         turnBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getParentFragmentManager().popBackStack();
+                layoutService.loadAddMore();
             }
         });
     }
 
     void onCreate(){
-        danhMucChiservice.findAll(new FindCallback() {
+        CompletableFuture<List<DanhMucChi>> future = danhMucChiservice.findAll();
+        danhMucChis = future.join();
+        PayTypeAdapter payTypeAdapter = new PayTypeAdapter(getContext(), danhMucChis, new OnTypeItemClickListener() {
             @Override
-            public void onSuccess(List results) {
-                danhMucChis = results;
+            public void onItemClick(DanhMucChi item) {
+                Bundle bundle = new Bundle();
 
-                    PayTypeAdapter payTypeAdapter = new PayTypeAdapter(getContext(), danhMucChis, new OnPayItemClickListener() {
-                    @Override
-                    public void onItemClick(DanhMucChi item) {
-                        Bundle bundle = new Bundle();
+                bundle.putSerializable("muc_chi", item);
+                AddMoreFragment addMoreFragment = new AddMoreFragment();
+                addMoreFragment.setArguments(bundle);
 
-                        bundle.putSerializable("muc_chi", item);
-                        AddMoreFragment addMoreFragment = new AddMoreFragment();
-                        addMoreFragment.setArguments(bundle);
-
-                        layoutService.change(R.id.main_fragmentBody, addMoreFragment);
-                    }
-                });
-
-                listDanhMucChi.setAdapter(payTypeAdapter);
-                listDanhMucChi.setItemAnimator(new SlideInLeftAnimator());
-                listDanhMucChi.setLayoutManager(new LinearLayoutManager(getContext()));
-            }
-
-            @Override
-            public void onFailure() {
-
+                layoutService.change(R.id.main_fragmentBody, addMoreFragment);
             }
         });
+
+        listDanhMucChi.setAdapter(payTypeAdapter);
+        listDanhMucChi.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
+    @Override
+    public void onDataPass(DanhMucChi danhMucChi) {
+
     }
 }
