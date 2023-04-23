@@ -47,11 +47,12 @@
                 android:importantForAutofill="no"
                 android:fontFamily="@font/segoeuib"
                 android:textSize="25sp"
+                android:text="0"
                 android:inputType="number"
                 android:textColor="#FF6565"
                 android:textAlignment="textEnd"
                 android:minWidth="250dp"
-                tools:ignore="LabelFor" />
+                tools:ignore="HardcodedText,LabelFor" />
 
             <TextView
                 android:id="@+id/addMore_moneyCurrency"
@@ -328,6 +329,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toLeftOf="@id/addMore_optionImg"
+                        android:textSize="18sp"
                         android:text="Chi tiền"
                         android:textColor="#fff"
                         android:layout_width="wrap_content"
@@ -340,8 +342,8 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         tools:ignore="ContentDescription" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

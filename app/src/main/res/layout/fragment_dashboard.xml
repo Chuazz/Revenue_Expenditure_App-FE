@@ -100,25 +100,25 @@
                                 android:layout_height="wrap_content"
                                 android:contentDescription="Xem thêm"
                                 tools:ignore="HardcodedText" />
-
                         </LinearLayout>
 
                         <TextView
-                            android:textSize="20sp"
+                            android:id="@+id/dashboard_textBalance"
+                            android:textSize="22sp"
                             android:fontFamily="@font/segoeuib"
                             android:textColor="#39A5F3"
-                            android:id="@+id/dashboard_textBalance"
-                            android:text="1.000.000đ"
+                            android:text="0đ"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             tools:ignore="HardcodedText" />
                     </LinearLayout>
 
                     <ImageView
+                        android:id="@+id/dashboard_showMoney"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        android:src="@mipmap/show"
+                        android:src="@drawable/ic_open_eye"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:contentDescription="Xem số tiền"
@@ -214,11 +214,65 @@
                     android:minHeight="200dp"
                     >
                     <TextView
+                        android:id="@+id/dashboard_labelItem2"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        android:text="NGo Van Son"
+                        app:layout_constraintHorizontal_chainStyle="spread_inside"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/segoeuib"
+                        android:text="Hạn mức chi"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/dashboard_labelDescription2"
+                        app:layout_constraintTop_toBottomOf="@id/dashboard_labelItem2"
+                        app:layout_constraintBottom_toTopOf="@id/dashboard_labelAction2"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:text="Cùng Sổ Thu Chi lập ra các hạn mức để \n để quản lý chi tiêu tốt hơn nhé"
+                        android:textAlignment="center"
+                        android:textSize="16sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:ignore="HardcodedText" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/dashboard_labelAction2"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/dashboard_labelDescription2"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:flow_horizontalAlign="center"
+                        android:orientation="horizontal"
+                        >
+                        <ImageView
+                            android:id="@+id/dashboard_labelActionImg2"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintRight_toLeftOf="@id/dashboard_labelActionText2"
+                            android:src="@drawable/ic_plus"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:textColor="#39A5F3"
+                            android:id="@+id/dashboard_labelActionText2"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintLeft_toRightOf="@id/dashboard_labelActionImg2"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:textSize="16sp"
+                            android:text="Thêm hạn mức chi"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:ignore="HardcodedText" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout

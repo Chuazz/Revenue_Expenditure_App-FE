@@ -2,6 +2,7 @@ package com.example.quanlythuchi.fragment.addMore;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ import com.example.quanlythuchi.service.ChiPhiService;
 import com.example.quanlythuchi.service.LayoutService;
 import com.example.quanlythuchi.service.NguoiDungService;
 import com.example.quanlythuchi.service.ThuNhapService;
+import com.example.quanlythuchi.util.CustomTextWatcher;
 import com.example.quanlythuchi.util.CustomToast;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
@@ -106,6 +108,7 @@ public class AddMoreFragment extends Fragment {
         onOptionClick();
         onOptionItemClick();
         onCheckBtnClick();
+        moneyInput.addTextChangedListener(new CustomTextWatcher(moneyInput));
 
         return view;
     }
@@ -182,18 +185,22 @@ public class AddMoreFragment extends Fragment {
                 }
 
                 isPay = oldValue.getBoolean("isPay");
-                if(isPay){
-                    optionText.setText("Chi tiền");
-                    payCheck.setVisibility(View.VISIBLE);
-                    receiveCheck.setVisibility(View.INVISIBLE);
-                }
-                else{
-                    optionText.setText("Thu tiền");
-                    payCheck.setVisibility(View.INVISIBLE);
-                    receiveCheck.setVisibility(View.VISIBLE);
-                }
             }
         }
+
+        if(isPay){
+            optionText.setText("Chi tiền");
+            payCheck.setVisibility(View.VISIBLE);
+            moneyInput.setTextColor(Color.parseColor("#FF6565"));
+            receiveCheck.setVisibility(View.INVISIBLE);
+        }
+        else{
+            optionText.setText("Thu tiền");
+            payCheck.setVisibility(View.INVISIBLE);
+            moneyInput.setTextColor(Color.parseColor("#36CB2B"));
+            receiveCheck.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @SuppressLint({"NonConstantResourceId", "SetTextI18n"})
@@ -253,8 +260,9 @@ public class AddMoreFragment extends Fragment {
             progressDialog.show();
 
             if(isPay){
+
                 ChiPhi chiPhi = new ChiPhi(LoginActivity.nguoiDung, danhMucChi,
-                        Long.parseLong(String.valueOf(moneyInput.getText())),
+                        Long.parseLong(String.valueOf(moneyInput.getText()).replace(",", "")),
                         String.valueOf(dateAddInput.getText()), String.valueOf(descriptionInput.getText()));
 
                 chiPhiService.insertOne(chiPhi).thenAccept(value -> {
@@ -267,9 +275,8 @@ public class AddMoreFragment extends Fragment {
             }
             else{
                 ThuNhap thuNhap = new ThuNhap(LoginActivity.nguoiDung, danhMucThu,
-                        Long.parseLong(String.valueOf(moneyInput.getText())),
+                        Long.parseLong(String.valueOf(moneyInput.getText()).replace(",", "")),
                         String.valueOf(dateAddInput.getText()), String.valueOf(descriptionInput.getText()));
-
 
                 thuNhapService.insertOne(thuNhap).thenAccept(value -> {
                     customToast.show("Cập nhập thất bại");

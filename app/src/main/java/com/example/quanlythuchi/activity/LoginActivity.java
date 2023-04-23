@@ -78,15 +78,14 @@ public class LoginActivity extends AppCompatActivity {
                     app.loginAsync(emailPasswordCredentials, it -> {
                         if (it.isSuccess()) {
                             user.set(app.currentUser());
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-
                             nguoiDungService = new NguoiDungService();
                             Document query = new Document("tenDangNhap", email);
                             CompletableFuture<NguoiDung> future  = nguoiDungService.findOne(query);
 
                             future.thenAccept(user2 -> {
                                 nguoiDung = user2;
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
                             }).exceptionally(throwable -> {
                                 Log.i(TAG, "onFailure: " + "Loi mia r");
                                 return null;

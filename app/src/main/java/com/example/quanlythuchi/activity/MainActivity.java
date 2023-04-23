@@ -35,20 +35,6 @@ public class MainActivity extends AppCompatActivity {
         layoutService.loadDashboard();
 
         onBottomNavItemClick();
-
-//        NguoiDungService nguoiDungService = new NguoiDungService();
-//        Document tenDangNhap = new Document("tenDangNhap", "thuanpt182@gmail.com");
-//
-//        nguoiDungService.theUserExistingMoney(tenDangNhap).thenAccept(sum -> {
-//            if (sum != null) {
-//                System.out.println("The user's existing money: " + sum);
-//            } else {
-//                System.out.println("Error occurred while calculating the user's existing money.");
-//            }
-//        }).exceptionally(e -> {
-//            System.err.println("Error occurred while calculating the user's existing money: " + e.getMessage());
-//            return null;
-//        });
     }
 
     void onBottomNavItemClick(){

@@ -87,21 +87,7 @@ public class NguoiDungService {
             future.completeExceptionally(e);
             return null;
         });
-        return future;
-    }
 
-
-    public Future<Long> theUserExistingMoney_Future(Document tenDangNhap) {
-        ThuNhapService thuNhapService = new ThuNhapService();
-        ThuNhapService chiPhiService = new ThuNhapService();
-
-        ExecutorService executor = Executors.newFixedThreadPool(2);
-        Future<Long> future = executor.submit(() -> {
-            Long totalTienThu = thuNhapService.totalRevenueOfUsers(tenDangNhap).get();
-            Long totalTienChi = chiPhiService.totalRevenueOfUsers(tenDangNhap).get();
-            return totalTienThu - totalTienChi;
-        });
-        executor.shutdown();
         return future;
     }
 }
