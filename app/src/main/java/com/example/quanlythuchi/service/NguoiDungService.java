@@ -3,9 +3,7 @@ package com.example.quanlythuchi.service;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
-import android.util.Log;
 import com.example.quanlythuchi.model.NguoiDung;
-import com.example.quanlythuchi.model.ThuNhap;
 
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistry;
@@ -41,7 +39,7 @@ public class NguoiDungService {
     public CompletableFuture<List<NguoiDung>> findAll() {
         ExecutorService executor = Executors.newSingleThreadExecutor();
 
-        CompletableFuture<List<NguoiDung>> future = CompletableFuture.supplyAsync(() -> {
+        return CompletableFuture.supplyAsync(() -> {
             RealmResultTask<MongoCursor<NguoiDung>> task = mongoCollection.find().iterator();
             MongoCursor<NguoiDung> dmcMongoCursor = task.get();
             List<NguoiDung> users = new ArrayList<>();
@@ -51,7 +49,6 @@ public class NguoiDungService {
             }
             return users;
         }, executor);
-        return future;
     }
 
     public CompletableFuture<NguoiDung> findOne(Document document) {
@@ -83,13 +80,9 @@ public class NguoiDungService {
         ChiPhiService chiPhiService = new ChiPhiService();
 
         CompletableFuture<Long> future = new CompletableFuture<>();
-        thuNhapService.totalRevenueOfUsers(tenDangNhap).thenCompose(totalTienThu -> {
-            return chiPhiService.totalUserSpend(tenDangNhap).thenApply(totalTienChi -> {
-                return totalTienThu - totalTienChi;
-            });
-        }).thenAccept(sum -> {
-            future.complete(sum);
-        }).exceptionally(e -> {
+        thuNhapService.totalRevenueOfUsers(tenDangNhap).thenCompose(totalTienThu -> chiPhiService.totalUserSpend(tenDangNhap).thenApply(totalTienChi -> {
+            return totalTienThu - totalTienChi;
+        })).thenAccept(future::complete).exceptionally(e -> {
             System.err.println("Error occurred while calculating total user spend: " + e.getMessage());
             future.completeExceptionally(e);
             return null;
@@ -111,6 +104,4 @@ public class NguoiDungService {
         executor.shutdown();
         return future;
     }
-
-
 }

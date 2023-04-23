@@ -1,49 +1,40 @@
 package com.example.quanlythuchi.fragment.payReceiveType;
 
-import static androidx.fragment.app.FragmentManager.TAG;
-
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.quanlythuchi.R;
-import com.example.quanlythuchi.adapter.PayTypeAdapter;
 import com.example.quanlythuchi.adapter.ReceiveTypeAdapter;
-import com.example.quanlythuchi.callback.listener.OnPayItemClickListener;
-import com.example.quanlythuchi.callback.listener.OnReceiveItemClickListener;
 import com.example.quanlythuchi.fragment.addMore.AddMoreFragment;
-import com.example.quanlythuchi.model.DanhMucChi;
 import com.example.quanlythuchi.model.DanhMucThu;
 import com.example.quanlythuchi.service.DanhMucThuService;
 import com.example.quanlythuchi.service.LayoutService;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+
+import javax.annotation.Nullable;
 
 import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 
 public class ReceiveTypeFragment extends Fragment {
     DanhMucThuService danhMucThuService;
     RecyclerView listDanhMucThu;
-    List danhMucThus;
     View view;
     ImageView turnBackBtn;
     LayoutService layoutService;
     public ReceiveTypeFragment() {
         // Required empty public constructor
     }
-    public static ReceiveTypeFragment newInstance() {
+    public static ReceiveTypeFragment newInstance(@Nullable Bundle args) {
         ReceiveTypeFragment fragment = new ReceiveTypeFragment();
-        Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
     }
@@ -72,17 +63,16 @@ public class ReceiveTypeFragment extends Fragment {
         CompletableFuture<List<DanhMucThu>> future = danhMucThuService.findAll();
         List<DanhMucThu> results = future.join();
 
-        ReceiveTypeAdapter receiveTypeAdapter = new ReceiveTypeAdapter(getContext(), results, new OnReceiveItemClickListener() {
-            @Override
-            public void onItemClick(DanhMucThu item) {
-                Bundle bundle = new Bundle();
+        ReceiveTypeAdapter receiveTypeAdapter = new ReceiveTypeAdapter(getContext(), results, item -> {
+            Bundle bundle = new Bundle();
+            Bundle args = getArguments();
 
-                bundle.putSerializable("muc_thu", item);
-                AddMoreFragment addMoreFragment = new AddMoreFragment();
-                addMoreFragment.setArguments(bundle);
+            bundle.putSerializable("muc_thu", item);
+            bundle.putBundle("old_value", args);
+            AddMoreFragment addMoreFragment = new AddMoreFragment();
+            addMoreFragment.setArguments(bundle);
 
-                layoutService.change(R.id.main_fragmentBody, addMoreFragment);
-            }
+            layoutService.change(R.id.main_fragmentBody, addMoreFragment);
         });
 
         listDanhMucThu.setAdapter(receiveTypeAdapter);
@@ -91,11 +81,6 @@ public class ReceiveTypeFragment extends Fragment {
     }
 
     private void onTurnBackBtnClick() {
-        turnBackBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getParentFragmentManager().popBackStack();
-            }
-        });
+        turnBackBtn.setOnClickListener(view -> getParentFragmentManager().popBackStack());
     }
 }

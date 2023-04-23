@@ -1,5 +1,7 @@
 package com.example.quanlythuchi.service;
 
+import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -39,12 +41,12 @@ public class LayoutService {
 
     }
 
-    public void loadPayType(){
-        change(R.id.main_fragmentBody, PayTypeFragment.newInstance());
+    public void loadPayType(Bundle args){
+        change(R.id.main_fragmentBody, PayTypeFragment.newInstance(args));
     }
 
-    public void loadReceiveType() {
-        change(R.id.main_fragmentBody, ReceiveTypeFragment.newInstance());
+    public void loadReceiveType(Bundle args) {
+        change(R.id.main_fragmentBody, ReceiveTypeFragment.newInstance(args));
     }
 
     public void change(int id, Fragment fragment){

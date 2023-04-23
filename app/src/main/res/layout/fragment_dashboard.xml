@@ -135,72 +135,124 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:background="#F0ECEC"
             >
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:padding="12dp"
-                android:background="#fff"
-                android:minHeight="200dp"
-                >
-                <TextView
-                    android:id="@+id/dashboard_labelItem"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/dashboard_labelImg"
-                    app:layout_constraintHorizontal_chainStyle="spread_inside"
-                    android:textSize="15sp"
-                    android:fontFamily="@font/segoeuib"
-                    android:text="Tình hình thu chi"
-                    android:layout_width="wrap_content"
+                android:orientation="vertical">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:ignore="HardcodedText" />
-
-                <ImageView
-                    android:id="@+id/dashboard_labelImg"
-                    android:src="@drawable/ic_setting"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toRightOf="@id/dashboard_labelItem"
-                    app:layout_constraintRight_toRightOf="parent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    app:layout_constraintTop_toBottomOf="@+id/dashboard_labelItem"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/dashboard_historyRecord"
-                    android:text="Tháng này bạn chưa có ghi chép nào"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:ignore="HardcodedText" />
-
-                <LinearLayout
-                    android:id="@+id/dashboard_historyRecord"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    tools:ignore="UseCompoundDrawables">
+                    android:layout_marginTop="16dp"
+                    android:padding="12dp"
+                    android:background="#fff"
+                    android:minHeight="200dp"
+                    >
                     <TextView
+                        android:id="@+id/dashboard_labelItem"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@id/dashboard_labelImg"
+                        app:layout_constraintHorizontal_chainStyle="spread_inside"
+                        android:textSize="15sp"
                         android:fontFamily="@font/segoeuib"
-                        android:textColor="#39A5F3"
-                        android:text="Lịch sử ghi chép"
+                        android:text="Tình hình thu chi"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         tools:ignore="HardcodedText" />
 
                     <ImageView
-                        android:src="@drawable/arrow_right_blue"
+                        android:id="@+id/dashboard_labelImg"
+                        android:src="@drawable/ic_setting"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintLeft_toRightOf="@id/dashboard_labelItem"
+                        app:layout_constraintRight_toRightOf="parent"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                        android:layout_height="wrap_content"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        app:layout_constraintTop_toBottomOf="@+id/dashboard_labelItem"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintBottom_toTopOf="@id/dashboard_historyRecord"
+                        android:text="Tháng này bạn chưa có ghi chép nào"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:ignore="HardcodedText" />
+
+                    <LinearLayout
+                        android:id="@+id/dashboard_historyRecord"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        tools:ignore="UseCompoundDrawables">
+                        <TextView
+                            android:fontFamily="@font/segoeuib"
+                            android:textColor="#39A5F3"
+                            android:text="Lịch sử ghi chép"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:ignore="HardcodedText" />
+
+                        <ImageView
+                            android:src="@drawable/arrow_right_blue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:ignore="ContentDescription" />
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:padding="12dp"
+                    android:background="#fff"
+                    android:minHeight="200dp"
+                    >
+                    <TextView
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:text="NGo Van Son"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:padding="12dp"
+                    android:background="#fff"
+                    android:minHeight="200dp"
+                    >
+                    <TextView
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:text="NGo Van Son"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:padding="12dp"
+                    android:background="#fff"
+                    android:minHeight="200dp"
+                    >
+                    <TextView
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:text="NGo Van Son"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

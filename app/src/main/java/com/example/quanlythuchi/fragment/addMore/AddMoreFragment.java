@@ -1,16 +1,8 @@
 package com.example.quanlythuchi.fragment.addMore;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +10,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.quanlythuchi.R;
 import com.example.quanlythuchi.activity.LoginActivity;
@@ -29,8 +26,8 @@ import com.example.quanlythuchi.service.ChiPhiService;
 import com.example.quanlythuchi.service.LayoutService;
 import com.example.quanlythuchi.service.NguoiDungService;
 import com.example.quanlythuchi.service.ThuNhapService;
+import com.example.quanlythuchi.util.CustomToast;
 import com.google.android.material.datepicker.MaterialDatePicker;
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
 public class AddMoreFragment extends Fragment {
     View view;
@@ -40,7 +37,8 @@ public class AddMoreFragment extends Fragment {
     Button chooseTypeBtn;
     boolean isOptionChecked = false;
     boolean isPay = true;
-    Button optionBtn;
+    ConstraintLayout optionBlock;
+    TextView optionText;
     LinearLayout optionContainer;
     ImageView checkBtn;
     LayoutService layoutService;
@@ -53,6 +51,11 @@ public class AddMoreFragment extends Fragment {
     Bundle oldValue;
     ThuNhapService thuNhapService;
     FragmentManager fragmentManager;
+    ImageView payCheck;
+    ImageView receiveCheck;
+    ProgressDialog progressDialog;
+    CustomToast customToast;
+    ImageView optionImg;
 
     public AddMoreFragment() {
     }
@@ -63,13 +66,6 @@ public class AddMoreFragment extends Fragment {
         fragment.setArguments(args);
 
         return fragment;
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        Log.i(TAG, "onSaveInstanceState: ");
     }
 
     @Override
@@ -84,7 +80,7 @@ public class AddMoreFragment extends Fragment {
         moneyInput = view.findViewById(R.id.addMore_addMoneyText);
         dateAddInput = view.findViewById(R.id.addMore_dateAddInput);
         chooseTypeBtn = view.findViewById(R.id.addMore_chooseTypeBtn);
-        optionBtn = view.findViewById(R.id.addMore_optionBtn);
+        optionBlock = view.findViewById(R.id.addMore_optionBlock);
         optionContainer = view.findViewById(R.id.addMore_optionContainer);
         checkBtn = view.findViewById(R.id.addMore_checkBtn);
         layoutService = new LayoutService(getParentFragmentManager());
@@ -97,6 +93,12 @@ public class AddMoreFragment extends Fragment {
         oldValue = new Bundle();
         thuNhapService = new ThuNhapService();
         fragmentManager = requireActivity().getSupportFragmentManager();
+        payCheck = view.findViewById(R.id.addMore_payCheck);
+        receiveCheck = view.findViewById(R.id.addMore_receiveCheck);
+        progressDialog = new ProgressDialog(getContext());
+        customToast = new CustomToast(getContext());
+        optionImg = view.findViewById(R.id.addMore_optionImg);
+        optionText = view.findViewById(R.id.addMore_optionText);
 
         onDateAddClick();
         onChooseTypeClick();
@@ -109,38 +111,45 @@ public class AddMoreFragment extends Fragment {
     }
 
     void onDateAddClick(){
-        dateAddBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MaterialDatePicker<Long> materialDatePicker =  MaterialDatePicker.Builder.datePicker()
-                        .setTitleText("Ngày chi")
-                        .setSelection(MaterialDatePicker.todayInUtcMilliseconds()).build();
+        dateAddBtn.setOnClickListener(view -> {
+            MaterialDatePicker<Long> materialDatePicker =  MaterialDatePicker.Builder.datePicker()
+                    .setTitleText("Ngày chi")
+                    .setSelection(MaterialDatePicker.todayInUtcMilliseconds()).build();
 
-                materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
-                    @Override
-                    public void onPositiveButtonClick(Long selection) {
-                        dateAddInput.setText(materialDatePicker.getHeaderText());
-                    }
-                });
-                materialDatePicker.show(getParentFragmentManager(), "TAG");
-            }
+            materialDatePicker.addOnPositiveButtonClickListener(selection -> dateAddInput.setText(materialDatePicker.getHeaderText()));
+            materialDatePicker.show(getParentFragmentManager(), "TAG");
         });
     }
 
     void onChooseTypeClick(){
-        chooseTypeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(isPay){
-                    layoutService.loadPayType();
-                }
-                else{
-                    layoutService.loadReceiveType();
-                }
+        chooseTypeBtn.setOnClickListener(view -> {
+            if(isPay){
+                layoutService.loadPayType(getFragmentBundle());
+            }
+            else{
+                layoutService.loadReceiveType(getFragmentBundle());
             }
         });
     }
 
+    Bundle getFragmentBundle(){
+        Bundle bundle = new Bundle();
+
+        if(moneyInput.getText() != null){
+            bundle.putString("so_tien", String.valueOf(moneyInput.getText()));
+        }
+        if(descriptionInput.getText() != null){
+            bundle.putString("ghi_chu", String.valueOf(descriptionInput.getText()));
+        }
+        if(dateAddInput.getText() != null){
+            bundle.putString("ngay_them", String.valueOf(dateAddInput.getText()));
+        }
+        bundle.putBoolean("isPay", isPay);
+
+        return bundle;
+    }
+
+    @SuppressLint("SetTextI18n")
     void onCreateView(){
         optionContainer.setVisibility(View.GONE);
 
@@ -148,87 +157,127 @@ public class AddMoreFragment extends Fragment {
         if (bundle != null) {
             DanhMucChi danhMucChi = (DanhMucChi) bundle.getSerializable("muc_chi");
             DanhMucThu danhMucThu = (DanhMucThu) bundle.getSerializable("muc_thu");
-
+            oldValue = bundle.getBundle("old_value");
 
             if(danhMucChi != null){
                 this.danhMucChi = danhMucChi;
                 typeInput.setText(danhMucChi.getTenDMChi());
+
             }
 
             if(danhMucThu != null){
                 this.danhMucThu = danhMucThu;
                 typeInput.setText(danhMucThu.getTenDMThu());
             }
+
+            if(oldValue != null){
+                if(oldValue.getString("so_tien") != null){
+                    moneyInput.setText(oldValue.getString("so_tien"));
+                }
+                if(oldValue.getString("ghi_chu") != null){
+                    descriptionInput.setText(oldValue.getString("ghi_chu"));
+                }
+                if(oldValue.getString("ngay_them") != null){
+                    dateAddInput.setText(oldValue.getString("ngay_them"));
+                }
+
+                isPay = oldValue.getBoolean("isPay");
+                if(isPay){
+                    optionText.setText("Chi tiền");
+                    payCheck.setVisibility(View.VISIBLE);
+                    receiveCheck.setVisibility(View.INVISIBLE);
+                }
+                else{
+                    optionText.setText("Thu tiền");
+                    payCheck.setVisibility(View.INVISIBLE);
+                    receiveCheck.setVisibility(View.VISIBLE);
+                }
+            }
         }
     }
 
+    @SuppressLint({"NonConstantResourceId", "SetTextI18n"})
     void onOptionItemClick(){
-        ImageView payCheck = (ImageView) view.findViewById(R.id.addMore_payCheck);
-        ImageView receiveCheck = (ImageView) view.findViewById(R.id.addMore_receiveCheck);
-
         for (int i = 0; i < optionContainer.getChildCount(); i++) {
             ConstraintLayout item = (ConstraintLayout) optionContainer.getChildAt(i);
 
-            item.setOnClickListener(new View.OnClickListener() {
-                @SuppressLint({"NonConstantResourceId", "SetTextI18n"})
-                @Override
-                public void onClick(View target) {
-                    switch (target.getId()){
-                        case R.id.addMore_payBtn:{
-                            optionBtn.setText("Chi tiền");
-                            payCheck.setVisibility(View.VISIBLE);
-                            receiveCheck.setVisibility(View.INVISIBLE);
-                            isPay = true;
-                            break;
-                        }
-                        case R.id.addMore_receiveBtn:{
-                            optionBtn.setText("Thu tiền");
-                            payCheck.setVisibility(View.INVISIBLE);
-                            receiveCheck.setVisibility(View.VISIBLE);
-                            isPay = false;
-                            break;
-                        }
+            item.setOnClickListener(target -> {
+                switch (target.getId()){
+                    case R.id.addMore_payBtn:{
+                        optionText.setText("Chi tiền");
+                        payCheck.setVisibility(View.VISIBLE);
+                        receiveCheck.setVisibility(View.INVISIBLE);
+                        isPay = true;
+                        break;
                     }
-                    optionContainer.setVisibility(View.GONE);
+                    case R.id.addMore_receiveBtn:{
+                        optionText.setText("Thu tiền");
+                        payCheck.setVisibility(View.INVISIBLE);
+                        receiveCheck.setVisibility(View.VISIBLE);
+                        isPay = false;
+                        break;
+                    }
                 }
+                optionContainer.setVisibility(View.GONE);
+                optionImg.setRotation(0);
+                resetForm();
             });
         }
     }
 
     void onOptionClick(){
-        optionBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View target) {
-                if(isOptionChecked){
-                    optionContainer.setVisibility(View.GONE);
-                }
-                else{
-                    optionContainer.setVisibility(View.VISIBLE);
-                }
-                isOptionChecked = !isOptionChecked;
-
+        optionBlock.setOnClickListener(target -> {
+            if(isOptionChecked){
+                optionContainer.setVisibility(View.GONE);
+                optionImg.setRotation(0);
             }
+            else{
+                optionContainer.setVisibility(View.VISIBLE);
+                optionImg.setRotation(180);
+            }
+            isOptionChecked = !isOptionChecked;
         });
     }
 
+    void resetForm(){
+        moneyInput.setText("");
+        typeInput.setText("");
+        descriptionInput.setText("");
+        dateAddInput.setText("");
+    }
+
     void onCheckBtnClick(){
-        checkBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(isPay){
-                    ChiPhi chiPhi = new ChiPhi(LoginActivity.nguoiDung, danhMucChi,
-                            Long.parseLong(String.valueOf(moneyInput.getText())),
-                            String.valueOf(dateAddInput.getText()), String.valueOf(descriptionInput.getText()));
 
-                    chiPhiService.insertOne(chiPhi);
-                }
-                else{
-                    ThuNhap thuNhap = new ThuNhap(LoginActivity.nguoiDung, danhMucThu,
-                            Long.parseLong(String.valueOf(moneyInput.getText())),
-                            String.valueOf(dateAddInput.getText()), String.valueOf(descriptionInput.getText()));
+        checkBtn.setOnClickListener(view -> {
+            progressDialog.setMessage("Đang cập nhập thông tin của bạn");
+            progressDialog.show();
 
-                    thuNhapService.insertOne(thuNhap);
-                }
+            if(isPay){
+                ChiPhi chiPhi = new ChiPhi(LoginActivity.nguoiDung, danhMucChi,
+                        Long.parseLong(String.valueOf(moneyInput.getText())),
+                        String.valueOf(dateAddInput.getText()), String.valueOf(descriptionInput.getText()));
+
+                chiPhiService.insertOne(chiPhi).thenAccept(value -> {
+                    customToast.show("Cập nhập thành công");
+                    progressDialog.cancel();
+                }).exceptionally(err -> {
+                    progressDialog.cancel();
+                    return null;
+                });
+            }
+            else{
+                ThuNhap thuNhap = new ThuNhap(LoginActivity.nguoiDung, danhMucThu,
+                        Long.parseLong(String.valueOf(moneyInput.getText())),
+                        String.valueOf(dateAddInput.getText()), String.valueOf(descriptionInput.getText()));
+
+
+                thuNhapService.insertOne(thuNhap).thenAccept(value -> {
+                    customToast.show("Cập nhập thất bại");
+                    progressDialog.cancel();
+                }).exceptionally(err -> {
+                    progressDialog.cancel();
+                    return null;
+                });
             }
         });
     }
