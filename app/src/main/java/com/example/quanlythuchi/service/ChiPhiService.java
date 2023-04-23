@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import io.realm.mongodb.AppConfiguration;
 import io.realm.mongodb.RealmResultTask;
@@ -115,15 +114,48 @@ public class ChiPhiService {
                     }
                 });
             } else {
-                System.out.println("User not found");
+                Log.v("EXAMPLE", "User not found");
                 future.complete(null);
             }
         }).exceptionally(e -> {
-            System.err.println("Error occurred while finding user: " + e.getMessage());
+            Log.v("EXAMPLE", "Error occurred while finding user: " + e.getMessage());
             future.completeExceptionally(e);
             return null;
         });
+        return future;
+    }
 
+    public CompletableFuture<List<ChiPhi>> getSpendingHistory(Document tenDangNhap) {
+        NguoiDungService nguoiDungService = new NguoiDungService();
+        CompletableFuture<NguoiDung> root = nguoiDungService.findOne(tenDangNhap);
+        CompletableFuture<List<ChiPhi>> future = new CompletableFuture<>();
+
+        root.thenAccept(user -> {
+            if(user != null) {
+                Document nguoiDung = new Document("nguoiDung", user);
+                RealmResultTask<MongoCursor<ChiPhi>> findTask = mongoCollection.find(nguoiDung).iterator();
+                findTask.getAsync(task -> {
+                    if (task.isSuccess()) {
+                        List<ChiPhi> chiPhis = new ArrayList<>();
+                        MongoCursor<ChiPhi> results = task.get();
+                        while (results.hasNext()) {
+                            chiPhis.add(results.next());
+                        }
+                        future.complete(chiPhis);
+                    } else {
+                        future.completeExceptionally(task.getError());
+                    }
+                });
+            }
+            else {
+                Log.v("EXAMPLE", "Không có lịch sử chi tiêu");
+                future.complete(null);
+            }
+        }).exceptionally(e -> {
+            Log.v("EXAMPLE", "Lỗi xảy ra khi đang tìm kiếm lịch sử chi tiêu: " + e.getMessage());
+            future.completeExceptionally(e);
+            return null;
+        });
         return future;
     }
 }

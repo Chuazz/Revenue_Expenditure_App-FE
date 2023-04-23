@@ -13,6 +13,7 @@ import com.example.quanlythuchi.service.ChiPhiService;
 import com.example.quanlythuchi.service.LayoutService;
 import com.example.quanlythuchi.service.NguoiDungService;
 import com.example.quanlythuchi.service.ThuNhapService;
+import com.example.quanlythuchi.service.ThuanTestService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.bson.Document;
@@ -31,11 +32,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         layoutService = new LayoutService(getSupportFragmentManager());
-
         layoutService.loadDashboard();
-
         onBottomNavItemClick();
+
+        ThuanTestService thuanTestService = new ThuanTestService();
+
+        thuanTestService.test_LichSuChiTieu_getTransactionHistory();
+
     }
+
+
 
     void onBottomNavItemClick(){
         BottomNavigationView bottomNavigationView = findViewById(R.id.main_bottomNav);

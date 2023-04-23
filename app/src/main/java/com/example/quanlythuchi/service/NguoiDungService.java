@@ -87,7 +87,6 @@ public class NguoiDungService {
             future.completeExceptionally(e);
             return null;
         });
-
         return future;
     }
 }

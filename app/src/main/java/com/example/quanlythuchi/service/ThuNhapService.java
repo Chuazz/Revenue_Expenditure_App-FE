@@ -3,7 +3,8 @@ package com.example.quanlythuchi.service;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
-import com.example.quanlythuchi.model.ChiPhi;
+import android.util.Log;
+
 import com.example.quanlythuchi.model.NguoiDung;
 import com.example.quanlythuchi.model.ThuNhap;
 
@@ -123,6 +124,40 @@ public class ThuNhapService {
             return null;
         });
 
+        return future;
+    }
+
+    public CompletableFuture<List<ThuNhap>> getEarningsHistory(Document tenDangNhap) {
+        NguoiDungService nguoiDungService = new NguoiDungService();
+        CompletableFuture<NguoiDung> root = nguoiDungService.findOne(tenDangNhap);
+        CompletableFuture<List<ThuNhap>> future = new CompletableFuture<>();
+
+        root.thenAccept(user -> {
+            if(user != null) {
+                Document nguoiDung = new Document("nguoiDung", user);
+                RealmResultTask<MongoCursor<ThuNhap>> findTask = mongoCollection.find(nguoiDung).iterator();
+                findTask.getAsync(task -> {
+                    if (task.isSuccess()) {
+                        List<ThuNhap> thuNhaps = new ArrayList<>();
+                        MongoCursor<ThuNhap> results = task.get();
+                        while (results.hasNext()) {
+                            thuNhaps.add(results.next());
+                        }
+                        future.complete(thuNhaps);
+                    } else {
+                        future.completeExceptionally(task.getError());
+                    }
+                });
+            }
+            else {
+                Log.v("EXAMPLE", "Không có lịch sử thu nhập");
+                future.complete(null);
+            }
+        }).exceptionally(e -> {
+            Log.v("EXAMPLE", "Lỗi xảy ra khi đang tìm kiếm lịch sử thu nhập: " + e.getMessage());
+            future.completeExceptionally(e);
+            return null;
+        });
         return future;
     }
 }
