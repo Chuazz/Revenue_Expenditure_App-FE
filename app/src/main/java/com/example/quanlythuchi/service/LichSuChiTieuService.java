@@ -9,70 +9,71 @@ import com.example.quanlythuchi.model.ThuNhap;
 import org.bson.Document;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+import java.util.concurrent.CompletableFuture;
 
 public class LichSuChiTieuService {
-    Document tenDangNhap, tenDangNhap2;
-    List<ThuNhap> thuNhaps;
-    List<ChiPhi> chiPhis;
-    public static HashMap<String, List<GiaoDich>> MapLichSuChiTieu = new HashMap<>();
+    public LichSuChiTieuService() { }
 
-    public LichSuChiTieuService(Document userName) {
-        this.tenDangNhap = userName; // Chạy thật
+    public CompletableFuture<Map<String, List<GiaoDich>>> getTransactionHistory(Document tenDangNhap) {
+        CompletableFuture<List<ThuNhap>> earningFuture = new ThuNhapService().getEarningsHistory(tenDangNhap);
+        CompletableFuture<List<ChiPhi>> spendingFuture = new ChiPhiService().getSpendingHistory(tenDangNhap);
 
-        // Lấy thu nhập nè
-        ThuNhapService thuNhapService = new ThuNhapService();
-        thuNhapService.getEarningsHistory(this.tenDangNhap).thenAccept(history -> {
-            this.thuNhaps = history;
-            Log.v("EXAMPLE", "Vô thu nhập rổi!" + this.thuNhaps.size());
-        }).exceptionally(e -> {
-            return null;
-        });
+        return CompletableFuture.allOf(earningFuture, spendingFuture)
+                .thenApplyAsync(_void -> {
+                    Map<String, List<GiaoDich>> MapLichSuChiTieu = new HashMap<>();
 
-        // Lấy chi tiêu nè
-        ChiPhiService chiPhiService = new ChiPhiService();
-        chiPhiService.getSpendingHistory(this.tenDangNhap).thenAccept(history -> {
-            this.chiPhis = history;
-            Log.v("EXAMPLE", "Vô chi phí rồi!" + this.chiPhis.size());
-        }).exceptionally(e -> {
-            return null;
-        });
+                    if (earningFuture.isCompletedExceptionally()) {
+                        return MapLichSuChiTieu;
+                    }
+
+                    List<ThuNhap> earnings = earningFuture.join();
+                    if (earnings != null) {
+                        for (ThuNhap thuNhap: earnings) {
+                            GiaoDich giaoDich = new GiaoDich(thuNhap.getDanhMucThu().getTenDMThu(), thuNhap.getGhiChu(), thuNhap.getTienThu(), true);
+                            List<GiaoDich> giaoDiches = MapLichSuChiTieu.get(thuNhap.getNgayThu());
+                            if (giaoDiches == null) {
+                                giaoDiches = new ArrayList<>();
+                            }
+                            giaoDiches.add(giaoDich);
+                            MapLichSuChiTieu.put(thuNhap.getNgayThu(), giaoDiches);
+                        }
+                    }
+
+                    if (spendingFuture.isCompletedExceptionally()) {
+                        return MapLichSuChiTieu;
+                    }
+
+                    List<ChiPhi> spendings = spendingFuture.join();
+                    if (spendings != null) {
+                        for (ChiPhi chiPhi: spendings) {
+                            GiaoDich giaoDich = new GiaoDich(chiPhi.getDanhMucChi().getTenDMChi(), chiPhi.getGhiChu(), chiPhi.getTienChi(), false);
+                            List<GiaoDich> giaoDiches = MapLichSuChiTieu.get(chiPhi.getNgayChi());
+                            if (giaoDiches == null) {
+                                giaoDiches = new ArrayList<>();
+                            }
+                            giaoDiches.add(giaoDich);
+                            MapLichSuChiTieu.put(chiPhi.getNgayChi(), giaoDiches);
+                        }
+                    }
+                    return MapLichSuChiTieu;
+                });
     }
 
-    public void getTransactionHistory() {
-        // Đưa Thu nhập vào Map
-        if(this.thuNhaps != null) {
-            for (ThuNhap thuNhap: this.thuNhaps) {
-                GiaoDich giaoDich = new GiaoDich(thuNhap.getDanhMucThu().getTenDMThu(), thuNhap.getGhiChu(), thuNhap.getTienThu(), true);
-                List<GiaoDich> giaoDiches = new ArrayList<>();
-                if(MapLichSuChiTieu.containsKey(thuNhap.getNgayThu())) {
-                    giaoDiches = MapLichSuChiTieu.get(thuNhap.getNgayThu());
-                }
-                giaoDiches.add(giaoDich);
-                MapLichSuChiTieu.put(thuNhap.getNgayThu(), giaoDiches);
-            }
-        }
-        // Đưa Chi tiêu vào Map
-        if(this.chiPhis != null) {
-            for (ChiPhi chiPhi: this.chiPhis) {
-                GiaoDich giaoDich = new GiaoDich(chiPhi.getDanhMucChi().getTenDMChi(), chiPhi.getGhiChu(), chiPhi.getTienChi(), false);
-                List<GiaoDich> giaoDiches = new ArrayList<>();
-                if(MapLichSuChiTieu.containsKey(chiPhi.getNgayChi())) {
-                    giaoDiches = MapLichSuChiTieu.get(chiPhi.getNgayChi());
-                }
-                giaoDiches.add(giaoDich);
-                MapLichSuChiTieu.put(chiPhi.getNgayChi(), giaoDiches);
-            }
-        }
-    }
+    public void printf(Map<String, List<GiaoDich>> map) {
+        TreeMap<String, List<GiaoDich>> sortedMap = new TreeMap<>(Collections.reverseOrder());
 
-    public void printf() {
-        Log.v("EXAMPLE", "Bắt đầu in nè nha!");
-        for (Map.Entry<String, List<GiaoDich>> entry : MapLichSuChiTieu.entrySet()) {
+        sortedMap.putAll(map);
+
+        for (Map.Entry<String, List<GiaoDich>> entry : sortedMap.entrySet()) {
             String key = entry.getKey();
-            System.out.println("Key: " + key);
+            Log.v("EXAMPLE","Key: " + key);
 
             // Lấy giá trị của key hiện tại
             List<GiaoDich> giaoDiches = entry.getValue();

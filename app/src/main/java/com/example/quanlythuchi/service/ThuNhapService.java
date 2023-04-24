@@ -115,11 +115,11 @@ public class ThuNhapService {
                     }
                 });
             } else {
-                System.out.println("User not found");
+                Log.v("EXAMPLE","User not found");
                 future.complete(null);
             }
         }).exceptionally(e -> {
-            System.err.println("Error occurred while finding user: " + e.getMessage());
+            Log.v("EXAMPLE","Error occurred while finding user: " + e.getMessage());
             future.completeExceptionally(e);
             return null;
         });

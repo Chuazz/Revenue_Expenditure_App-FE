@@ -8,6 +8,7 @@ import android.util.Log;
 import com.example.quanlythuchi.activity.LoginActivity;
 import com.example.quanlythuchi.model.ChiPhi;
 import com.example.quanlythuchi.model.DanhMucChi;
+import com.example.quanlythuchi.model.GiaoDich;
 import com.example.quanlythuchi.model.ThuNhap;
 
 import org.bson.Document;
@@ -17,6 +18,7 @@ import org.bson.codecs.pojo.PojoCodecProvider;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
@@ -33,10 +35,15 @@ public class ThuanTestService {
     }
 
     public void test_LichSuChiTieu_getTransactionHistory() {
-        LichSuChiTieuService lichSuChiTieuService = new LichSuChiTieuService(this.tenDangNhap);
+        LichSuChiTieuService lichSuChiTieuService = new LichSuChiTieuService();
 
-        lichSuChiTieuService.getTransactionHistory();
-        lichSuChiTieuService.printf();
+        lichSuChiTieuService.getTransactionHistory(this.tenDangNhap).thenAccept(map -> {
+            Log.v("EXAMPLE", "Lịch sử chi tiêu nè!");
+            lichSuChiTieuService.printf(map);
+        }).exceptionally(e -> {
+            Log.v("EXAMPLE", "Lỗi xảy ra trong quá trình lấy lịch sử chi tiêu!");
+            return null;
+        });
     }
 
     public void test_ChiPhi_getSpendingHistory() {
