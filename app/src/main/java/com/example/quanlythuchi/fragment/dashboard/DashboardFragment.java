@@ -1,24 +1,22 @@
 package com.example.quanlythuchi.fragment.dashboard;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.quanlythuchi.R;
 import com.example.quanlythuchi.activity.LoginActivity;
+import com.example.quanlythuchi.service.LayoutService;
 import com.example.quanlythuchi.service.NguoiDungService;
-import com.example.quanlythuchi.util.Editor;
 
 import org.bson.Document;
 
@@ -39,6 +37,8 @@ public class DashboardFragment extends Fragment {
     boolean isOpen = true;
     Long userMoney;
     TextView labelDescription2;
+    LinearLayout historyBtn;
+    LayoutService layoutService;
 
 
     public DashboardFragment() {
@@ -67,13 +67,22 @@ public class DashboardFragment extends Fragment {
         nguoiDungService = new NguoiDungService();
         showMoney = view.findViewById(R.id.dashboard_showMoney);
         labelDescription2 = view.findViewById(R.id.dashboard_labelDescription2);
+        historyBtn = view.findViewById(R.id.dashboard_historyRecord);
+        layoutService = new LayoutService(getParentFragmentManager());
 
         onCreateView();
         onShowMoneyClick();
-        Editor.makeBold(labelDescription2, "Sổ Thu Chi");
+        onHistoryBtnClick();
 
         return view;
     }
+
+    void onHistoryBtnClick(){
+        historyBtn.setOnClickListener(view -> {
+            layoutService.loadHistory();
+        });
+    }
+
 
     @SuppressLint("SetTextI18n")
     void onShowMoneyClick(){

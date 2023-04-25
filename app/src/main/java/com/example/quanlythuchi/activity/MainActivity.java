@@ -34,11 +34,6 @@ public class MainActivity extends AppCompatActivity {
         layoutService = new LayoutService(getSupportFragmentManager());
         layoutService.loadDashboard();
         onBottomNavItemClick();
-
-        ThuanTestService thuanTestService = new ThuanTestService();
-
-        thuanTestService.test_LichSuChiTieu_getTransactionHistory();
-
     }
 
 

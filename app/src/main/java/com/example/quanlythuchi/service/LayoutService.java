@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.quanlythuchi.R;
+import com.example.quanlythuchi.fragment.dashboard.HistoryFragment;
 import com.example.quanlythuchi.fragment.account.AccountFragment;
 import com.example.quanlythuchi.fragment.addMore.AddMoreFragment;
 import com.example.quanlythuchi.fragment.dashboard.DashboardFragment;
@@ -47,6 +48,10 @@ public class LayoutService {
 
     public void loadReceiveType(Bundle args) {
         change(R.id.main_fragmentBody, ReceiveTypeFragment.newInstance(args));
+    }
+
+    public void loadHistory(){
+        change(R.id.main_fragmentBody, HistoryFragment.newInstance());
     }
 
     public void change(int id, Fragment fragment){
