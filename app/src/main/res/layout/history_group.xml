@@ -4,29 +4,96 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="#fff"
     android:layout_width="match_parent"
-    android:layout_marginTop="16dp"
     android:layout_marginBottom="16dp"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/historyGroup_label"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/historyGroup_header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="TextView"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="HardcodedText" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@drawable/border_left_primary_bold"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        >
+        <TextView
+            android:id="@+id/historyGroup_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="23"
+            android:textSize="40sp"
+            android:textColor="#292929"
+            android:fontFamily="@font/segoeuib"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="HardcodedText" />
+
+        <LinearLayout
+            android:layout_marginStart="23dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/historyGroup_label"
+            app:layout_constraintTop_toTopOf="parent"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:fontFamily="@font/segoeuib"
+                android:textColor="#292929"
+                android:textSize="20sp"
+                android:text="Chủ nhật"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:textSize="20sp"
+                android:text="04/2023"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:fontFamily="@font/segoeuib"
+                android:textColor="#38B750"
+                android:textSize="20sp"
+                android:text="1.000.000đ"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:fontFamily="@font/segoeuib"
+                android:textColor="#ED5363"
+                android:textSize="20sp"
+                android:text="1.000.000đ"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/historyGroup_list"
         android:layout_width="0dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/historyGroup_label"
+        app:layout_constraintTop_toBottomOf="@+id/historyGroup_header"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

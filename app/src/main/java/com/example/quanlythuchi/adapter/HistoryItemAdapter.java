@@ -1,5 +1,7 @@
 package com.example.quanlythuchi.adapter;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.quanlythuchi.R;
 import com.example.quanlythuchi.model.GiaoDich;
 import com.example.quanlythuchi.model.LichSu;
+import com.example.quanlythuchi.util.Commas;
 
 import java.util.List;
 
@@ -27,15 +30,24 @@ public class HistoryItemAdapter  extends RecyclerView.Adapter<HistoryItemAdapter
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.history_item, parent, false);
+
         return new ViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         GiaoDich giaoDich = items.get(position);
 
+        if(giaoDich.isThuNhap()){
+            holder.value.setTextColor(Color.parseColor("#40B34E"));
+        }
+        else{
+            holder.value.setTextColor(Color.parseColor("#ED5363"));
+        }
+
         holder.label.setText(giaoDich.getDanhMuc());
-        holder.value.setText(String.valueOf(giaoDich.getTien()));
+        holder.value.setText(Commas.add(giaoDich.getTien()) + "đ");
     }
 
     @Override
