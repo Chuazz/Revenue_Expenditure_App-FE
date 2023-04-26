@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,21 @@ import android.widget.TextView;
 
 import com.example.quanlythuchi.R;
 import com.example.quanlythuchi.activity.LoginActivity;
+import com.example.quanlythuchi.model.GiaoDich;
+import com.example.quanlythuchi.model.LichSu;
 import com.example.quanlythuchi.service.LayoutService;
+import com.example.quanlythuchi.service.LichSuChiTieuService;
 import com.example.quanlythuchi.service.NguoiDungService;
 
 import org.bson.Document;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,6 +49,8 @@ public class DashboardFragment extends Fragment {
     TextView labelDescription2;
     LinearLayout historyBtn;
     LayoutService layoutService;
+    Bundle args;
+    List<LichSu> lichSus;
 
 
     public DashboardFragment() {
@@ -69,17 +81,43 @@ public class DashboardFragment extends Fragment {
         labelDescription2 = view.findViewById(R.id.dashboard_labelDescription2);
         historyBtn = view.findViewById(R.id.dashboard_historyRecord);
         layoutService = new LayoutService(getParentFragmentManager());
+        lichSus = new ArrayList<>();
+        args = new Bundle();
 
         onCreateView();
+        getHistory();
         onShowMoneyClick();
         onHistoryBtnClick();
 
         return view;
     }
 
+    void getHistory(){
+        LichSuChiTieuService lichSuChiTieuService = new LichSuChiTieuService();
+        Document document = new Document("tenDangNhap", LoginActivity.nguoiDung.getTenDangNhap());
+
+        lichSuChiTieuService.getTransactionHistory(document).thenAccept(map -> {
+            TreeMap<String, List<GiaoDich>> sortedMap = new TreeMap<>(Collections.reverseOrder());
+
+            sortedMap.putAll(map);
+
+            for (Map.Entry<String, List<GiaoDich>> entry : sortedMap.entrySet()) {
+                String key = entry.getKey();
+                List<GiaoDich> giaoDiches = entry.getValue();
+
+                lichSus.add(new LichSu(key, giaoDiches));
+            }
+
+            args.putSerializable("lich_su", (Serializable) lichSus);
+        }).exceptionally(e -> {
+            Log.v("EXAMPLE", "Lỗi xảy ra trong quá trình lấy lịch sử chi tiêu!");
+            return null;
+        });
+    }
+
     void onHistoryBtnClick(){
         historyBtn.setOnClickListener(view -> {
-            layoutService.loadHistory();
+            layoutService.loadHistory(args);
         });
     }
 

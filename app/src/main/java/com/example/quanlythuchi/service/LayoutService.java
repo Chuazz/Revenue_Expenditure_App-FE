@@ -50,8 +50,8 @@ public class LayoutService {
         change(R.id.main_fragmentBody, ReceiveTypeFragment.newInstance(args));
     }
 
-    public void loadHistory(){
-        change(R.id.main_fragmentBody, HistoryFragment.newInstance());
+    public void loadHistory(Bundle args){
+        change(R.id.main_fragmentBody, HistoryFragment.newInstance(args));
     }
 
     public void change(int id, Fragment fragment){
