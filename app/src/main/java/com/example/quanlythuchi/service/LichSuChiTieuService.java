@@ -62,7 +62,9 @@ public class LichSuChiTieuService {
                             MapLichSuChiTieu.put(chiPhi.getNgayChi(), giaoDiches);
                         }
                     }
-                    return MapLichSuChiTieu;
+                    TreeMap<String, List<GiaoDich>> sortedMap = new TreeMap<>(Collections.reverseOrder());
+                    sortedMap.putAll(MapLichSuChiTieu);
+                    return sortedMap;
                 });
     }
 
