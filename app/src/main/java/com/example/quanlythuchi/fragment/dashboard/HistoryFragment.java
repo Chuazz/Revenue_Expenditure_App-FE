@@ -61,7 +61,6 @@ public class HistoryFragment extends Fragment {
         if(bundle != null){
             HistoryAdapter historyAdapter = new HistoryAdapter((List<LichSu>) bundle.getSerializable("lich_su"));
             listItem.setAdapter(historyAdapter);
-            listItem.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
         }
 
         return view;
