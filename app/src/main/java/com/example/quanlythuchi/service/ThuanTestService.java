@@ -39,7 +39,7 @@ public class ThuanTestService {
 
         lichSuChiTieuService.getTransactionHistory(this.tenDangNhap).thenAccept(map -> {
             Log.v("EXAMPLE", "Lịch sử chi tiêu nè!");
-            lichSuChiTieuService.printf(map);
+            //lichSuChiTieuService.printf(map);
         }).exceptionally(e -> {
             Log.v("EXAMPLE", "Lỗi xảy ra trong quá trình lấy lịch sử chi tiêu!");
             return null;

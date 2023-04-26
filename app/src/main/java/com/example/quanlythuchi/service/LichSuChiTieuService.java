@@ -11,6 +11,7 @@ import org.bson.Document;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -21,28 +22,28 @@ import java.util.concurrent.CompletableFuture;
 public class LichSuChiTieuService {
     public LichSuChiTieuService() { }
 
-    public CompletableFuture<Map<String, List<GiaoDich>>> getTransactionHistory(Document tenDangNhap) {
+    public CompletableFuture<Map<Date, List<GiaoDich>>> getTransactionHistory(Document tenDangNhap) {
         CompletableFuture<List<ThuNhap>> earningFuture = new ThuNhapService().getEarningsHistory(tenDangNhap);
         CompletableFuture<List<ChiPhi>> spendingFuture = new ChiPhiService().getSpendingHistory(tenDangNhap);
 
         return CompletableFuture.allOf(earningFuture, spendingFuture)
                 .thenApplyAsync(_void -> {
-                    Map<String, List<GiaoDich>> MapLichSuChiTieu = new HashMap<>();
+                    Map<Date, List<GiaoDich>> MapLichSuChiTieu = new HashMap<>();
 
                     if (earningFuture.isCompletedExceptionally()) {
                         return MapLichSuChiTieu;
                     }
 
-                    List<ThuNhap> earnings = earningFuture.join();
-                    if (earnings != null) {
-                        for (ThuNhap thuNhap: earnings) {
+                    List<ThuNhap> thuNhaps = earningFuture.join();
+                    if (thuNhaps != null) {
+                        for (ThuNhap thuNhap: thuNhaps) {
                             GiaoDich giaoDich = new GiaoDich(thuNhap.getDanhMucThu().getTenDMThu(), thuNhap.getGhiChu(), thuNhap.getTienThu(), true);
-                            List<GiaoDich> giaoDiches = MapLichSuChiTieu.get(thuNhap.getNgayThu());
+                            List<GiaoDich> giaoDiches = MapLichSuChiTieu.get(new Date(thuNhap.getNgayThu()));
                             if (giaoDiches == null) {
                                 giaoDiches = new ArrayList<>();
                             }
                             giaoDiches.add(giaoDich);
-                            MapLichSuChiTieu.put(thuNhap.getNgayThu(), giaoDiches);
+                            MapLichSuChiTieu.put(new Date(thuNhap.getNgayThu()), giaoDiches);
                         }
                     }
 
@@ -50,19 +51,29 @@ public class LichSuChiTieuService {
                         return MapLichSuChiTieu;
                     }
 
-                    List<ChiPhi> spendings = spendingFuture.join();
-                    if (spendings != null) {
-                        for (ChiPhi chiPhi: spendings) {
+                    List<ChiPhi> chiPhis = spendingFuture.join();
+                    if (chiPhis != null) {
+                        for (ChiPhi chiPhi: chiPhis) {
                             GiaoDich giaoDich = new GiaoDich(chiPhi.getDanhMucChi().getTenDMChi(), chiPhi.getGhiChu(), chiPhi.getTienChi(), false);
-                            List<GiaoDich> giaoDiches = MapLichSuChiTieu.get(chiPhi.getNgayChi());
+                            List<GiaoDich> giaoDiches = MapLichSuChiTieu.get(new Date(chiPhi.getNgayChi()));
                             if (giaoDiches == null) {
                                 giaoDiches = new ArrayList<>();
                             }
                             giaoDiches.add(giaoDich);
-                            MapLichSuChiTieu.put(chiPhi.getNgayChi(), giaoDiches);
+                            MapLichSuChiTieu.put(new Date(chiPhi.getNgayChi()), giaoDiches);
                         }
                     }
-                    return MapLichSuChiTieu;
+                    TreeMap<Date, List<GiaoDich>> sortedMap = new TreeMap<>(Collections.reverseOrder());
+//                    TreeMap<Date, List<GiaoDich>> sortedMap = new TreeMap<>(new Comparator<Date>() {
+//                        @Override
+//                        public int compare(Date date1, Date date2) {
+//                            return date2.compareTo(date1);
+//                        }
+//                    });
+
+                    sortedMap.putAll(MapLichSuChiTieu);
+
+                    return sortedMap;
                 });
     }
 

@@ -12,6 +12,7 @@ import com.example.quanlythuchi.R;
 import com.example.quanlythuchi.model.GiaoDich;
 import com.example.quanlythuchi.model.LichSu;
 
+import java.util.Date;
 import java.util.List;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
@@ -33,14 +34,15 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         LichSu lichSu = lichSus.get(position);
-        String ngay = lichSu.getNgay();
         List<GiaoDich> giaoDichs = lichSu.getGiaoDich();
 
-        holder.label.setText(ngay);
+        String newDate = lichSu.get_thu() + " - " + lichSu.get_ngay() +
+                        '/' + lichSu.get_thang() + '/' + lichSu.get_nam() +
+                        "  -- Thu: " + lichSu.getTongThu() + "  -- Chi: " + lichSu.getTongChi();
+        holder.label.setText(newDate);
 
         HistoryItemAdapter historyItemAdapter = new HistoryItemAdapter(giaoDichs);
         holder.items.setAdapter(historyItemAdapter);
-
     }
 
     @Override

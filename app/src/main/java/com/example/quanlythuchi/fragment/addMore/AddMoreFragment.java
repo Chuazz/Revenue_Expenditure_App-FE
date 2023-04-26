@@ -263,7 +263,7 @@ public class AddMoreFragment extends Fragment {
             if(isPay){
 
                 ChiPhi chiPhi = new ChiPhi(LoginActivity.nguoiDung, danhMucChi,
-                        Long.parseLong(String.valueOf(moneyInput.getText()).replace(",", "")),
+                        Long.parseLong(String.valueOf(moneyInput.getText()).replace(".", "")),
                         String.valueOf(dateAddInput.getText()), String.valueOf(descriptionInput.getText()));
 
                 chiPhiService.insertOne(chiPhi).thenAccept(value -> {

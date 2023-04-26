@@ -23,4 +23,26 @@ public class shareService {
         String strDate = formatter.format(date);
         return  strDate;
     }
+
+    public static String getDayOfWeek(int day) {
+        switch (day) {
+            case 1:
+                return "Chủ nhật";
+            case 2:
+                return "Thứ hai";
+            case 3:
+                return "Thứ ba";
+            case 4:
+                return "Thứ tư";
+            case 5:
+                return "Thứ năm";
+            case 6:
+                return "Thứ sáu";
+            case 7:
+                return "Thứ bảy";
+            default:
+                return "Nhập tầm bậy rồi 3!";
+        }
+    }
+
 }
