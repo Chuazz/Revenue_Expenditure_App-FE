@@ -109,13 +109,13 @@
                             android:text="Tổng thu"
                             android:textSize="18sp"
                             android:textColor="#292929"
-                            android:fontFamily="@font/segoeuib"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             tools:ignore="HardcodedText" />
                         <TextView
+                            android:id="@+id/history_totalReceiveText"
                             android:layout_gravity="center"
-                            android:text="1.000.000đ"
+                            android:text="0đ"
                             android:textSize="22sp"
                             android:textColor="#20B847"
                             android:layout_width="wrap_content"
@@ -141,13 +141,13 @@
                             android:text="Tổng chi"
                             android:textSize="18sp"
                             android:textColor="#292929"
-                            android:fontFamily="@font/segoeuib"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             tools:ignore="HardcodedText" />
                         <TextView
+                            android:id="@+id/history_totalPayText"
                             android:layout_gravity="center"
-                            android:text="1.000.000đ"
+                            android:text="0đ"
                             android:textSize="22sp"
                             android:textColor="#EF5263"
                             android:layout_width="wrap_content"

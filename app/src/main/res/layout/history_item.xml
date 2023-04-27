@@ -13,10 +13,8 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
         android:paddingTop="12dp"
         android:paddingBottom="12dp"
-        android:paddingEnd="12dp"
         android:background="@drawable/border_left"
         tools:ignore="RtlSymmetry">
         <ImageView
