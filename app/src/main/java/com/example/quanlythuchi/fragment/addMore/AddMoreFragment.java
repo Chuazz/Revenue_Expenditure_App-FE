@@ -281,7 +281,7 @@ public class AddMoreFragment extends Fragment {
                         String.valueOf(dateAddInput.getText()), String.valueOf(descriptionInput.getText()));
 
                 thuNhapService.insertOne(thuNhap).thenAccept(value -> {
-                    customToast.show("Cập nhập thất bại");
+                    customToast.show("Cập nhập thành công");
                     progressDialog.cancel();
                     resetForm();
                 }).exceptionally(err -> {

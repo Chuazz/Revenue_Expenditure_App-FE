@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.quanlythuchi.R;
+import com.example.quanlythuchi.fragment.dashboard.HistoryFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +29,12 @@ public class CurrentMoneyFragment extends Fragment {
 
     public CurrentMoneyFragment() {
         // Required empty public constructor
+    }
+
+    public static CurrentMoneyFragment newInstance(Bundle args) {
+        CurrentMoneyFragment fragment = new CurrentMoneyFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     /**

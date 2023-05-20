@@ -89,18 +89,6 @@ public class ChiPhiService {
         return future;
     }
 
-    public CompletableFuture<Void> insertOne1(ChiPhi chiPhi) {
-        CompletableFuture<Void> future = new CompletableFuture<>();
-        this.mongoCollection.insertOne(chiPhi).getAsync(task -> {
-            if (task.isSuccess()) {
-                future.complete(null);
-            } else {
-                future.completeExceptionally(task.getError());
-            }
-        });
-        return future;
-    }
-
     public CompletableFuture<Long> updateOne(Document queryFilter, Document updateDocument) {
         CompletableFuture<Long> future = new CompletableFuture<>();
         this.mongoCollection.updateOne(queryFilter, updateDocument).getAsync(task -> {

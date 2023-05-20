@@ -13,6 +13,7 @@ import com.example.quanlythuchi.fragment.addMore.AddMoreFragment;
 import com.example.quanlythuchi.fragment.dashboard.DashboardFragment;
 import com.example.quanlythuchi.fragment.payReceiveType.PayTypeFragment;
 import com.example.quanlythuchi.fragment.payReceiveType.ReceiveTypeFragment;
+import com.example.quanlythuchi.fragment.report.CurrentMoneyFragment;
 import com.example.quanlythuchi.fragment.report.ReportFragment;
 
 public class LayoutService {
@@ -52,6 +53,10 @@ public class LayoutService {
 
     public void loadHistory(Bundle args){
         change(R.id.main_fragmentBody, HistoryFragment.newInstance(args));
+    }
+
+    public void loadCurrentMoney(Bundle args){
+        change(R.id.main_fragmentBody, CurrentMoneyFragment.newInstance(args));
     }
 
     public void change(int id, Fragment fragment){
