@@ -93,11 +93,11 @@ public class HistoryFragment extends Fragment {
     @SuppressLint("SetTextI18n")
     void setTotalPayReceive(){
         thuNhapService.totalRevenueOfUsers(nguoiDung).thenAccept(aLong -> {
-            totalPay.setText(Commas.add(aLong) + "đ");
+            totalReceive.setText(Commas.add(aLong) + "đ");
         });
 
         chiPhiService.totalUserSpend(nguoiDung).thenAccept(aLong -> {
-            totalReceive.setText(Commas.add(aLong) + "đ");
+            totalPay.setText(Commas.add(aLong) + "đ");
         });
     }
 

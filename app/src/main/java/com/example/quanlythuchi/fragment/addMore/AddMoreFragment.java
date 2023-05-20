@@ -263,12 +263,13 @@ public class AddMoreFragment extends Fragment {
             if(isPay){
 
                 ChiPhi chiPhi = new ChiPhi(LoginActivity.nguoiDung, danhMucChi,
-                        Long.parseLong(String.valueOf(moneyInput.getText()).replace(".", "")),
+                        Long.parseLong(String.valueOf(moneyInput.getText()).replace(",", "")),
                         String.valueOf(dateAddInput.getText()), String.valueOf(descriptionInput.getText()));
 
                 chiPhiService.insertOne(chiPhi).thenAccept(value -> {
                     customToast.show("Cập nhập thành công");
                     progressDialog.cancel();
+                    resetForm();
                 }).exceptionally(err -> {
                     progressDialog.cancel();
                     return null;
@@ -282,6 +283,7 @@ public class AddMoreFragment extends Fragment {
                 thuNhapService.insertOne(thuNhap).thenAccept(value -> {
                     customToast.show("Cập nhập thất bại");
                     progressDialog.cancel();
+                    resetForm();
                 }).exceptionally(err -> {
                     progressDialog.cancel();
                     return null;
