@@ -89,6 +89,42 @@ public class ChiPhiService {
         return future;
     }
 
+    public CompletableFuture<Void> insertOne1(ChiPhi chiPhi) {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        this.mongoCollection.insertOne(chiPhi).getAsync(task -> {
+            if (task.isSuccess()) {
+                future.complete(null);
+            } else {
+                future.completeExceptionally(task.getError());
+            }
+        });
+        return future;
+    }
+
+    public CompletableFuture<Long> updateOne(Document queryFilter, Document updateDocument) {
+        CompletableFuture<Long> future = new CompletableFuture<>();
+        this.mongoCollection.updateOne(queryFilter, updateDocument).getAsync(task -> {
+            if (task.isSuccess()) {
+                future.complete(task.get().getModifiedCount());
+            } else {
+                future.completeExceptionally(task.getError());
+            }
+        });
+        return future;
+    }
+
+    public CompletableFuture<Long> deleteOne(Document queryFilter) {
+        CompletableFuture<Long> future = new CompletableFuture<>();
+        this.mongoCollection.deleteOne(queryFilter).getAsync(task -> {
+            if (task.isSuccess()) {
+                future.complete(task.get().getDeletedCount());
+            } else {
+                future.completeExceptionally(task.getError());
+            }
+        });
+        return future;
+    }
+
     public CompletableFuture<Long> totalUserSpend(Document tenDangNhap) {
         NguoiDungService nguoiDungService = new NguoiDungService();
         CompletableFuture<NguoiDung> root = nguoiDungService.findOne(tenDangNhap);

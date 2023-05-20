@@ -7,10 +7,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.example.quanlythuchi.R;
 
 public class ReportFragment extends Fragment {
+
+    LinearLayout currentMoneyBtn;
 
     public ReportFragment() {
         // Required empty public constructor
