@@ -138,6 +138,7 @@
             android:background="#F0ECEC"
             >
             <LinearLayout
+                android:paddingBottom="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -153,7 +154,6 @@
                         android:id="@+id/dashboard_labelItem"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toLeftOf="@id/dashboard_labelImg"
                         app:layout_constraintHorizontal_chainStyle="spread_inside"
                         android:textSize="15sp"
                         android:fontFamily="@font/segoeuib"
@@ -161,16 +161,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         tools:ignore="HardcodedText" />
-
-                    <ImageView
-                        android:id="@+id/dashboard_labelImg"
-                        android:src="@drawable/ic_setting"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintLeft_toRightOf="@id/dashboard_labelItem"
-                        app:layout_constraintRight_toRightOf="parent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        tools:ignore="ContentDescription" />
 
                     <TextView
                         app:layout_constraintTop_toBottomOf="@+id/dashboard_labelItem"
@@ -255,8 +245,8 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintRight_toLeftOf="@id/dashboard_labelActionText2"
                             android:src="@drawable/ic_plus"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
                             tools:ignore="ContentDescription" />
 
                         <TextView
@@ -281,14 +271,67 @@
                     android:layout_marginTop="16dp"
                     android:padding="12dp"
                     android:background="#fff"
-                    android:minHeight="200dp"
+                    android:minHeight="160dp"
                     >
                     <TextView
+                        android:id="@+id/dashboard_labelItem3"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        android:text="NGo Van Son"
+                        app:layout_constraintHorizontal_chainStyle="spread_inside"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/segoeuib"
+                        android:text="Du lịch"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/dashboard_labelDescription3"
+                        app:layout_constraintTop_toBottomOf="@id/dashboard_labelItem3"
+                        app:layout_constraintBottom_toTopOf="@id/dashboard_labelAction3"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:text="Hãy tạo chuyến đi để theo dõi cùng \n Sổ Thu Chi"
+                        android:textAlignment="center"
+                        android:textSize="16sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:ignore="HardcodedText" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/dashboard_labelAction3"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/dashboard_labelDescription3"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:flow_horizontalAlign="center"
+                        android:orientation="horizontal"
+                        >
+                        <ImageView
+                            android:id="@+id/dashboard_labelActionImg3"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintRight_toLeftOf="@id/dashboard_labelActionText3"
+                            android:src="@drawable/ic_plus"
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:textColor="#39A5F3"
+                            android:id="@+id/dashboard_labelActionText3"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintLeft_toRightOf="@id/dashboard_labelActionImg3"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:textSize="16sp"
+                            android:text="Thêm mới"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:ignore="HardcodedText" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -297,14 +340,32 @@
                     android:layout_marginTop="16dp"
                     android:padding="12dp"
                     android:background="#fff"
-                    android:minHeight="200dp"
+                    android:minHeight="120dp"
                     >
                     <TextView
+                        android:id="@+id/dashboard_labelItem4"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        android:text="NGo Van Son"
+                        app:layout_constraintHorizontal_chainStyle="spread_inside"
+                        android:textSize="15sp"
+                        android:fontFamily="@font/segoeuib"
+                        android:text="Sổ tiết kiệm"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/dashboard_labelDescription4"
+                        app:layout_constraintTop_toBottomOf="@id/dashboard_labelItem4"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:text="Bạn chưa có sổ tiết kiệm nào"
+                        android:textAlignment="center"
+                        android:textSize="16sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:ignore="HardcodedText" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
         </ScrollView>
