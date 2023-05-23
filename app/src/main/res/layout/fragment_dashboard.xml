@@ -28,7 +28,7 @@
                     android:id="@+id/dashboard_useName"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:textSize="17sp"
+                    android:textSize="18sp"
                     android:textColor="#fff"
                     android:fontFamily="@font/segoeuib"
                     android:text="Chào Ngô Văn Sơn"

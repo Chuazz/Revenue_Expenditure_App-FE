@@ -1,17 +1,20 @@
 package com.example.quanlythuchi.adapter;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quanlythuchi.R;
 import com.example.quanlythuchi.model.GiaoDich;
 import com.example.quanlythuchi.model.LichSu;
+import com.example.quanlythuchi.service.LayoutService;
 import com.example.quanlythuchi.util.Commas;
 
 import org.w3c.dom.Text;
@@ -22,9 +25,12 @@ import java.util.List;
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
 
     List<LichSu> lichSus;
+    LayoutService layoutService;
+    FragmentManager fragmentManager;
 
-    public HistoryAdapter(List<LichSu> lichSus) {
+    public HistoryAdapter(List<LichSu> lichSus, FragmentManager fragmentManager) {
         this.lichSus = lichSus;
+        this.fragmentManager = fragmentManager;
     }
 
     @NonNull
@@ -32,6 +38,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.history_group, parent, false);
+        layoutService = new LayoutService(this.fragmentManager);
         return new ViewHolder(view);
     }
 
@@ -63,7 +70,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         holder.totalReceive.setText(Commas.add(lichSu.getTongThu()) + "đ");
         holder.totalPay.setText(Commas.add(lichSu.getTongChi()) + "đ");
 
-        HistoryItemAdapter historyItemAdapter = new HistoryItemAdapter(giaoDichs);
+        HistoryItemAdapter historyItemAdapter = new HistoryItemAdapter(giaoDichs, item -> {
+            layoutService.loadDetail(lichSu.getNgay(), item);
+        });
         holder.items.setAdapter(historyItemAdapter);
     }
 

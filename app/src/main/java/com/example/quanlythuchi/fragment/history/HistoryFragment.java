@@ -1,15 +1,8 @@
-package com.example.quanlythuchi.fragment.dashboard;
-
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+package com.example.quanlythuchi.fragment.history;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +10,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.quanlythuchi.R;
 import com.example.quanlythuchi.activity.LoginActivity;
 import com.example.quanlythuchi.adapter.HistoryAdapter;
-import com.example.quanlythuchi.callback.historyCallback;
-import com.example.quanlythuchi.model.ChiPhi;
 import com.example.quanlythuchi.model.GiaoDich;
 import com.example.quanlythuchi.model.LichSu;
 import com.example.quanlythuchi.service.ChiPhiService;
@@ -32,19 +26,15 @@ import com.example.quanlythuchi.service.shareService;
 import com.example.quanlythuchi.util.Commas;
 
 import org.bson.Document;
-import org.w3c.dom.Text;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.TreeMap;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 public class HistoryFragment extends Fragment {
     List<LichSu> lichSus = new ArrayList<>();
@@ -141,7 +131,7 @@ public class HistoryFragment extends Fragment {
                 lichSus.add(lichSu);
             }
             listItem.post(() -> {
-                HistoryAdapter historyAdapter = new HistoryAdapter(lichSus);
+                HistoryAdapter historyAdapter = new HistoryAdapter(lichSus, getParentFragmentManager());
                 listItem.setAdapter(historyAdapter);
                 progressDialog.cancel();
             });
@@ -153,11 +143,6 @@ public class HistoryFragment extends Fragment {
 
     void onCreate(){
         Bundle bundle = getArguments();
-
-//        if(bundle != null){
-//            HistoryAdapter historyAdapter = new HistoryAdapter((List<LichSu>) bundle.getSerializable("lich_su"));
-//            listItem.setAdapter(historyAdapter);
-//        }
     }
 
     void onClickBackBtn(){
@@ -176,5 +161,4 @@ public class HistoryFragment extends Fragment {
             totalPay.setText(Commas.add(aLong) + "đ");
         });
     }
-
 }

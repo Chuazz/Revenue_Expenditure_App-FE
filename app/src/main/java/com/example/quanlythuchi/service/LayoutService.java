@@ -7,7 +7,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.quanlythuchi.R;
-import com.example.quanlythuchi.fragment.dashboard.HistoryFragment;
+import com.example.quanlythuchi.fragment.history.DetailFragment;
+import com.example.quanlythuchi.fragment.history.HistoryFragment;
 import com.example.quanlythuchi.fragment.account.AccountFragment;
 import com.example.quanlythuchi.fragment.addMore.AddMoreFragment;
 import com.example.quanlythuchi.fragment.dashboard.DashboardFragment;
@@ -15,6 +16,9 @@ import com.example.quanlythuchi.fragment.payReceiveType.PayTypeFragment;
 import com.example.quanlythuchi.fragment.payReceiveType.ReceiveTypeFragment;
 import com.example.quanlythuchi.fragment.report.CurrentMoneyFragment;
 import com.example.quanlythuchi.fragment.report.ReportFragment;
+import com.example.quanlythuchi.model.GiaoDich;
+
+import java.util.Date;
 
 public class LayoutService {
     private final FragmentManager fragmentManager;
@@ -57,6 +61,10 @@ public class LayoutService {
 
     public void loadCurrentMoney(Bundle args){
         change(R.id.main_fragmentBody, CurrentMoneyFragment.newInstance(args));
+    }
+
+    public void loadDetail(Date date, GiaoDich giaoDich){
+        change(R.id.main_fragmentBody, DetailFragment.newInstance(date, giaoDich));
     }
 
     public void change(int id, Fragment fragment){

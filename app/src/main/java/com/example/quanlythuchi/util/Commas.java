@@ -10,6 +10,6 @@ public class Commas {
     }
 
     public static String remove(String value){
-        return String.valueOf(value).replace(".", "");
+        return String.valueOf(value).replace(",", "");
     }
 }
