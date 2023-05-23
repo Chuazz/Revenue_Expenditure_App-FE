@@ -96,7 +96,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/historyGroup_list"
         android:layout_width="0dp"
-        android:paddingStart="28dp"
+        android:paddingStart="22dp"
         android:paddingEnd="16dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
