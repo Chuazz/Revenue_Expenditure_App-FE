@@ -1,24 +1,30 @@
 package com.example.quanlythuchi.service;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
+import android.content.Intent;
 import android.util.Log;
 
 import com.example.quanlythuchi.activity.LoginActivity;
+import com.example.quanlythuchi.activity.MainActivity;
 import com.example.quanlythuchi.model.ChiPhi;
 import com.example.quanlythuchi.model.DanhMucChi;
 import com.example.quanlythuchi.model.GiaoDich;
+import com.example.quanlythuchi.model.NguoiDung;
 import com.example.quanlythuchi.model.ThuNhap;
 
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
+import org.bson.types.ObjectId;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import io.realm.mongodb.App;
 import io.realm.mongodb.AppConfiguration;
@@ -42,6 +48,51 @@ public class ThuanTestService {
             //lichSuChiTieuService.printf(map);
         }).exceptionally(e -> {
             Log.v("EXAMPLE", "Lỗi xảy ra trong quá trình lấy lịch sử chi tiêu!");
+            return null;
+        });
+    }
+
+    public void update_ChiPhi() {
+        NguoiDungService nguoiDungService = new NguoiDungService();
+        Document document = new Document("tenDangNhap", "thuanpt182@gmail.com");
+        CompletableFuture<NguoiDung> findOneFuture = nguoiDungService.findOne(document);
+        findOneFuture.thenAccept(user -> {
+            if (user != null) {
+                ChiPhiService chiPhiService = new ChiPhiService();
+                //Document queryFilter  = new Document("ghiChu", "Tien nha o cua Thuan").append("ngayChi", "Apr 22, 2023"); // Ưng nối bao nhiêu thì nối
+                Document queryFilter  = new Document("nguoiDung", user);
+                Document updateDocument  = new Document("$set", new Document("ghiChu", "Tien nha o cua Thuanpt"));
+
+                // Xong bước này là dữ liệu đã được cập nhật
+                CompletableFuture<Long> updateFuture = chiPhiService.updateOne(queryFilter, updateDocument );
+
+                // Bước này thực hiện để xem kêt quả trả về như thế nào
+                // Nếu không cần kiểm tra thì có thể bỏ qua mà dữ liệu vẫn sẽ cập nhật
+                updateFuture.thenAccept((result) -> {
+                    if(result == 1) {
+                        Log.v("EXAMPLE", "success");
+                    } else {
+                        Log.v("EXAMPLE", "fail");
+                    }
+                });
+            } else {
+                System.out.println("Không tìm thấy người dùng phù hợp.");
+            }
+        }).exceptionally(throwable -> {
+            Log.i(TAG, "onFailure: " + "Loi mia r");
+            return null;
+        });
+    }
+
+    public void delete_ChiPhi() {
+        ChiPhiService chiPhiService = new ChiPhiService();
+        Document queryFilter  = new Document("_id", new ObjectId("64441a5af57ba99cb437f55b"));
+        CompletableFuture<Long> deleteFuture = chiPhiService.deleteOne(queryFilter);
+
+        deleteFuture.thenAccept((result) -> {
+            Log.v("EXAMPLE", "Số tài liệu đã bị xóa: " + result);
+        }).exceptionally(error -> {
+            Log.v("EXAMPLE", "Đã xảy ra lỗi khi xóa: " + error.getMessage());
             return null;
         });
     }
