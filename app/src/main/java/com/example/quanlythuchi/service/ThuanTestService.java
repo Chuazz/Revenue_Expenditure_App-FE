@@ -18,6 +18,7 @@ import com.example.quanlythuchi.model.ThuNhap;
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
+import org.bson.types.ObjectId;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -84,7 +85,16 @@ public class ThuanTestService {
     }
 
     public void delete_ChiPhi() {
+        ChiPhiService chiPhiService = new ChiPhiService();
+        Document queryFilter  = new Document("_id", new ObjectId("64441a5af57ba99cb437f55b"));
+        CompletableFuture<Long> deleteFuture = chiPhiService.deleteOne(queryFilter);
 
+        deleteFuture.thenAccept((result) -> {
+            Log.v("EXAMPLE", "Số tài liệu đã bị xóa: " + result);
+        }).exceptionally(error -> {
+            Log.v("EXAMPLE", "Đã xảy ra lỗi khi xóa: " + error.getMessage());
+            return null;
+        });
     }
 
     public void test_ChiPhi_getSpendingHistory() {
