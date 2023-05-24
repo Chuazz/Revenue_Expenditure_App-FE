@@ -225,12 +225,89 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/main_guideLine1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.8"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/addMore_actionUpdate"
+            android:layout_below="@id/addMore_addMoreOptionSpend"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_width="match_parent"
+            android:layout_marginTop="16sp"
+            android:layout_height="50dp"
+            >
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/addMore_removeBtn"
+                app:layout_constraintRight_toLeftOf="@id/addMore_saveBtn"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/remove_btn"
+                android:layout_marginEnd="8dp"
+                >
+                <ImageView
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    android:id="@+id/addMore_removeIcon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/addMore_removeText"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:src="@drawable/ic_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:ignore="ContentDescription" />
+                <TextView
+                    android:id="@+id/addMore_removeText"
+                    app:layout_constraintLeft_toRightOf="@id/addMore_removeIcon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:text="Xóa"
+                    android:textSize="18sp"
+                    android:layout_marginStart="8dp"
+                    android:textColor="#ff4400"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:ignore="HardcodedText" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/addMore_saveBtn"
+                app:layout_constraintLeft_toRightOf="@id/addMore_removeBtn"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/save_btn"
+                android:layout_marginEnd="8dp"
+                >
+                <ImageView
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    android:id="@+id/addMore_saveIcon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/addMore_saveText"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:src="@drawable/ic_save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:ignore="ContentDescription" />
+                <TextView
+                    android:id="@+id/addMore_saveText"
+                    app:layout_constraintLeft_toRightOf="@id/addMore_saveIcon"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:text="Lưu"
+                    android:layout_marginStart="8dp"
+                    android:textSize="18sp"
+                    android:textColor="#fff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:ignore="HardcodedText" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/addMore_toolbar"

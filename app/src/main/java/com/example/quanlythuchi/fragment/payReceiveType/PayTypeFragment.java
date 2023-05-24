@@ -1,6 +1,7 @@
 package com.example.quanlythuchi.fragment.payReceiveType;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quanlythuchi.R;
 import com.example.quanlythuchi.adapter.PayTypeAdapter;
-import com.example.quanlythuchi.callback.sendData.TypeDataPassListener;
 import com.example.quanlythuchi.fragment.addMore.AddMoreFragment;
 import com.example.quanlythuchi.model.DanhMucChi;
 import com.example.quanlythuchi.service.DanhMucChiService;
@@ -27,10 +27,9 @@ import javax.annotation.Nullable;
 import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 
 
-public class PayTypeFragment extends Fragment implements TypeDataPassListener {
+public class PayTypeFragment extends Fragment {
     DanhMucChiService danhMucChiservice;
     RecyclerView listDanhMucChi;
-    List<DanhMucChi> danhMucChis;
     View view;
     ImageView turnBackBtn;
     LayoutService layoutService;
@@ -73,26 +72,26 @@ public class PayTypeFragment extends Fragment implements TypeDataPassListener {
 
     void onCreate(){
         CompletableFuture<List<DanhMucChi>> future = danhMucChiservice.findAll();
-        danhMucChis = future.join();
-        PayTypeAdapter payTypeAdapter = new PayTypeAdapter(getContext(), danhMucChis, item -> {
-            Bundle bundle = new Bundle();
-            Bundle args = getArguments();
 
-            bundle.putSerializable("muc_chi", item);
-            bundle.putBundle("old_value", args);
+        future.thenAccept(results -> listDanhMucChi.post(() -> {
+            PayTypeAdapter payTypeAdapter = new PayTypeAdapter(getContext(), results, item -> {
+                Bundle bundle = new Bundle();
+                Bundle args = getArguments();
 
-            AddMoreFragment addMoreFragment = new AddMoreFragment();
-            addMoreFragment.setArguments(bundle);
-            layoutService.change(R.id.main_fragmentBody, addMoreFragment);
+                bundle.putSerializable("muc_chi", item);
+                bundle.putBundle("old_value", args);
+
+                AddMoreFragment addMoreFragment = new AddMoreFragment();
+                addMoreFragment.setArguments(bundle);
+                layoutService.change(R.id.main_fragmentBody, addMoreFragment);
+            });
+
+            listDanhMucChi.setAdapter(payTypeAdapter);
+            listDanhMucChi.setItemAnimator(new SlideInLeftAnimator());
+            listDanhMucChi.setLayoutManager(new LinearLayoutManager(getContext()));
+        })).exceptionally(e -> {
+            Log.e("TAG", "onCreate: " + e);
+            return null;
         });
-
-        listDanhMucChi.setAdapter(payTypeAdapter);
-        listDanhMucChi.setItemAnimator(new SlideInLeftAnimator());
-        listDanhMucChi.setLayoutManager(new LinearLayoutManager(getContext()));
-    }
-
-    @Override
-    public void onDataPass(DanhMucChi danhMucChi) {
-
     }
 }

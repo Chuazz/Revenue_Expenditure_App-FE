@@ -1,6 +1,7 @@
 package com.example.quanlythuchi.fragment.payReceiveType;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,23 +62,26 @@ public class ReceiveTypeFragment extends Fragment {
 
     void onCreate(){
         CompletableFuture<List<DanhMucThu>> future = danhMucThuService.findAll();
-        List<DanhMucThu> results = future.join();
 
-        ReceiveTypeAdapter receiveTypeAdapter = new ReceiveTypeAdapter(getContext(), results, item -> {
-            Bundle bundle = new Bundle();
-            Bundle args = getArguments();
+        future.thenAccept(results -> listDanhMucThu.post(() -> {
+            ReceiveTypeAdapter receiveTypeAdapter = new ReceiveTypeAdapter(getContext(), results, item -> {
+                Bundle bundle = new Bundle();
+                Bundle args = getArguments();
 
-            bundle.putSerializable("muc_thu", item);
-            bundle.putBundle("old_value", args);
-            AddMoreFragment addMoreFragment = new AddMoreFragment();
-            addMoreFragment.setArguments(bundle);
+                bundle.putSerializable("muc_thu", item);
+                bundle.putBundle("old_value", args);
+                AddMoreFragment addMoreFragment = new AddMoreFragment();
+                addMoreFragment.setArguments(bundle);
 
-            layoutService.change(R.id.main_fragmentBody, addMoreFragment);
+                layoutService.change(R.id.main_fragmentBody, addMoreFragment);
+            });
+            listDanhMucThu.setAdapter(receiveTypeAdapter);
+            listDanhMucThu.setItemAnimator(new SlideInLeftAnimator());
+            listDanhMucThu.setLayoutManager(new LinearLayoutManager(getContext()));
+        })).exceptionally(e -> {
+            Log.e("TAG", "onCreate: " + e);
+            return null;
         });
-
-        listDanhMucThu.setAdapter(receiveTypeAdapter);
-        listDanhMucThu.setItemAnimator(new SlideInLeftAnimator());
-        listDanhMucThu.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     private void onTurnBackBtnClick() {
