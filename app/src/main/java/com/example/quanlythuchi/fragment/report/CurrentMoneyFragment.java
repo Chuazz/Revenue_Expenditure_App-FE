@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.quanlythuchi.R;
-import com.example.quanlythuchi.fragment.dashboard.HistoryFragment;
 
 /**
  * A simple {@link Fragment} subclass.

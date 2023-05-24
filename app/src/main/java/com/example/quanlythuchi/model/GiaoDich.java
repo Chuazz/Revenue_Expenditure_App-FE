@@ -1,6 +1,8 @@
 package com.example.quanlythuchi.model;
 
-public class GiaoDich {
+import java.io.Serializable;
+
+public class GiaoDich implements Serializable {
     private String DanhMuc;
     private String GhiChu;
     private long Tien;

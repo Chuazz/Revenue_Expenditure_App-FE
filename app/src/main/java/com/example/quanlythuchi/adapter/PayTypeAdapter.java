@@ -29,7 +29,7 @@ public class PayTypeAdapter extends RecyclerView.Adapter<PayTypeAdapter.ViewHold
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater =LayoutInflater.from(this.context);
+        LayoutInflater layoutInflater = LayoutInflater.from(this.context);
         View view = layoutInflater.inflate(R.layout.pay_type_item, null);
         ViewHolder holder = new ViewHolder(view);
 
@@ -38,9 +38,9 @@ public class PayTypeAdapter extends RecyclerView.Adapter<PayTypeAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        DanhMucChi contact = danhMucChis.get(position);
-        holder.nameType.setText(contact.getTenDMChi());
-        holder.bind(danhMucChis.get(position), listener);
+        DanhMucChi danhMuc = danhMucChis.get(position);
+        holder.nameType.setText(danhMuc.getTenDMChi());
+        holder.bind(danhMuc, listener);
     }
 
     @Override
@@ -57,11 +57,7 @@ public class PayTypeAdapter extends RecyclerView.Adapter<PayTypeAdapter.ViewHold
         }
 
         public void bind(final DanhMucChi item, final OnPayItemClickListener listener) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
-                    listener.onItemClick(item);
-                }
-            });
+            itemView.setOnClickListener(v -> listener.onItemClick(item));
         }
     }
 }

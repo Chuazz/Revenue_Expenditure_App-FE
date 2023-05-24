@@ -1,5 +1,6 @@
 package com.example.quanlythuchi.adapter;
 
+
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -11,18 +12,22 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.quanlythuchi.R;
+import com.example.quanlythuchi.callback.listener.OnHistoryItemClickListener;
 import com.example.quanlythuchi.model.GiaoDich;
-import com.example.quanlythuchi.model.LichSu;
 import com.example.quanlythuchi.util.Commas;
 
+import java.util.Date;
 import java.util.List;
 
 public class HistoryItemAdapter  extends RecyclerView.Adapter<HistoryItemAdapter.ViewHolder> {
 
     List<GiaoDich> items;
+    private OnHistoryItemClickListener listener;
 
-    public HistoryItemAdapter(List<GiaoDich> items) {
+
+    public HistoryItemAdapter(List<GiaoDich> items, OnHistoryItemClickListener listener) {
         this.items = items;
+        this.listener = listener;
     }
 
     @NonNull
@@ -48,6 +53,7 @@ public class HistoryItemAdapter  extends RecyclerView.Adapter<HistoryItemAdapter
 
         holder.label.setText(giaoDich.getDanhMuc());
         holder.value.setText(Commas.add(giaoDich.getTien()) + "đ");
+        holder.bind(giaoDich, this.listener);
     }
 
     @Override
@@ -56,7 +62,6 @@ public class HistoryItemAdapter  extends RecyclerView.Adapter<HistoryItemAdapter
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-
         TextView label;
         TextView value;
 
@@ -65,6 +70,12 @@ public class HistoryItemAdapter  extends RecyclerView.Adapter<HistoryItemAdapter
 
             label = itemView.findViewById(R.id.historyItem_label);
             value = itemView.findViewById(R.id.historyItem_value);
+        }
+
+        public void bind(final GiaoDich item, final OnHistoryItemClickListener listener) {
+            itemView.setOnClickListener(v -> {
+                listener.onItemClick(item);
+            });
         }
     }
 }

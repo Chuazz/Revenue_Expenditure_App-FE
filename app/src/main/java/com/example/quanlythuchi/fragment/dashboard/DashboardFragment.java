@@ -1,6 +1,9 @@
 package com.example.quanlythuchi.fragment.dashboard;
 
+import static android.content.ContentValues.TAG;
+
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -16,6 +19,7 @@ import android.widget.TextView;
 
 import com.example.quanlythuchi.R;
 import com.example.quanlythuchi.activity.LoginActivity;
+import com.example.quanlythuchi.adapter.HistoryAdapter;
 import com.example.quanlythuchi.model.GiaoDich;
 import com.example.quanlythuchi.model.LichSu;
 import com.example.quanlythuchi.service.LayoutService;
@@ -34,6 +38,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -88,59 +93,13 @@ public class DashboardFragment extends Fragment {
         args = new Bundle();
 
         onCreateView();
-        getHistory();
         onShowMoneyClick();
         onHistoryBtnClick();
 
         return view;
     }
 
-    void getHistory(){
-        LichSuChiTieuService lichSuChiTieuService = new LichSuChiTieuService();
-        Document document = new Document("tenDangNhap", LoginActivity.nguoiDung.getTenDangNhap());
 
-        lichSuChiTieuService.getTransactionHistory(document).thenAccept(map -> {
-            TreeMap<Date, List<GiaoDich>> sortedMap = new TreeMap<>(Collections.reverseOrder());
-
-            sortedMap.putAll(map);
-
-            for (Map.Entry<Date, List<GiaoDich>> entry : sortedMap.entrySet()) {
-                Date key = entry.getKey();
-                List<GiaoDich> giaoDiches = entry.getValue();
-
-                LichSu lichSu = new LichSu(key, giaoDiches);
-
-                // Kiểm tra có phải ngày hôm nay không
-                if(key.compareTo(new Date()) == 0) {
-                    lichSu.setToday(true);
-                }
-
-                // Lấy thứ, ngày, tháng, năm
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(key);
-                lichSu.set_thu(shareService.getDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK)));
-                lichSu.set_ngay(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
-                lichSu.set_thang(String.valueOf(calendar.get(Calendar.MONTH) + 1));
-                lichSu.set_nam(String.valueOf(calendar.get(Calendar.YEAR)));
-
-                // Tính tổng thu/chi trong 1 ngày
-                for (GiaoDich giaoDich : giaoDiches) {
-                    if(giaoDich.isThuNhap()) {
-                        lichSu.plusThu(giaoDich.getTien());
-                    }
-                    else {
-                        lichSu.plusChi(giaoDich.getTien());
-                    }
-                }
-
-                lichSus.add(lichSu);
-            }
-            args.putSerializable("lich_su", (Serializable) lichSus);
-        }).exceptionally(e -> {
-            Log.v("EXAMPLE", "Lỗi xảy ra trong quá trình lấy lịch sử chi tiêu!");
-            return null;
-        });
-    }
 
     void onHistoryBtnClick(){
         historyBtn.setOnClickListener(view -> {

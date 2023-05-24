@@ -28,7 +28,7 @@
 
                 <TextView
                     android:id="@+id/account_title"
-                    android:textSize="17sp"
+                    android:textSize="20sp"
                     android:textColor="#ffff"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -57,12 +57,12 @@
                 tools:ignore="UselessParent"
                 android:baselineAligned="false">
                 <LinearLayout
+                    android:background="@drawable/report_item_bg"
                     android:id="@+id/report_currentMoney"
-                    android:background="#fff"
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
-                    android:layout_marginStart="6dp"
-                    android:layout_marginEnd="12dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="6dp"
                     android:orientation="vertical"
                     android:layout_weight="1"
                     android:layout_width="0dp"
@@ -84,7 +84,7 @@
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
                 <LinearLayout
-                    android:background="#fff"
+                    android:background="@drawable/report_item_bg"
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
                     android:layout_marginStart="6dp"
