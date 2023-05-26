@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         Realm.init(this);
 
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Đang lấy thông tin của bạn");
+        progressDialog.setMessage("Đang kiểm tra thông tin của bạn");
         progressDialog.setCancelable(false);
 
         onClick();

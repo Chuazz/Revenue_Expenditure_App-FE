@@ -1,6 +1,7 @@
 package com.example.quanlythuchi.adapter;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +63,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         holder.totalReceive.setText(Commas.add(lichSu.getTongThu()) + "đ");
         holder.totalPay.setText(Commas.add(lichSu.getTongChi()) + "đ");
 
-        HistoryItemAdapter historyItemAdapter = new HistoryItemAdapter(giaoDichs, item -> layoutService.loadAddMore(lichSu.getNgay(), item, true));
+        HistoryItemAdapter historyItemAdapter = new HistoryItemAdapter(giaoDichs, item -> {
+            layoutService.loadAddMore(lichSu.getNgay(), item, true);
+        });
         holder.items.setAdapter(historyItemAdapter);
     }
 

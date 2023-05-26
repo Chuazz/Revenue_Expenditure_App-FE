@@ -1,9 +1,12 @@
 package com.example.quanlythuchi.fragment.addMore;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +26,7 @@ import com.example.quanlythuchi.model.ChiPhi;
 import com.example.quanlythuchi.model.DanhMucChi;
 import com.example.quanlythuchi.model.DanhMucThu;
 import com.example.quanlythuchi.model.GiaoDich;
+import com.example.quanlythuchi.model.NguoiDung;
 import com.example.quanlythuchi.model.ThuNhap;
 import com.example.quanlythuchi.service.ChiPhiService;
 import com.example.quanlythuchi.service.LayoutService;
@@ -33,8 +37,12 @@ import com.example.quanlythuchi.util.CustomTextWatcher;
 import com.example.quanlythuchi.util.CustomToast;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
+import org.bson.Document;
+import org.bson.types.ObjectId;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.CompletableFuture;
 
 public class AddMoreFragment extends Fragment {
     View view;
@@ -65,6 +73,8 @@ public class AddMoreFragment extends Fragment {
     ProgressDialog progressDialog;
     CustomToast customToast;
     ImageView optionImg;
+    ConstraintLayout removeBtn;
+    ConstraintLayout saveBtn;
 
     public AddMoreFragment() {
     }
@@ -111,6 +121,10 @@ public class AddMoreFragment extends Fragment {
         optionImg = view.findViewById(R.id.addMore_optionImg);
         optionText = view.findViewById(R.id.addMore_optionText);
         actionUpdateBlock = view.findViewById(R.id.addMore_actionUpdate);
+        removeBtn = view.findViewById(R.id.addMore_removeBtn);
+        saveBtn = view.findViewById(R.id.addMore_saveBtn);
+
+        progressDialog.setMessage("Đang cập nhập thông tin của bạn");
 
         onDateAddClick();
         onChooseTypeClick();
@@ -118,9 +132,78 @@ public class AddMoreFragment extends Fragment {
         onOptionClick();
         onOptionItemClick();
         onCheckBtnClick();
+        onRemoveBtnClick();
+        onSaveBtnClick();
         moneyInput.addTextChangedListener(new CustomTextWatcher(moneyInput));
 
         return view;
+    }
+
+    void onSaveBtnClick() {
+        saveBtn.setOnClickListener(e -> {
+            Bundle args = getArguments();
+            progressDialog.show();
+            NguoiDungService nguoiDungService = new NguoiDungService();
+            Document document = new Document("tenDangNhap", LoginActivity.nguoiDung.getTenDangNhap());
+            CompletableFuture<NguoiDung> findOneFuture = nguoiDungService.findOne(document);
+            findOneFuture.thenAccept(user -> {
+                if (user != null && args != null) {
+                    String description = String.valueOf(descriptionInput.getText());
+                    Integer money = Integer.parseInt(Commas.remove(String.valueOf(moneyInput.getText())));
+                    GiaoDich giaoDich = (GiaoDich) args.getSerializable("giao_dich");
+                    ChiPhiService chiPhiService = new ChiPhiService();
+                    Document queryFilter  = new Document("nguoiDung", user).append("ghiChu", giaoDich.getGhiChu());
+                    Document updateQuery = new Document("ghiChu", description);
+
+                    if(isPay){
+                        queryFilter.append("tienChi", giaoDich.getTien());
+                        updateQuery.append("tienChi", money);
+                    }
+                    else{
+                        queryFilter.append("tienThu", giaoDich.getTien());
+                        //updateQuery.append("tienThu", money);
+                    }
+
+                    Document updateDocument  = new Document("$set", updateQuery);
+                    CompletableFuture<Long> updateFuture = chiPhiService.updateOne(queryFilter, updateDocument );
+
+                    updateFuture.thenAccept((result) -> {
+                        if(result == 1) {
+                            customToast.show("Cập nhập thành công");
+                        } else {
+                            customToast.show("Cập nhập thất bại");
+                        }
+                        progressDialog.cancel();
+                    });
+                }
+            }).exceptionally(throwable -> {
+                Log.i(TAG, "onFailure: " + "Loi mia r");
+                return null;
+            });
+        });
+    }
+
+    void onRemoveBtnClick() {
+        removeBtn.setOnClickListener(e -> {
+            progressDialog.show();
+
+            ChiPhiService chiPhiService = new ChiPhiService();
+            Document queryFilter  = new Document("_id", new ObjectId("64441a5af57ba99cb437f55b"));
+            CompletableFuture<Long> deleteFuture = chiPhiService.deleteOne(queryFilter);
+
+            deleteFuture.thenAccept((result) -> {
+                if(result >= 1){
+                    customToast.show("Cập nhập thành công");
+                }
+                else{
+                    customToast.show("Cập nhập thất bại");
+                }
+                progressDialog.show();
+            }).exceptionally(error -> {
+                Log.v("EXAMPLE", "Đã xảy ra lỗi khi xóa: " + error.getMessage());
+                return null;
+            });
+        });
     }
 
     void onDateAddClick(){
@@ -150,23 +233,6 @@ public class AddMoreFragment extends Fragment {
                 layoutService.loadReceiveType(bundle);
             }
         });
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    void setFormDataDetail(Bundle bundle){
-       GiaoDich giaoDich = (GiaoDich) bundle.getSerializable("giao_dich");
-
-       if(giaoDich != null){
-           Date date_bundle = (Date) bundle.getSerializable("date");
-           SimpleDateFormat targetFormat = new SimpleDateFormat("MMM d, yyyy");
-
-           this.moneyInput.setText(Commas.add(giaoDich.getTien()));
-           this.typeInput.setText(giaoDich.getDanhMuc());
-           this.descriptionInput.setText(giaoDich.getGhiChu());
-           this.dateAddInput.setText(targetFormat.format(date_bundle));
-           this.isUpdate = bundle.getBoolean("is_update");
-           this.isPay = !giaoDich.isThuNhap();
-       }
     }
 
     @SuppressLint({"SetTextI18n", "SimpleDateFormat"})
@@ -227,6 +293,23 @@ public class AddMoreFragment extends Fragment {
             moneyInput.setTextColor(Color.parseColor("#36CB2B"));
             receiveCheck.setVisibility(View.VISIBLE);
         }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    void setFormDataDetail(Bundle bundle){
+       GiaoDich giaoDich = (GiaoDich) bundle.getSerializable("giao_dich");
+
+       if(giaoDich != null){
+           Date date_bundle = (Date) bundle.getSerializable("date");
+           SimpleDateFormat targetFormat = new SimpleDateFormat("MMM d, yyyy");
+
+           this.moneyInput.setText(Commas.add(giaoDich.getTien()));
+           this.typeInput.setText(giaoDich.getDanhMuc());
+           this.descriptionInput.setText(giaoDich.getGhiChu());
+           this.dateAddInput.setText(targetFormat.format(date_bundle));
+           this.isUpdate = bundle.getBoolean("is_update");
+           this.isPay = !giaoDich.isThuNhap();
+       }
     }
 
     @SuppressLint({"NonConstantResourceId", "SetTextI18n"})
@@ -306,7 +389,6 @@ public class AddMoreFragment extends Fragment {
 
     void onCheckBtnClick(){
         checkBtn.setOnClickListener(view -> {
-            progressDialog.setMessage("Đang cập nhập thông tin của bạn");
             progressDialog.show();
 
             if(!isUpdate){
