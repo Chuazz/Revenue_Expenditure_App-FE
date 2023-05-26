@@ -90,7 +90,7 @@ public class HistoryFragment extends Fragment {
         return view;
     }
 
-    void getHistory(){
+    void getHistory() {
         LichSuChiTieuService lichSuChiTieuService = new LichSuChiTieuService();
         Document document = new Document("tenDangNhap", LoginActivity.nguoiDung.getTenDangNhap());
 

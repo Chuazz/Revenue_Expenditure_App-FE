@@ -3,19 +3,29 @@ package com.example.quanlythuchi.model;
 import java.io.Serializable;
 
 public class GiaoDich implements Serializable {
+    private String MaGD;
     private String DanhMuc;
     private String GhiChu;
     private long Tien;
 
-    private boolean ThuNhap; // True là Thu, False là chi
+    private boolean ThuNhap; // True là Thu nhập, False là Chi tiêu
 
     public GiaoDich() { }
 
-    public GiaoDich(String danhMuc, String ghiChu, long tien, boolean thuNhap) {
+    public GiaoDich(String maGD, String danhMuc, String ghiChu, long tien, boolean thuNhap) {
+        MaGD = maGD;
         DanhMuc = danhMuc;
         GhiChu = ghiChu;
         Tien = tien;
         ThuNhap = thuNhap;
+    }
+
+    public String getMaGD() {
+        return MaGD;
+    }
+
+    public void setMaGD(String maGD) {
+        MaGD = maGD;
     }
 
     public String getDanhMuc() {

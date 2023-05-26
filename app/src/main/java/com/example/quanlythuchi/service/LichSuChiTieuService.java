@@ -37,7 +37,8 @@ public class LichSuChiTieuService {
                     List<ThuNhap> thuNhaps = earningFuture.join();
                     if (thuNhaps != null) {
                         for (ThuNhap thuNhap: thuNhaps) {
-                            GiaoDich giaoDich = new GiaoDich(thuNhap.getDanhMucThu().getTenDMThu(), thuNhap.getGhiChu(), thuNhap.getTienThu(), true);
+                            GiaoDich giaoDich = new GiaoDich(thuNhap.getMaThu(), thuNhap.getDanhMucThu().getTenDMThu(),
+                                    thuNhap.getGhiChu(), thuNhap.getTienThu(), true);
                             List<GiaoDich> giaoDiches = MapLichSuChiTieu.get(new Date(thuNhap.getNgayThu()));
                             if (giaoDiches == null) {
                                 giaoDiches = new ArrayList<>();
@@ -54,7 +55,8 @@ public class LichSuChiTieuService {
                     List<ChiPhi> chiPhis = spendingFuture.join();
                     if (chiPhis != null) {
                         for (ChiPhi chiPhi: chiPhis) {
-                            GiaoDich giaoDich = new GiaoDich(chiPhi.getDanhMucChi().getTenDMChi(), chiPhi.getGhiChu(), chiPhi.getTienChi(), false);
+                            GiaoDich giaoDich = new GiaoDich(chiPhi.getMaChi(), chiPhi.getDanhMucChi().getTenDMChi(),
+                                    chiPhi.getGhiChu(), chiPhi.getTienChi(), false);
                             List<GiaoDich> giaoDiches = MapLichSuChiTieu.get(new Date(chiPhi.getNgayChi()));
                             if (giaoDiches == null) {
                                 giaoDiches = new ArrayList<>();
