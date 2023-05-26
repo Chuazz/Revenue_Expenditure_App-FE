@@ -3,15 +3,16 @@ package com.example.quanlythuchi.model;
 import java.util.UUID;
 
 public class ChiPhi {
-    public String getMaChi() {
-        return MaChi;
+
+    public String getMaGD() {
+        return MaGD;
     }
 
-    public void setMaChi(String MaChi) {
-        this.MaChi = MaChi;
+    public void setMaGD(String maGD) {
+        MaGD = maGD;
     }
 
-    private String MaChi;
+    private String MaGD;
     private NguoiDung NguoiDung;
     private DanhMucChi DanhMucChi;
     private long TienChi;
@@ -32,7 +33,7 @@ public class ChiPhi {
 
     public ChiPhi(NguoiDung nguoiDung, DanhMucChi danhMucChi, long tienChi, String ngayChi, String ghiChu) {
         UUID uuid = UUID.randomUUID();
-        this.MaChi = uuid.toString();
+        this.MaGD = uuid.toString();
         NguoiDung = nguoiDung;
         DanhMucChi = danhMucChi;
         TienChi = tienChi;

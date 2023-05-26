@@ -143,43 +143,50 @@ public class AddMoreFragment extends Fragment {
         saveBtn.setOnClickListener(e -> {
             Bundle args = getArguments();
             progressDialog.show();
-            NguoiDungService nguoiDungService = new NguoiDungService();
-            Document document = new Document("tenDangNhap", LoginActivity.nguoiDung.getTenDangNhap());
-            CompletableFuture<NguoiDung> findOneFuture = nguoiDungService.findOne(document);
-            findOneFuture.thenAccept(user -> {
-                if (user != null && args != null) {
-                    String description = String.valueOf(descriptionInput.getText());
-                    Integer money = Integer.parseInt(Commas.remove(String.valueOf(moneyInput.getText())));
-                    GiaoDich giaoDich = (GiaoDich) args.getSerializable("giao_dich");
-                    ChiPhiService chiPhiService = new ChiPhiService();
-                    Document queryFilter  = new Document("nguoiDung", user).append("ghiChu", giaoDich.getGhiChu());
-                    Document updateQuery = new Document("ghiChu", description);
+            // Chưa sửa nè
+            GiaoDich giaoDich = (GiaoDich) args.getSerializable("giao_dich");
+            Document queryFilter  = new Document("maGD", giaoDich.getMaGD());
 
-                    if(isPay){
-                        queryFilter.append("tienChi", giaoDich.getTien());
-                        updateQuery.append("tienChi", money);
+            // Sửa rồi nè
+            Integer money = Integer.parseInt(Commas.remove(String.valueOf(moneyInput.getText())));
+            String description = String.valueOf(descriptionInput.getText());
+            //String date = String.valueOf(dateAddInput.getText());
+            Document updateDocument  = new Document("$set", new Document("ghiChu", description));
+
+            if(isPay){
+                CompletableFuture<Long> updateFuture = chiPhiService.updateOne(queryFilter, updateDocument);
+                updateFuture.thenAccept((result) -> {
+                    if(result == 1) {
+                        customToast.show("Cập nhập thành công");
+                    } else {
+                        customToast.show("Cập nhập thất bại");
                     }
-                    else{
-                        queryFilter.append("tienThu", giaoDich.getTien());
-                        //updateQuery.append("tienThu", money);
+                    progressDialog.cancel();
+                });
+            }
+            else{
+                CompletableFuture<Long> updateFuture = thuNhapService.updateOne(queryFilter, updateDocument);
+                updateFuture.thenAccept((result) -> {
+                    if(result == 1) {
+                        customToast.show("Cập nhập thành công");
+                    } else {
+                        customToast.show("Cập nhập thất bại");
                     }
+                    progressDialog.cancel();
+                });
+            }
 
-                    Document updateDocument  = new Document("$set", updateQuery);
-                    CompletableFuture<Long> updateFuture = chiPhiService.updateOne(queryFilter, updateDocument );
-
-                    updateFuture.thenAccept((result) -> {
-                        if(result == 1) {
-                            customToast.show("Cập nhập thành công");
-                        } else {
-                            customToast.show("Cập nhập thất bại");
-                        }
-                        progressDialog.cancel();
-                    });
-                }
-            }).exceptionally(throwable -> {
-                Log.i(TAG, "onFailure: " + "Loi mia r");
-                return null;
-            });
+//            Document updateDocument  = new Document("$set", updateQuery);
+//            CompletableFuture<Long> updateFuture = chiPhiService.updateOne(queryFilter, updateDocument);
+//
+//            updateFuture.thenAccept((result) -> {
+//                if(result == 1) {
+//                    customToast.show("Cập nhập thành công");
+//                } else {
+//                    customToast.show("Cập nhập thất bại");
+//                }
+//                progressDialog.cancel();
+//            });
         });
     }
 
