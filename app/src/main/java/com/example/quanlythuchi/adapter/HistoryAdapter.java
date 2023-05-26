@@ -44,7 +44,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         LichSu lichSu = lichSus.get(position);
         List<GiaoDich> giaoDichs = lichSu.getGiaoDich();
-
         if(lichSu.isToday()){
             holder.day.setText("Hôm nay");
         }

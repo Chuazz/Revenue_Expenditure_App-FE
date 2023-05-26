@@ -150,10 +150,11 @@ public class AddMoreFragment extends Fragment {
             // Sửa rồi nè
             Integer money = Integer.parseInt(Commas.remove(String.valueOf(moneyInput.getText())));
             String description = String.valueOf(descriptionInput.getText());
-            //String date = String.valueOf(dateAddInput.getText());
-            Document updateDocument  = new Document("$set", new Document("ghiChu", description));
+            String date = String.valueOf(dateAddInput.getText());
 
             if(isPay){
+                Document updateDocument  = new Document("$set",
+                        new Document("ghiChu", description).append("tienChi", money).append("ngayChi", date));
                 CompletableFuture<Long> updateFuture = chiPhiService.updateOne(queryFilter, updateDocument);
                 updateFuture.thenAccept((result) -> {
                     if(result == 1) {
@@ -165,6 +166,8 @@ public class AddMoreFragment extends Fragment {
                 });
             }
             else{
+                Document updateDocument  = new Document("$set",
+                        new Document("ghiChu", description).append("tienThu", money).append("ngayThu", date));
                 CompletableFuture<Long> updateFuture = thuNhapService.updateOne(queryFilter, updateDocument);
                 updateFuture.thenAccept((result) -> {
                     if(result == 1) {
@@ -175,41 +178,49 @@ public class AddMoreFragment extends Fragment {
                     progressDialog.cancel();
                 });
             }
-
-//            Document updateDocument  = new Document("$set", updateQuery);
-//            CompletableFuture<Long> updateFuture = chiPhiService.updateOne(queryFilter, updateDocument);
-//
-//            updateFuture.thenAccept((result) -> {
-//                if(result == 1) {
-//                    customToast.show("Cập nhập thành công");
-//                } else {
-//                    customToast.show("Cập nhập thất bại");
-//                }
-//                progressDialog.cancel();
-//            });
         });
     }
 
     void onRemoveBtnClick() {
         removeBtn.setOnClickListener(e -> {
+            Bundle args = getArguments();
             progressDialog.show();
 
-            ChiPhiService chiPhiService = new ChiPhiService();
-            Document queryFilter  = new Document("_id", new ObjectId("64441a5af57ba99cb437f55b"));
-            CompletableFuture<Long> deleteFuture = chiPhiService.deleteOne(queryFilter);
+            GiaoDich giaoDich = (GiaoDich) args.getSerializable("giao_dich");
+            Document queryFilter  = new Document("maGD", giaoDich.getMaGD());
 
-            deleteFuture.thenAccept((result) -> {
-                if(result >= 1){
-                    customToast.show("Cập nhập thành công");
-                }
-                else{
-                    customToast.show("Cập nhập thất bại");
-                }
-                progressDialog.show();
-            }).exceptionally(error -> {
-                Log.v("EXAMPLE", "Đã xảy ra lỗi khi xóa: " + error.getMessage());
-                return null;
-            });
+            if(isPay) {
+                CompletableFuture<Long> deleteFuture = chiPhiService.deleteOne(queryFilter);
+                deleteFuture.thenAccept((result) -> {
+                    if(result != 0){
+                        customToast.show("Xóa giao dịch thành công");
+                        layoutService.loadHistory(null);
+                    }
+                    else{
+                        customToast.show("Xóa giao dịch thất bại");
+                    }
+                    progressDialog.cancel();
+                }).exceptionally(error -> {
+                    Log.v("EXAMPLE", "Đã xảy ra lỗi khi xóa: " + error.getMessage());
+                    return null;
+                });
+            }
+            else {
+                CompletableFuture<Long> deleteFuture = thuNhapService.deleteOne(queryFilter);
+                deleteFuture.thenAccept((result) -> {
+                    if(result != 0){
+                        customToast.show("Xóa giao dịch thành công");
+                        layoutService.loadHistory(null);
+                    }
+                    else{
+                        customToast.show("Xóa giao dịch thất bại");
+                    }
+                    progressDialog.cancel();
+                }).exceptionally(error -> {
+                    Log.v("EXAMPLE", "Đã xảy ra lỗi khi xóa: " + error.getMessage());
+                    return null;
+                });
+            }
         });
     }
 
@@ -304,19 +315,19 @@ public class AddMoreFragment extends Fragment {
 
     @SuppressLint("SimpleDateFormat")
     void setFormDataDetail(Bundle bundle){
-       GiaoDich giaoDich = (GiaoDich) bundle.getSerializable("giao_dich");
+        GiaoDich giaoDich = (GiaoDich) bundle.getSerializable("giao_dich");
 
-       if(giaoDich != null){
-           Date date_bundle = (Date) bundle.getSerializable("date");
-           SimpleDateFormat targetFormat = new SimpleDateFormat("MMM d, yyyy");
+        if(giaoDich != null){
+            Date date_bundle = (Date) bundle.getSerializable("date");
+            SimpleDateFormat targetFormat = new SimpleDateFormat("MMM d, yyyy");
 
-           this.moneyInput.setText(Commas.add(giaoDich.getTien()));
-           this.typeInput.setText(giaoDich.getDanhMuc());
-           this.descriptionInput.setText(giaoDich.getGhiChu());
-           this.dateAddInput.setText(targetFormat.format(date_bundle));
-           this.isUpdate = bundle.getBoolean("is_update");
-           this.isPay = !giaoDich.isThuNhap();
-       }
+            this.moneyInput.setText(Commas.add(giaoDich.getTien()));
+            this.typeInput.setText(giaoDich.getDanhMuc());
+            this.descriptionInput.setText(giaoDich.getGhiChu());
+            this.dateAddInput.setText(targetFormat.format(date_bundle));
+            this.isUpdate = bundle.getBoolean("is_update");
+            this.isPay = !giaoDich.isThuNhap();
+        }
     }
 
     @SuppressLint({"NonConstantResourceId", "SetTextI18n"})
