@@ -1,8 +1,17 @@
 package com.example.quanlythuchi.model;
 
-import java.util.Date;
+import java.util.UUID;
 
 public class ChiPhi {
+    public String getMaChi() {
+        return MaChi;
+    }
+
+    public void setMaChi(String MaChi) {
+        this.MaChi = MaChi;
+    }
+
+    private String MaChi;
     private NguoiDung NguoiDung;
     private DanhMucChi DanhMucChi;
     private long TienChi;
@@ -22,6 +31,8 @@ public class ChiPhi {
     }
 
     public ChiPhi(NguoiDung nguoiDung, DanhMucChi danhMucChi, long tienChi, String ngayChi, String ghiChu) {
+        UUID uuid = UUID.randomUUID();
+        this.MaChi = uuid.toString();
         NguoiDung = nguoiDung;
         DanhMucChi = danhMucChi;
         TienChi = tienChi;
