@@ -152,6 +152,12 @@ public class AddMoreFragment extends Fragment {
             String description = String.valueOf(descriptionInput.getText());
             String date = String.valueOf(dateAddInput.getText());
 
+            if(money <= 0 || date == "") {
+                customToast.show("Dữ liệu không hợp lệ!");
+                progressDialog.cancel();
+                return;
+            }
+
             if(isPay){
                 Document updateDocument  = new Document("$set",
                         new Document("ghiChu", description).append("tienChi", money).append("ngayChi", date));
@@ -408,6 +414,14 @@ public class AddMoreFragment extends Fragment {
     void onCheckBtnClick(){
         checkBtn.setOnClickListener(view -> {
             progressDialog.show();
+            Integer money = Integer.parseInt(Commas.remove(String.valueOf(moneyInput.getText())));
+            String date = String.valueOf(dateAddInput.getText());
+
+            if(money <= 0 || date == "") {
+                customToast.show("Dữ liệu không hợp lệ!");
+                progressDialog.cancel();
+                return;
+            }
 
             if(!isUpdate){
                 if(isPay){
